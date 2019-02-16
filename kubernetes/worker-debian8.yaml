@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - args:
-        - -browser-url=http://bbb-browser/
+        - -browser-url=http://bb-browser.example.com/
         - -concurrency=4
         - -scheduler=scheduler-debian8:8981
         image: buildbarn/bb-worker:20190210T161704Z-6f6bded
