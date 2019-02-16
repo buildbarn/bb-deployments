@@ -32,7 +32,6 @@ spec:
           name: ac
       volumes:
       - configMap:
-          defaultMode: 400
           name: config-storage
         name: config
   volumeClaimTemplates:

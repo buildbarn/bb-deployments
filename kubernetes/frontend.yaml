@@ -27,7 +27,6 @@ spec:
           name: config
       volumes:
       - configMap:
-          defaultMode: 400
           name: config-storage-clients
         name: config
 ---
