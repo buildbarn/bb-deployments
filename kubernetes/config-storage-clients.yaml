@@ -1,0 +1,65 @@
+apiVersion: v1
+data:
+  blobstore.conf: |
+    content_addressable_storage {
+      sharding {
+        hash_initialization: 11946695773637837490
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-0.storage:8980"
+            }
+          }
+          weight: 1
+        }
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-1.storage:8980"
+            }
+          }
+          weight: 1
+        }
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-2.storage:8980"
+            }
+          }
+          weight: 1
+        }
+      }
+    }
+    action_cache {
+      sharding {
+        hash_initialization: 14897363947481274433
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-0.storage:8980"
+            }
+          }
+          weight: 1
+        }
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-1.storage:8980"
+            }
+          }
+          weight: 1
+        }
+        shard {
+          backend {
+            grpc {
+              endpoint: "storage-2.storage:8980"
+            }
+          }
+          weight: 1
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: config-storage-clients
+  namespace: buildbarn
