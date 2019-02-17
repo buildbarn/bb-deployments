@@ -1,0 +1,38 @@
+# Common settings for remote builds.
+build:remote --experimental_strict_action_env
+build:remote --genrule_strategy=remote
+build:remote --spawn_strategy=remote
+build:remote --strategy=Closure=remote
+build:remote --strategy=Javac=remote
+
+# From https://github.com/bazelbuild/bazel-toolchains/blob/master/configs/debian8_clang/0.4.0/toolchain.bazelrc
+build:rbe-debian8 --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build:rbe-debian8 --crosstool_top=@bazel_toolchains//configs/debian8_clang/0.4.0/bazel_0.22.0/default:toolchain
+build:rbe-debian8 --extra_execution_platforms=@bazel_toolchains//configs/debian8_clang/0.4.0:rbe_debian8
+build:rbe-debian8 --extra_toolchains=@bazel_toolchains//configs/debian8_clang/0.4.0/bazel_0.22.0/cpp:cc-toolchain-clang-x86_64-default
+build:rbe-debian8 --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-debian8 --host_javabase=@bazel_toolchains//configs/debian8_clang/0.4.0:jdk8
+build:rbe-debian8 --host_platform=@bazel_toolchains//configs/debian8_clang/0.4.0:rbe_debian8
+build:rbe-debian8 --java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-debian8 --javabase=@bazel_toolchains//configs/debian8_clang/0.4.0:jdk8
+build:rbe-debian8 --platforms=@bazel_toolchains//configs/debian8_clang/0.4.0:rbe_debian8
+# Additional settings.
+build:rbe-debian8 --action_env=PATH=/bin:/usr/bin
+build:rbe-debian8 --cpu=k8
+build:rbe-debian8 --host_cpu=k8
+
+# From https://github.com/bazelbuild/bazel-toolchains/blob/master/configs/ubuntu16_04_clang/1.1/toolchain.bazelrc
+build:rbe-ubuntu16-04 --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build:rbe-ubuntu16-04 --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.1/bazel_0.22.0/default:toolchain
+build:rbe-ubuntu16-04 --extra_execution_platforms=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:rbe_ubuntu1604
+build:rbe-ubuntu16-04 --extra_toolchains=@bazel_toolchains//configs/ubuntu16_04_clang/1.1/bazel_0.22.0/cpp:cc-toolchain-clang-x86_64-default
+build:rbe-ubuntu16-04 --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-ubuntu16-04 --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
+build:rbe-ubuntu16-04 --host_platform=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:rbe_ubuntu1604
+build:rbe-ubuntu16-04 --java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-ubuntu16-04 --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:jdk8
+build:rbe-ubuntu16-04 --platforms=@bazel_toolchains//configs/ubuntu16_04_clang/1.1:rbe_ubuntu1604
+# Additional settings.
+build:rbe-ubuntu16-04 --action_env=PATH=/bin:/usr/bin
+build:rbe-ubuntu16-04 --cpu=k8
+build:rbe-ubuntu16-04 --host_cpu=k8
