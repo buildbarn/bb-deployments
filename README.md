@@ -47,7 +47,7 @@ http_archive(
 ```
 
 In addition to that, you will need to add
-[a list of generic build options](https://github.com/bazelbuild/bazel-toolchains/blob/master/bazelrc)
+[a list of generic build options](https://github.com/buildbarn/bb-deployments/blob/master/bazelrc)
 to your `~/.bazelrc`, followed by the following set of options that are
 specific to your environment:
 
