@@ -38,7 +38,6 @@ spec:
   - metadata:
       name: cas
     spec:
-      storageClassName: rook-ceph-block
       accessModes:
       - ReadWriteOnce
       resources:
@@ -47,7 +46,6 @@ spec:
   - metadata:
       name: ac
     spec:
-      storageClassName: rook-ceph-block
       accessModes:
       - ReadWriteOnce
       resources:
