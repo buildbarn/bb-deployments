@@ -21,6 +21,8 @@ respectively. The script assumes that these projects have been built
 ./run.sh ~/projects/bb-storage ~/projects/bb-browser ~/projects/bb-remote-execution
 ```
 
+This deployment is known to work on FreeBSD, Linux and macOS.
+
 # Using this deployment with Bazel
 
 In addition to [the generic build options](https://github.com/buildbarn/bb-deployments/blob/master/bazelrc),
