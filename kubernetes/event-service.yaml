@@ -1,23 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: browser
+  name: event-service
   namespace: buildbarn
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: browser
+      app: event-service
   template:
     metadata:
       labels:
-        app: browser
+        app: event-service
     spec:
       containers:
-      - image: buildbarn/bb-browser:20190226T150148Z-53f3290
-        name: browser
+      - image: buildbarn/bb-event-service:20190225T222112Z-b9170c2
+        name: event-service
         ports:
-        - containerPort: 80
+        - containerPort: 8983
           protocol: TCP
         volumeMounts:
         - mountPath: /config
@@ -33,27 +33,12 @@ metadata:
   annotations:
     prometheus.io/port: "80"
     prometheus.io/scrape: "true"
-  name: browser
+  name: event-service
   namespace: buildbarn
 spec:
   ports:
-  - port: 80
+  - port: 8983
     protocol: TCP
   selector:
-    app: browser
-  type: ClusterIP
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: browser
-  namespace: buildbarn
-spec:
-  rules:
-  - host: bb-browser.example.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: browser
-          servicePort: 80
+    app: event-service
+  type: LoadBalancer

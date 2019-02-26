@@ -14,6 +14,7 @@ services:
   storage-0:
     image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
     command:
+    - -allow-ac-updates-for-instance=bb-event-service
     - -allow-ac-updates-for-instance=debian8
     - -allow-ac-updates-for-instance=ubuntu16-04
     expose:
@@ -27,6 +28,7 @@ services:
   storage-1:
     image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
     command:
+    - -allow-ac-updates-for-instance=bb-event-service
     - -allow-ac-updates-for-instance=debian8
     - -allow-ac-updates-for-instance=ubuntu16-04
     expose:
@@ -38,10 +40,17 @@ services:
     - ./storage-ac-1:/storage-ac
     - ./storage-cas-1:/storage-cas
 
-  browser:
-    image: buildbarn/bb-browser:20190210T072316Z-0f6bc13
+  event-service:
+    image: buildbarn/bb-event-service:20190225T222112Z-b9170c2
     ports:
     - 7983:80
+    - 8983:8983
+    volumes:
+    - ./config-storage-clients:/config
+  browser:
+    image: buildbarn/bb-browser:20190226T150148Z-53f3290
+    ports:
+    - 7984:80
     volumes:
     - ./config-storage-clients:/config
 
@@ -54,11 +63,11 @@ services:
   worker-debian8:
     image: buildbarn/bb-worker:20190210T161704Z-6f6bded
     command:
-    - -browser-url=http://localhost:7983/
+    - -browser-url=http://localhost:7984/
     - -concurrency=4
     - -scheduler=scheduler-debian8:8981
     ports:
-    - 7984:80
+    - 7985:80
     volumes:
     - ./config-storage-clients:/config
     - ./worker-debian8:/worker
@@ -77,11 +86,11 @@ services:
   worker-ubuntu16-04:
     image: buildbarn/bb-worker:20190210T161704Z-6f6bded
     command:
-    - -browser-url=http://localhost:7983/
+    - -browser-url=http://localhost:7984/
     - -concurrency=4
     - -scheduler=scheduler-ubuntu16-04:8981
     ports:
-    - 17984:80
+    - 17985:80
     volumes:
     - ./config-storage-clients:/config
     - ./worker-ubuntu16-04:/worker

@@ -16,7 +16,8 @@ following setup:
   official [Debian 8](https://console.cloud.google.com/marketplace/details/google/rbe-debian8)
   and [Ubuntu 16.04](https://console.cloud.google.com/marketplace/details/google/rbe-ubuntu16-04)
   images.
-- An installation of [Buildbarn Browser](https://github.com/buildbarn/bb-browser).
+- An installation of [the Buildbarn Browser](https://github.com/buildbarn/bb-browser).
+- An installation of [the Buildbarn Event Service](https://github.com/buildbarn/bb-event-service/).
 
 Below is a diagram of what this setup Buildbarn looks like. In this
 diagram, the arrows represent the direction in which network connections
@@ -52,12 +53,14 @@ to your `~/.bazelrc`, followed by the following set of options that are
 specific to your environment:
 
 ```
+build:mycluster-debian8 --bes_backend=fill-in-your-cluster-hostname-here:8983
 build:mycluster-debian8 --config=remote
 build:mycluster-debian8 --config=rbe-debian8
 build:mycluster-debian8 --jobs=64
 build:mycluster-debian8 --remote_executor=fill-in-your-cluster-hostname-here:8980
 build:mycluster-debian8 --remote_instance_name=debian8
 
+build:mycluster-ubuntu16-04 --bes_backend=fill-in-your-cluster-hostname-here:8983
 build:mycluster-ubuntu16-04 --config=remote
 build:mycluster-ubuntu16-04 --config=rbe-ubuntu16-04
 build:mycluster-ubuntu16-04 --jobs=64
