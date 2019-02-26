@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
       - args:
+        - -allow-ac-updates-for-instance=bb-event-service
         - -allow-ac-updates-for-instance=debian8
         - -allow-ac-updates-for-instance=ubuntu16-04
         image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
@@ -89,6 +90,7 @@ data:
         data_file_size_bytes: 104857600           # 100 MiB
         data_allocation_chunk_size_bytes: 1048576 # 1 MiB
         # List of instances for which to create an AC.
+        instance: "bb-event-service"
         instance: "debian8"
         instance: "ubuntu16-04"
       }
