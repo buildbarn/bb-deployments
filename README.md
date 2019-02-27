@@ -53,18 +53,19 @@ to your `~/.bazelrc`, followed by the following set of options that are
 specific to your environment:
 
 ```
-build:mycluster-debian8 --bes_backend=fill-in-your-cluster-hostname-here:8983
-build:mycluster-debian8 --config=remote
+build:mycluster --bes_backend=fill-in-the-frontend-service-hostname-here:8983
+build:mycluster --bes_results_url=http://fill-in-the-browser-service-hostname-here/build_events/bb-event-service/
+build:mycluster --config=remote
+build:mycluster --remote_executor=fill-in-the-frontend-service-hostname-here:8980
+
+build:mycluster-debian8 --config=mycluster
 build:mycluster-debian8 --config=rbe-debian8
 build:mycluster-debian8 --jobs=64
-build:mycluster-debian8 --remote_executor=fill-in-your-cluster-hostname-here:8980
 build:mycluster-debian8 --remote_instance_name=debian8
 
-build:mycluster-ubuntu16-04 --bes_backend=fill-in-your-cluster-hostname-here:8983
-build:mycluster-ubuntu16-04 --config=remote
+build:mycluster-ubuntu16-04 --config=mycluster
 build:mycluster-ubuntu16-04 --config=rbe-ubuntu16-04
 build:mycluster-ubuntu16-04 --jobs=64
-build:mycluster-ubuntu16-04 --remote_executor=fill-in-your-cluster-hostname-here:8980
 build:mycluster-ubuntu16-04 --remote_instance_name=ubuntu16-04
 ```
 

@@ -14,7 +14,7 @@ spec:
         app: browser
     spec:
       containers:
-      - image: buildbarn/bb-browser:20190226T150148Z-53f3290
+      - image: buildbarn/bb-browser:20190227T072202Z-8f4b37d
         name: browser
         ports:
         - containerPort: 80
