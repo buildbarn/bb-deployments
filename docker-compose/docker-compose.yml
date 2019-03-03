@@ -48,7 +48,7 @@ services:
     volumes:
     - ./config-storage-clients:/config
   browser:
-    image: buildbarn/bb-browser:20190227T072202Z-8f4b37d
+    image: buildbarn/bb-browser:20190303T064412Z-dd7ac26
     ports:
     - 7984:80
     volumes:
