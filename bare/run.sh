@@ -32,18 +32,18 @@ mkdir -p build cache storage-ac storage-cas
 (cd "${BROWSER_SRC}/cmd/bb_browser" &&
  exec "${BROWSER_SRC}/bazel-bin/cmd/bb_browser/${ARCH}/bb_browser" \
     -blobstore-config "${CURWD}/blobstore-storage-clients.conf" \
-    -web.listen-address localhost:7983) &
+    -web.listen-address localhost:7984) &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_scheduler/${ARCH}/bb_scheduler" \
     -web.listen-address localhost:7981 &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_worker/${ARCH}/bb_worker" \
     -blobstore-config blobstore-storage-clients.conf \
-    -browser-url http://localhost:7983/ \
+    -browser-url http://localhost:7984/ \
     -build-directory build \
     -cache-directory cache \
     -concurrency 4 \
     -runner unix://runner \
     -scheduler localhost:8981 \
-    -web.listen-address localhost:7984 &
+    -web.listen-address localhost:7985 &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_runner/${ARCH}/bb_runner" \
     -build-directory build \
     -listen-path runner &
