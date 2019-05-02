@@ -2,14 +2,15 @@
 
 set -eu
 
-if [ $# -ne 3 ]; then
-  echo "usage: storage_srcdir browser_srcdir remote_execution_srcdir" >&2
+if [ $# -ne 4 ]; then
+  echo "usage: storage_srcdir browser_srcdir remote_execution_srcdir event_service_srcdir" >&2
   exit 1
 fi
 
 STORAGE_SRC="${1}"
 BROWSER_SRC="${2}"
 REMOTE_EXECUTION_SRC="${3}"
+EVENT_SERVICE_SRC="${4}"
 
 cd "$(dirname "$0")"
 
@@ -25,6 +26,7 @@ mkdir -p build cache storage-ac storage-cas
 
 # Launch storage, browser, scheduler, worker and runner.
 "${STORAGE_SRC}/bazel-bin/cmd/bb_storage/${ARCH}/bb_storage" \
+    -allow-ac-updates-for-instance=bb-event-service \
     -allow-ac-updates-for-instance=local \
     -blobstore-config blobstore-storage.conf \
     -scheduler 'local|localhost:8981' \
@@ -33,6 +35,9 @@ mkdir -p build cache storage-ac storage-cas
  exec "${BROWSER_SRC}/bazel-bin/cmd/bb_browser/${ARCH}/bb_browser" \
     -blobstore-config "${CURWD}/blobstore-storage-clients.conf" \
     -web.listen-address localhost:7984) &
+"${EVENT_SERVICE_SRC}/bazel-bin/cmd/bb_event_service/${ARCH}/bb_event_service" \
+    -blobstore-config "${CURWD}/blobstore-storage-clients.conf" \
+    -web.listen-address localhost:7983 &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_scheduler/${ARCH}/bb_scheduler" \
     -web.listen-address localhost:7981 &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_worker/${ARCH}/bb_worker" \

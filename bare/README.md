@@ -18,7 +18,7 @@ respectively. The script assumes that these projects have been built
 (`bazel build //...`).
 
 ```sh
-./run.sh ~/projects/bb-storage ~/projects/bb-browser ~/projects/bb-remote-execution
+./run.sh ~/projects/bb-storage ~/projects/bb-browser ~/projects/bb-remote-execution ~/projects/bb-event-service
 ```
 
 This deployment is known to work on FreeBSD, Linux and macOS.
@@ -29,6 +29,8 @@ In addition to [the generic build options](https://github.com/buildbarn/bb-deplo
 the following options should be added to `~/.bazelrc`:
 
 ```
+build:local --bes_backend=localhost:8983
+build:local --bes_results_url=http://localhost:7984/build_events/bb-event-service/
 build:local --config=remote
 build:local --jobs=8
 build:local --remote_executor=localhost:8980
