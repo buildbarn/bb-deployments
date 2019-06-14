@@ -1,0 +1,71 @@
+apiVersion: v1
+data:
+  frontend.json: |
+    {
+      "contentAddressableStorage": {
+        "sharding": {
+          "hashInitialization": 11946695773637837490,
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-0.storage:8980"
+              }
+            },
+            "weight": 1
+          },
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-1.storage:8980"
+              }
+            },
+            "weight": 1
+          },
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-2.storage:8980"
+              }
+            },
+            "weight": 1
+          }
+        }
+      },
+      "actionCache": {
+        "sharding": {
+          "hashInitialization": 14897363947481274433,
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-0.storage:8980"
+              }
+            },
+            "weight": 1
+          },
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-1.storage:8980"
+              }
+            },
+            "weight": 1
+          },
+          "shard": {
+            "backend": {
+              "grpc": {
+                "endpoint": "storage-2.storage:8980"
+              }
+            },
+            "weight": 1
+          }
+        }
+      },
+      "schedulers": {
+        "debian8": "scheduler-debian8:8981",
+        "ubuntu16-04": "scheduler-ubuntu16-04:8981"
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: frontend
+  namespace: buildbarn

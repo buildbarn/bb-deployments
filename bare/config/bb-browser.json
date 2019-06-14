@@ -1,0 +1,15 @@
+{
+  "blobstore": {
+    "contentAddressableStorage": {
+      "grpc": {
+        "endpoint": "localhost:8980"
+      }
+    },
+    "actionCache": {
+      "grpc": {
+        "endpoint": "localhost:8980"
+      }
+    }
+  },
+  "listenAddress": "localhost:7984"
+}

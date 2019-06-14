@@ -20,9 +20,7 @@ spec:
     spec:
       containers:
       - args:
-        - -browser-url=http://bb-browser.example.com/
-        - -concurrency=4
-        - -scheduler=scheduler-debian8:8981
+        - /config/worker.json
         image: buildbarn/bb-worker:20190210T161704Z-6f6bded
         name: worker
         volumeMounts:
@@ -47,7 +45,7 @@ spec:
           name: worker
       volumes:
       - configMap:
-          name: config-storage-clients
+          name: worker
         name: config
       - emptyDir: {}
         name: worker

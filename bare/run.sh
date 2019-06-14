@@ -26,31 +26,17 @@ mkdir -p build cache storage-ac storage-cas
 
 # Launch storage, browser, scheduler, worker and runner.
 "${STORAGE_SRC}/bazel-bin/cmd/bb_storage/${ARCH}/bb_storage" \
-    -allow-ac-updates-for-instance=bb-event-service \
-    -allow-ac-updates-for-instance=local \
-    -blobstore-config blobstore-storage.conf \
-    -scheduler 'local|localhost:8981' \
-    -web.listen-address localhost:7980 &
+    "${CURWD}/config/bb-storage.json" &
 (cd "${BROWSER_SRC}/cmd/bb_browser" &&
- exec "${BROWSER_SRC}/bazel-bin/cmd/bb_browser/${ARCH}/bb_browser" \
-    -blobstore-config "${CURWD}/blobstore-storage-clients.conf" \
-    -web.listen-address localhost:7984) &
+  exec "${BROWSER_SRC}/bazel-bin/cmd/bb_browser/${ARCH}/bb_browser" \
+      "${CURWD}/config/bb-browser.json") &
 "${EVENT_SERVICE_SRC}/bazel-bin/cmd/bb_event_service/${ARCH}/bb_event_service" \
-    -blobstore-config "${CURWD}/blobstore-storage-clients.conf" \
-    -web.listen-address localhost:7983 &
+    "${CURWD}/config/bb-event-service.json" &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_scheduler/${ARCH}/bb_scheduler" \
-    -web.listen-address localhost:7981 &
+    "${CURWD}/config/bb-scheduler.json" &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_worker/${ARCH}/bb_worker" \
-    -blobstore-config blobstore-storage-clients.conf \
-    -browser-url http://localhost:7984/ \
-    -build-directory build \
-    -cache-directory cache \
-    -concurrency 4 \
-    -runner unix://runner \
-    -scheduler localhost:8981 \
-    -web.listen-address localhost:7985 &
+    "${CURWD}/config/bb-worker.json" &
 "${REMOTE_EXECUTION_SRC}/bazel-bin/cmd/bb_runner/${ARCH}/bb_runner" \
-    -build-directory build \
-    -listen-path runner &
+    "${CURWD}/config/bb-runner.json" &
 
 wait

@@ -16,9 +16,7 @@ spec:
     spec:
       containers:
       - args:
-        - -allow-ac-updates-for-instance=bb-event-service
-        - -allow-ac-updates-for-instance=debian8
-        - -allow-ac-updates-for-instance=ubuntu16-04
+        - /config/storage.json
         image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
         name: storage
         ports:
@@ -33,7 +31,7 @@ spec:
           name: ac
       volumes:
       - configMap:
-          name: config-storage
+          name: storage
         name: config
   volumeClaimTemplates:
   - metadata:
@@ -68,34 +66,3 @@ spec:
     protocol: TCP
   selector:
     app: storage
----
-apiVersion: v1
-data:
-  blobstore.conf: |
-    content_addressable_storage {
-      circular {
-        directory: "/cas"
-        offset_file_size_bytes: 16777216           # 16 MiB
-        offset_cache_size: 10000
-        data_file_size_bytes: 10737418240          # 10 GiB
-        data_allocation_chunk_size_bytes: 16777216 # 16 MiB
-        # Blobs for all instances are stored in a single CAS.
-      }
-    }
-    action_cache {
-      circular {
-        directory: "/ac"
-        offset_file_size_bytes: 1048576           # 1 MiB
-        offset_cache_size: 1000
-        data_file_size_bytes: 104857600           # 100 MiB
-        data_allocation_chunk_size_bytes: 1048576 # 1 MiB
-        # List of instances for which to create an AC.
-        instance: "bb-event-service"
-        instance: "debian8"
-        instance: "ubuntu16-04"
-      }
-    }
-kind: ConfigMap
-metadata:
-  name: config-storage
-  namespace: buildbarn

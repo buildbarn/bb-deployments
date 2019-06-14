@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
       - args:
-        - -scheduler=debian8|scheduler-debian8:8981
-        - -scheduler=ubuntu16-04|scheduler-ubuntu16-04:8981
+        - /config/frontend.json
         image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
         name: storage
         ports:
@@ -27,7 +26,7 @@ spec:
           name: config
       volumes:
       - configMap:
-          name: config-storage-clients
+          name: frontend
         name: config
 ---
 apiVersion: v1
