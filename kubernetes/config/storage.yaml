@@ -2,23 +2,25 @@ apiVersion: v1
 data:
   storage.json: |
     {
-      "contentAddressableStorage" {
-        "circular" {
-          "directory": "/cas"
-          "offsetFileSizeBytes": 16777216
-          "offsetCacheSize": 10000
-          "dataFileSizeBytes": 10737418240
-          "dataAllocationChunkSizeBytes": 16777216
-        }
-      }
-      "actionCache" {
-        "circular" {
-          "directory": "/ac"
-          "offsetFileSizeBytes": 1048576
-          "offsetCacheSize": 1000
-          "dataFileSizeBytes": 104857600
-          "dataAllocationChunkSizeBytes": 1048576
-          "instance": ["bb-event-service", "debian8", "ubuntu16-04"]
+      "blobstore": {
+        "contentAddressableStorage": {
+          "circular": {
+            "directory": "/cas",
+            "offsetFileSizeBytes": 16777216,
+            "offsetCacheSize": 10000,
+            "dataFileSizeBytes": 10737418240,
+            "dataAllocationChunkSizeBytes": 16777216
+          }
+        },
+        "actionCache": {
+          "circular": {
+            "directory": "/ac",
+            "offsetFileSizeBytes": 1048576,
+            "offsetCacheSize": 1000,
+            "dataFileSizeBytes": 104857600,
+            "dataAllocationChunkSizeBytes": 1048576,
+            "instance": ["bb-event-service", "debian8", "ubuntu16-04"]
+          }
         }
       },
       "allowAcUpdatesForInstances": ["bb-event-service", "debian8", "ubuntu16-04"]

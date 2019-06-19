@@ -21,16 +21,20 @@ spec:
       containers:
       - args:
         - /config/worker.json
-        image: buildbarn/bb-worker:20190210T161704Z-6f6bded
+        image: buildbarn/bb-worker:20190617T153934Z-810b6b8
         name: worker
         volumeMounts:
         - mountPath: /config
-          name: config
+          name: worker-config
         - mountPath: /worker
           name: worker
-      - image: buildbarn/bb-runner-ubuntu16-04:20190210T161704Z-6f6bded
+      - args:
+        - /config/runner.json
+        image: buildbarn/bb-runner-ubuntu16-04:20190617T153934Z-810b6b8
         name: runner
         volumeMounts:
+        - mountPath: /config
+          name: runner-config
         - mountPath: /worker
           name: worker
       initContainers:
@@ -46,6 +50,9 @@ spec:
       volumes:
       - configMap:
           name: worker-ubuntu16-04
-        name: config
+        name: worker-config
+      - configMap:
+          name: runner
+        name: runner-config
       - emptyDir: {}
         name: worker

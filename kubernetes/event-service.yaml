@@ -14,7 +14,7 @@ spec:
         app: event-service
     spec:
       containers:
-      - image: buildbarn/bb-event-service:20190225T222112Z-b9170c2
+      - image: buildbarn/bb-event-service:20190617T160116Z-3ab3681
         args:
         - /config/event-service.json
         name: event-service

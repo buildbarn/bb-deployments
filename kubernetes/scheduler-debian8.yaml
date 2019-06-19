@@ -16,11 +16,20 @@ spec:
         instance: debian8
     spec:
       containers:
-      - image: buildbarn/bb-scheduler:20190210T161704Z-6f6bded
+      - args:
+        - /config/scheduler.json
+        image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
         name: scheduler
         ports:
         - containerPort: 8981
           protocol: TCP
+        volumeMounts:
+        - mountPath: /config
+          name: config
+      volumes:
+      - configMap:
+          name: scheduler
+        name: config
 ---
 apiVersion: v1
 kind: Service
