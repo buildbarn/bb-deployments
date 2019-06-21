@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
     command:
     - /config/frontend.json
     ports:
@@ -11,7 +11,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
     command:
     - /config/storage.json
     expose:
@@ -23,7 +23,7 @@ services:
     - ./storage-ac-0:/storage-ac
     - ./storage-cas-0:/storage-cas
   storage-1:
-    image: buildbarn/bb-storage:20190211T175559Z-ee2cb65
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
     command:
     - /config/storage.json
     expose:
@@ -36,7 +36,7 @@ services:
     - ./storage-cas-1:/storage-cas
 
   event-service:
-    image: buildbarn/bb-event-service:20190225T222112Z-b9170c2
+    image: buildbarn/bb-event-service:20190617T160116Z-3ab3681
     command:
     - /config/event-service.json
     ports:
@@ -45,7 +45,7 @@ services:
     volumes:
     - ./config:/config
   browser:
-    image: buildbarn/bb-browser:20190303T064412Z-dd7ac26
+    image: buildbarn/bb-browser:20190617T160027Z-548ca96
     command:
     - /config/browser.json
     ports:
@@ -54,13 +54,17 @@ services:
     - ./config:/config
 
   scheduler-debian8:
-    image: buildbarn/bb-scheduler:20190210T161704Z-6f6bded
+    image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
+    command:
+    - /config/scheduler.json
     expose:
     - 8981
     ports:
     - 7981:80
+    volumes:
+    - ./config:/config
   worker-debian8:
-    image: buildbarn/bb-worker:20190210T161704Z-6f6bded
+    image: buildbarn/bb-worker:20190617T153934Z-810b6b8
     command:
     - /config/worker-debian8.json
     ports:
@@ -69,19 +73,26 @@ services:
     - ./config:/config
     - ./worker-debian8:/worker
   runner-debian8:
-    image: buildbarn/bb-runner-debian8:20190210T161704Z-6f6bded
+    image: buildbarn/bb-runner-debian8:20190617T153934Z-810b6b8
+    command:
+    - /config/runner.json
     network_mode: none
     volumes:
     - ./worker-debian8:/worker
+    - ./config:/config
 
   scheduler-ubuntu16-04:
-    image: buildbarn/bb-scheduler:20190210T161704Z-6f6bded
+    image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
+    command:
+    - /config/scheduler.json
     expose:
     - 8981
     ports:
     - 17981:80
+    volumes:
+    - ./config:/config
   worker-ubuntu16-04:
-    image: buildbarn/bb-worker:20190210T161704Z-6f6bded
+    image: buildbarn/bb-worker:20190617T153934Z-810b6b8
     command:
     - /config/worker-ubuntu16-04.json
     ports:
@@ -90,7 +101,10 @@ services:
     - ./config:/config
     - ./worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: buildbarn/bb-runner-ubuntu16-04:20190210T161704Z-6f6bded
+    image: buildbarn/bb-runner-ubuntu16-04:20190617T153934Z-810b6b8
+    command:
+    - /config/runner.json
     network_mode: none
     volumes:
     - ./worker-ubuntu16-04:/worker
+    - ./config:/config
