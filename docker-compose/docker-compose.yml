@@ -53,34 +53,6 @@ services:
     volumes:
     - ./config:/config
 
-  scheduler-debian8:
-    image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
-    command:
-    - /config/scheduler.json
-    expose:
-    - 8981
-    ports:
-    - 7981:80
-    volumes:
-    - ./config:/config
-  worker-debian8:
-    image: buildbarn/bb-worker:20190617T153934Z-810b6b8
-    command:
-    - /config/worker-debian8.json
-    ports:
-    - 7985:80
-    volumes:
-    - ./config:/config
-    - ./worker-debian8:/worker
-  runner-debian8:
-    image: buildbarn/bb-runner-debian8:20190617T153934Z-810b6b8
-    command:
-    - /config/runner.json
-    network_mode: none
-    volumes:
-    - ./worker-debian8:/worker
-    - ./config:/config
-
   scheduler-ubuntu16-04:
     image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
     command:
@@ -101,7 +73,7 @@ services:
     - ./config:/config
     - ./worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: buildbarn/bb-runner-ubuntu16-04:20190617T153934Z-810b6b8
+    image: bazel/cmd/bb_runner:bb_runner_ubuntu16_04_container
     command:
     - /config/runner.json
     network_mode: none

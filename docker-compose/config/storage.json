@@ -16,9 +16,9 @@
         "offsetCacheSize": 1000,
         "dataFileSizeBytes": 104857600,
         "dataAllocationChunkSizeBytes": 1048576,
-        "instance": ["bb-event-service", "local"]
+        "instance": ["bb-event-service", "ubuntu16-04"]
       }
     }
   },
-  "allowAcUpdatesForInstances": ["bb-event-service", "debian8", "ubuntu16-04"]
+  "allowAcUpdatesForInstances": ["bb-event-service", "ubuntu16-04"]
 }

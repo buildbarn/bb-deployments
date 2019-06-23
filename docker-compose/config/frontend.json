@@ -54,7 +54,6 @@
     }
   },
   "schedulers": {
-    "debian8": "scheduler-debian8:8981",
     "ubuntu16-04": "scheduler-ubuntu16-04:8981"
   }
 }

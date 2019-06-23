@@ -13,9 +13,8 @@ following setup:
   frontend servers is used to fan out requests.
 - [Remote execution](https://github.com/buildbarn/bb-remote-execution)
   of build actions, using container images based on Google RBE's
-  official [Debian 8](https://console.cloud.google.com/marketplace/details/google/rbe-debian8)
-  and [Ubuntu 16.04](https://console.cloud.google.com/marketplace/details/google/rbe-ubuntu16-04)
-  images.
+  official [Ubuntu 16.04](https://console.cloud.google.com/marketplace/details/google/rbe-ubuntu16-04)
+  image.
 - An installation of [the Buildbarn Browser](https://github.com/buildbarn/bb-browser).
 - An installation of [the Buildbarn Event Service](https://github.com/buildbarn/bb-event-service/).
 
@@ -58,11 +57,6 @@ build:mycluster --bes_results_url=http://fill-in-the-browser-service-hostname-he
 build:mycluster --config=remote
 build:mycluster --remote_executor=fill-in-the-frontend-service-hostname-here:8980
 
-build:mycluster-debian8 --config=mycluster
-build:mycluster-debian8 --config=rbe-debian8
-build:mycluster-debian8 --jobs=64
-build:mycluster-debian8 --remote_instance_name=debian8
-
 build:mycluster-ubuntu16-04 --config=mycluster
 build:mycluster-ubuntu16-04 --config=rbe-ubuntu16-04
 build:mycluster-ubuntu16-04 --jobs=64
@@ -70,9 +64,8 @@ build:mycluster-ubuntu16-04 --remote_instance_name=ubuntu16-04
 ```
 
 Once added, you may perform remote builds against Buildbarn by running
-one of the commands below:
+the command below:
 
 ```
-bazel build --config=mycluster-debian8 //...
 bazel build --config=mycluster-ubuntu16-04 //...
 ```
