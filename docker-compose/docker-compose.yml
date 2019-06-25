@@ -73,7 +73,7 @@ services:
     - ./config:/config
     - ./worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: bazel/cmd/bb_runner:bb_runner_ubuntu16_04_container
+    image: buildbarn/bb-runner-ubuntu16-04:20190622T110746Z-a5be3f6
     command:
     - /config/runner.json
     network_mode: none
