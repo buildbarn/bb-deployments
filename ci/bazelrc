@@ -1,0 +1,30 @@
+# Common settings for remote builds.
+build:remote --experimental_strict_action_env
+build:remote --genrule_strategy=remote
+build:remote --spawn_strategy=remote
+build:remote --strategy=Closure=remote
+build:remote --strategy=Javac=remote
+
+# From https://github.com/bazelbuild/bazel-toolchains/blob/master/configs/ubuntu16_04_clang/1.2/toolchain.bazelrc
+build:rbe-ubuntu16-04 --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
+build:rbe-ubuntu16-04 --crosstool_top=@bazel_toolchains//configs/ubuntu16_04_clang/1.2/bazel_0.25.0/default:toolchain
+build:rbe-ubuntu16-04 --extra_execution_platforms=@bazel_toolchains//configs/ubuntu16_04_clang/1.2:rbe_ubuntu1604
+build:rbe-ubuntu16-04 --extra_toolchains=@bazel_toolchains//configs/ubuntu16_04_clang/1.2/bazel_0.25.0/cpp:cc-toolchain-clang-x86_64-default
+build:rbe-ubuntu16-04 --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-ubuntu16-04 --host_javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.2:jdk8
+build:rbe-ubuntu16-04 --host_platform=@bazel_toolchains//configs/ubuntu16_04_clang/1.2:rbe_ubuntu1604
+build:rbe-ubuntu16-04 --java_toolchain=@bazel_tools//tools/jdk:toolchain_hostjdk8
+build:rbe-ubuntu16-04 --javabase=@bazel_toolchains//configs/ubuntu16_04_clang/1.2:jdk8
+build:rbe-ubuntu16-04 --platforms=@bazel_toolchains//configs/ubuntu16_04_clang/1.2:rbe_ubuntu1604
+# Additional settings.
+build:rbe-ubuntu16-04 --action_env=PATH=/bin:/usr/bin
+build:rbe-ubuntu16-04 --cpu=k8
+build:rbe-ubuntu16-04 --host_cpu=k8
+
+build:docker-compose --bes_backend=event-service:8983
+build:docker-compose --bes_results_url=http://localhost:7984/build_events/bb-event-service/
+build:docker-compose --config=remote
+build:docker-compose --config=rbe-ubuntu16-04
+build:docker-compose --jobs=8
+build:docker-compose --remote_executor=frontend:8980
+build:docker-compose --remote_instance_name=ubuntu16-04

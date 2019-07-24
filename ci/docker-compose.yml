@@ -1,0 +1,82 @@
+version: '3'
+services:
+  frontend:
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    command:
+    - /config/frontend.json
+    ports:
+    - 7980:80
+    - 8980:8980
+    volumes:
+    - ./config:/config
+
+  storage-0:
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    command:
+    - /config/storage.json
+    expose:
+    - 8980
+    ports:
+    - 7982:80
+    volumes:
+    - ./config:/config
+    - $STORAGE_AC_0:/storage-ac
+    - $STORAGE_CAS_0:/storage-cas
+  storage-1:
+    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    command:
+    - /config/storage.json
+    expose:
+    - 8980
+    ports:
+    - 17982:80
+    volumes:
+    - ./config:/config
+    - $STORAGE_AC_1:/storage-ac
+    - $STORAGE_CAS_1:/storage-cas
+
+  event-service:
+    image: buildbarn/bb-event-service:20190617T160116Z-3ab3681
+    command:
+    - /config/event-service.json
+    ports:
+    - 7983:80
+    - 8983:8983
+    volumes:
+    - ./config:/config
+  browser:
+    image: buildbarn/bb-browser:20190619T204620Z-ddf284d
+    command:
+    - /config/browser.json
+    ports:
+    - 7984:80
+    volumes:
+    - ./config:/config
+
+  scheduler-ubuntu16-04:
+    image: buildbarn/bb-scheduler:20190622T110746Z-a5be3f6
+    command:
+    - /config/scheduler.json
+    expose:
+    - 8981
+    ports:
+    - 17981:80
+    volumes:
+    - ./config:/config
+  worker-ubuntu16-04:
+    image: buildbarn/bb-worker:20190622T110746Z-a5be3f6
+    command:
+    - /config/worker-ubuntu16-04.json
+    ports:
+    - 17985:80
+    volumes:
+    - ./config:/config
+    - $CURWD/worker-ubuntu16-04:/worker
+  runner-ubuntu16-04:
+    image: buildbarn/bb-runner-ubuntu16-04:20190622T110746Z-a5be3f6
+    command:
+    - /config/runner.json
+    network_mode: none
+    volumes:
+    - $CURWD/worker-ubuntu16-04:/worker
+    - ./config:/config

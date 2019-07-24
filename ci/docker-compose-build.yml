@@ -1,0 +1,25 @@
+version: '3'
+services:
+  builder:
+    image: l.gcr.io/google/bazel:0.27.0
+    command:
+    - --bazelrc=/bazelrc
+    - build
+    - --host_force_python=PY2
+    - --config=docker-compose
+    - //...
+    working_dir: /workdir
+    volumes:
+    - ./bazelrc:/bazelrc
+    - $BUILD_WORKING_DIRECTORY:/workdir
+  imager:
+    image: l.gcr.io/google/bazel:0.27.0
+    entrypoint: /bin/bash
+    command:
+    - /push.sh
+    working_dir: /workdir
+    volumes:
+    - ./push.sh:/push.sh
+    - $HOME/.docker:/root/.docker
+    - ./bazelrc:/bazelrc
+    - $BUILD_WORKING_DIRECTORY:/workdir
