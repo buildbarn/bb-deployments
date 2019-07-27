@@ -12,8 +12,10 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 
 cleanup() {
+  status=$?
   rm -rf "${worker}"
   docker-compose -f $(rlocation "com_github_buildbarn_bb_deployments/ci/docker-compose.yml") down
+  exit $status
 }
 trap cleanup 0
 
