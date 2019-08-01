@@ -19,8 +19,8 @@ cleanup() {
 }
 trap cleanup 0
 
-set -ux
-set +e
+set -x
+set +u
 
 export CURWD=$(pwd)
 
@@ -29,4 +29,6 @@ mkdir -m 0700 "${worker}/cache"
 
 docker-compose -f $(rlocation "com_github_buildbarn_bb_deployments/ci/docker-compose.yml") up -d && \
 docker-compose -f $(rlocation "com_github_buildbarn_bb_deployments/ci/docker-compose-build.yml") run --rm builder && \
-docker-compose -f $(rlocation "com_github_buildbarn_bb_deployments/ci/docker-compose-build.yml") run --rm imager
+if test "${BUILDKITE_BRANCH}" = "master"; then
+  docker-compose -f $(rlocation "com_github_buildbarn_bb_deployments/ci/docker-compose-build.yml") run --rm imager
+fi
