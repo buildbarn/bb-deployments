@@ -4,7 +4,7 @@ services:
     image: l.gcr.io/google/bazel:0.27.0
     command:
     - --bazelrc=/bazelrc
-    - build
+    - test
     - --host_force_python=PY2
     - --config=docker-compose
     - //...
