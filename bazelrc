@@ -1,10 +1,3 @@
-# Common settings for remote builds.
-build:remote --experimental_strict_action_env
-build:remote --genrule_strategy=remote
-build:remote --spawn_strategy=remote
-build:remote --strategy=Closure=remote
-build:remote --strategy=Javac=remote
-
 # From https://github.com/bazelbuild/bazel-toolchains/blob/master/bazelrc/bazel-1.0.0.bazelrc
 build:rbe-ubuntu16-04 --action_env=BAZEL_DO_NOT_DETECT_CPP_TOOLCHAIN=1
 build:rbe-ubuntu16-04 --crosstool_top=@rbe_default//cc:toolchain
