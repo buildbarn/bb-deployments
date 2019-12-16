@@ -52,10 +52,10 @@ to your `~/.bazelrc`, followed by the following set of options that are
 specific to your environment:
 
 ```
-build:mycluster --bes_backend=fill-in-the-frontend-service-hostname-here:8983
+build:mycluster --bes_backend=grpc://fill-in-the-frontend-service-hostname-here:8985
 build:mycluster --bes_results_url=http://fill-in-the-browser-service-hostname-here/build_events/bb-event-service/
 build:mycluster --config=remote
-build:mycluster --remote_executor=fill-in-the-frontend-service-hostname-here:8980
+build:mycluster --remote_executor=grpc://fill-in-the-frontend-service-hostname-here:8980
 
 build:mycluster-ubuntu16-04 --config=mycluster
 build:mycluster-ubuntu16-04 --config=rbe-ubuntu16-04
