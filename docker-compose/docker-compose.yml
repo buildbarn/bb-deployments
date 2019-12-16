@@ -1,81 +1,82 @@
 version: '3'
 services:
   frontend:
-    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    image: buildbarn/bb-storage:20200102T100452Z-f920d92
     command:
-    - /config/frontend.json
+    - /config/frontend.jsonnet
     ports:
-    - 7980:80
+    - 7980:7980
     - 8980:8980
     volumes:
     - ./config:/config
 
   storage-0:
-    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    image: buildbarn/bb-storage:20200102T100452Z-f920d92
     command:
-    - /config/storage.json
+    - /config/storage.jsonnet
     expose:
-    - 8980
+    - 8981
     ports:
-    - 7982:80
+    - 7981:7981
     volumes:
     - ./config:/config
     - ./storage-ac-0:/storage-ac
     - ./storage-cas-0:/storage-cas
   storage-1:
-    image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+    image: buildbarn/bb-storage:20200102T100452Z-f920d92
     command:
-    - /config/storage.json
+    - /config/storage.jsonnet
     expose:
-    - 8980
+    - 8981
     ports:
-    - 17982:80
+    - 17981:7981
     volumes:
     - ./config:/config
     - ./storage-ac-1:/storage-ac
     - ./storage-cas-1:/storage-cas
 
-  event-service:
-    image: buildbarn/bb-event-service:20190617T160116Z-3ab3681
+  scheduler:
+    image: buildbarn/bb-scheduler:20200102T102244Z-300a067
     command:
-    - /config/event-service.json
+    - /config/scheduler.jsonnet
+    expose:
+    - 8982
+    - 8983
     ports:
-    - 7983:80
-    - 8983:8983
+    - 7982:7982
     volumes:
     - ./config:/config
   browser:
-    image: buildbarn/bb-browser:20190617T160027Z-548ca96
+    image: buildbarn/bb-browser:20200102T103638Z-e432c91
     command:
-    - /config/browser.json
+    - /config/browser.jsonnet
     ports:
-    - 7984:80
+    - 7984:7984
+    volumes:
+    - ./config:/config
+  event-service:
+    image: buildbarn/bb-event-service:20200102T104139Z-c01f79c
+    command:
+    - /config/event-service.jsonnet
+    ports:
+    - 7985:7985
+    - 8985:8985
     volumes:
     - ./config:/config
 
-  scheduler-ubuntu16-04:
-    image: buildbarn/bb-scheduler:20190617T153934Z-810b6b8
-    command:
-    - /config/scheduler.json
-    expose:
-    - 8981
-    ports:
-    - 17981:80
-    volumes:
-    - ./config:/config
   worker-ubuntu16-04:
-    image: buildbarn/bb-worker:20190617T153934Z-810b6b8
+    image: buildbarn/bb-worker:20200102T102244Z-300a067
     command:
-    - /config/worker-ubuntu16-04.json
+    - /config/worker-ubuntu16-04.jsonnet
     ports:
-    - 17985:80
+    - 7986:7986
     volumes:
     - ./config:/config
     - ./worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: buildbarn/bb-runner-ubuntu16-04:20190622T110746Z-a5be3f6
+    image: buildbarn/bb-runner-ubuntu16-04:20200102T102244Z-300a067
     command:
-    - /config/runner.json
+    - /config/runner-ubuntu16-04.jsonnet
     network_mode: none
     volumes:
     - ./worker-ubuntu16-04:/worker
