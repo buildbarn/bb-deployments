@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  runner-ubuntu16-04.jsonnet: |
+    {
+      buildDirectoryPath: '/worker/build',
+      grpcServers: [{
+        listenPaths: ['/worker/runner'],
+        authenticationPolicy: { allow: {} },
+      }],
+    }
+kind: ConfigMap
+metadata:
+  name: runner-ubuntu16-04
+  namespace: buildbarn

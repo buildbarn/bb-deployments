@@ -4,7 +4,7 @@ metadata:
   name: storage
   namespace: buildbarn
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: storage
@@ -16,15 +16,19 @@ spec:
     spec:
       containers:
       - args:
-        - /config/storage.json
-        image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+        - /config/storage.jsonnet
+        image: buildbarn/bb-storage:20200102T100452Z-f920d92
         name: storage
         ports:
-        - containerPort: 8980
+        - containerPort: 8981
           protocol: TCP
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /config/storage.jsonnet
           name: config
+          subPath: storage.jsonnet
+        - mountPath: /config/common.libsonnet
+          name: common
+          subPath: common.libsonnet
         - mountPath: /cas
           name: cas
         - mountPath: /ac
@@ -33,6 +37,9 @@ spec:
       - configMap:
           name: storage
         name: config
+      - configMap:
+          name: common
+        name: common
   volumeClaimTemplates:
   - metadata:
       name: cas
@@ -62,7 +69,8 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - port: 8980
+  - port: 8981
     protocol: TCP
+    name: grpc
   selector:
     app: storage

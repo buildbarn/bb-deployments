@@ -15,19 +15,26 @@ spec:
     spec:
       containers:
       - args:
-        - /config/frontend.json
-        image: buildbarn/bb-storage:20190617T155413Z-3c42fa4
+        - /config/frontend.jsonnet
+        image: buildbarn/bb-storage:20200102T100452Z-f920d92
         name: storage
         ports:
         - containerPort: 8980
           protocol: TCP
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /config/frontend.jsonnet
           name: config
+          subPath: frontend.jsonnet
+        - mountPath: /config/common.libsonnet
+          name: common
+          subPath: common.libsonnet
       volumes:
       - configMap:
           name: frontend
         name: config
+      - configMap:
+          name: common
+        name: common
 ---
 apiVersion: v1
 kind: Service
@@ -41,6 +48,7 @@ spec:
   ports:
   - port: 8980
     protocol: TCP
+    name: grpc
   selector:
     app: frontend
   type: LoadBalancer

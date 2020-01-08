@@ -14,20 +14,27 @@ spec:
         app: event-service
     spec:
       containers:
-      - image: buildbarn/bb-event-service:20190617T160116Z-3ab3681
+      - image: buildbarn/bb-event-service:20200102T104139Z-c01f79c
         args:
-        - /config/event-service.json
+        - /config/event-service.jsonnet
         name: event-service
         ports:
-        - containerPort: 8983
+        - containerPort: 8985
           protocol: TCP
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /config/event-service.jsonnet
           name: config
+          subPath: event-service.jsonnet
+        - mountPath: /config/common.libsonnet
+          name: common
+          subPath: common.libsonnet
       volumes:
       - configMap:
           name: event-service
         name: config
+      - configMap:
+          name: common
+        name: common
 ---
 apiVersion: v1
 kind: Service
@@ -39,8 +46,9 @@ metadata:
   namespace: buildbarn
 spec:
   ports:
-  - port: 8983
+  - port: 8985
     protocol: TCP
+    name: grpc
   selector:
     app: event-service
   type: LoadBalancer
