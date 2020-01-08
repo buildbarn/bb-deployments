@@ -1,75 +1,40 @@
 apiVersion: v1
 data:
-  worker.json: |
+  worker-ubuntu16-04.jsonnet: |
+    local common = import 'common.libsonnet';
+
     {
-      "blobstore": {
-        "contentAddressableStorage": {
-          "sharding": {
-            "hashInitialization": 11946695773637837490,
-            "shard": [
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-0.storage:8980"
-                  }
-                },
-                "weight": 1
-              },
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-1.storage:8980"
-                  }
-                },
-                "weight": 1
-              },
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-2.storage:8980"
-                  }
-                },
-                "weight": 1
-              }
-            ]
-          }
-        },
-        "actionCache": {
-          "sharding": {
-            "hashInitialization": 14897363947481274433,
-            "shard": [
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-0.storage:8980"
-                  }
-                },
-                "weight": 1
-              },
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-1.storage:8980"
-                  }
-                },
-                "weight": 1
-              },
-              {
-                "backend": {
-                  "grpc": {
-                    "endpoint": "storage-2.storage:8980"
-                  }
-                },
-                "weight": 1
-              }
-            ]
-          }
-        }
+      blobstore: common.blobstore,
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      scheduler: { address: 'scheduler:8983' },
+      httpListenAddress: common.httpListenAddress,
+      maximumMemoryCachedDirectories: 1000,
+      localBuildDirectory: {
+        buildDirectoryPath: '/worker/build',
+        cacheDirectoryPath: '/worker/cache',
+        maximumCacheFileCount: 10000,
+        maximumCacheSizeBytes: 1024 * 1024 * 1024,
+        cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
       },
-      "browserUrl": "http://bb-browser.example.com/",
-      "concurrency": 4,
-      "schedulerAddress": "scheduler-ubuntu16-04:8981"
+      instanceName: 'remote-execution',
+      runners: [{
+        endpoint: { address: 'unix:///worker/runner' },
+        concurrency: 8,
+        platform: {
+          properties: [
+            { name: 'OSFamily', value: 'Linux' },
+            { name: 'container-image', value: 'docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:6ad1d0883742bfd30eba81e292c135b95067a6706f3587498374a083b7073cb9' },
+          ],
+        },
+        defaultExecutionTimeout: '1800s',
+        maximumExecutionTimeout: '3600s',
+        workerId: {
+          'pod': std.extVar("POD_NAME"),
+          'node': std.extVar("NODE_NAME")
+        },
+      }],
     }
+
 kind: ConfigMap
 metadata:
   name: worker-ubuntu16-04

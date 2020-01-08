@@ -1,7 +1,20 @@
 apiVersion: v1
 data:
-  scheduler.json: |
-    {}
+  scheduler.jsonnet: |
+    local common = import 'common.libsonnet';
+
+    {
+      httpListenAddress: common.httpListenAddress,
+      clientGrpcServers: [{
+        listenAddresses: [':8982'],
+        authenticationPolicy: { allow: {} },
+      }],
+      workerGrpcServers: [{
+        listenAddresses: [':8983'],
+        authenticationPolicy: { allow: {} },
+      }],
+      blobstore: common.blobstore,
+    }
 kind: ConfigMap
 metadata:
   name: scheduler

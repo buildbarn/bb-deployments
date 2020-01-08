@@ -1,29 +1,37 @@
 apiVersion: v1
 data:
-  storage.json: |
+  storage.jsonnet: |
+    local common = import 'common.libsonnet';
+
     {
-      "blobstore": {
-        "contentAddressableStorage": {
-          "circular": {
-            "directory": "/cas",
-            "offsetFileSizeBytes": 16777216,
-            "offsetCacheSize": 10000,
-            "dataFileSizeBytes": 10737418240,
-            "dataAllocationChunkSizeBytes": 16777216
-          }
+      blobstore: {
+        contentAddressableStorage: {
+          circular: {
+            directory: '/cas',
+            offsetFileSizeBytes: 16 * 1024 * 1024,
+            offsetCacheSize: 10000,
+            dataFileSizeBytes: 10 * 1024 * 1024 * 1024,
+            dataAllocationChunkSizeBytes: 16 * 1024 * 1024,
+          },
         },
-        "actionCache": {
-          "circular": {
-            "directory": "/ac",
-            "offsetFileSizeBytes": 1048576,
-            "offsetCacheSize": 1000,
-            "dataFileSizeBytes": 104857600,
-            "dataAllocationChunkSizeBytes": 1048576,
-            "instance": ["bb-event-service", "ubuntu16-04"]
-          }
-        }
+        actionCache: {
+          circular: {
+            directory: '/ac',
+            offsetFileSizeBytes: 1024 * 1024,
+            offsetCacheSize: 1000,
+            dataFileSizeBytes: 100 * 1024 * 1024,
+            dataAllocationChunkSizeBytes: 1024 * 1024,
+            instances: ['bb-event-service', 'remote-execution'],
+          },
+        },
       },
-      "allowAcUpdatesForInstances": ["bb-event-service", "ubuntu16-04"]
+      httpListenAddress: common.httpListenAddress,
+      grpcServers: [{
+        listenAddresses: [':8981'],
+        authenticationPolicy: { allow: {} },
+      }],
+      allowAcUpdatesForInstances: ['bb-event-service', 'remote-execution'],
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
     }
 
 kind: ConfigMap

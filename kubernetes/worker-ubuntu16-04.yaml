@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: worker-ubuntu16-04
   namespace: buildbarn
+  annotations:
+    prometheus.io/port: "80"
+    prometheus.io/scrape: "true"
 spec:
   replicas: 8
   selector:
@@ -11,30 +14,44 @@ spec:
       instance: ubuntu16-04
   template:
     metadata:
-      annotations:
-        prometheus.io/port: "80"
-        prometheus.io/scrape: "true"
       labels:
         app: worker
         instance: ubuntu16-04
     spec:
       containers:
       - args:
-        - /config/worker.json
-        image: buildbarn/bb-worker:20190617T153934Z-810b6b8
+        - /config/worker-ubuntu16-04.jsonnet
+        image: buildbarn/bb-worker:20200102T102244Z-300a067
         name: worker
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /config/worker-ubuntu16-04.jsonnet
           name: worker-config
+          subPath: worker-ubuntu16-04.jsonnet
+        - mountPath: /config/common.libsonnet
+          name: common
+          subPath: common.libsonnet
         - mountPath: /worker
           name: worker
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
       - args:
-        - /config/runner.json
-        image: buildbarn/bb-runner-ubuntu16-04:20190617T153934Z-810b6b8
+        - /config/runner-ubuntu16-04.jsonnet
+        image: buildbarn/bb-runner-ubuntu16-04:20200102T102244Z-300a067
         name: runner
         volumeMounts:
-        - mountPath: /config
+        - mountPath: /config/runner-ubuntu16-04.jsonnet
           name: runner-config
+          subPath: runner-ubuntu16-04.jsonnet
+        - mountPath: /config/common.libsonnet
+          name: common
+          subPath: common.libsonnet
         - mountPath: /worker
           name: worker
       initContainers:
@@ -52,7 +69,10 @@ spec:
           name: worker-ubuntu16-04
         name: worker-config
       - configMap:
-          name: runner
+          name: runner-ubuntu16-04
         name: runner-config
+      - configMap:
+          name: common
+        name: common
       - emptyDir: {}
         name: worker
