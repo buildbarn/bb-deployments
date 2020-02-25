@@ -73,7 +73,7 @@ services:
     - ./config:/config
     - $CURWD/worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: buildbarn/bb-runner-ubuntu16-04:20190622T110746Z-a5be3f6
+    image: buildbarn/bb-runner-ubuntu16-04:20200308T200719Z-6c18867
     command:
     - /config/runner.json
     network_mode: none
