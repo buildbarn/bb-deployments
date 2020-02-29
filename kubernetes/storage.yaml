@@ -23,23 +23,27 @@ spec:
         - containerPort: 8981
           protocol: TCP
         volumeMounts:
-        - mountPath: /config/storage.jsonnet
-          name: config
-          subPath: storage.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
         - mountPath: /cas
           name: cas
         - mountPath: /ac
           name: ac
       volumes:
-      - configMap:
-          name: storage
-        name: config
-      - configMap:
-          name: common
-        name: common
+      - name: configs
+        projected:
+          sources:
+          - configMap:
+              name: storage
+              items:
+              - key: storage.jsonnet
+                path: storage.jsonnet
+          - configMap:
+              name: common
+              items:
+              - key: common.libsonnet
+                path: common.libsonnet
   volumeClaimTemplates:
   - metadata:
       name: cas
