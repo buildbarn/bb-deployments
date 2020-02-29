@@ -28,19 +28,23 @@ spec:
         - containerPort: 80
           protocol: TCP
         volumeMounts:
-        - mountPath: /config/scheduler.jsonnet
-          name: config
-          subPath: scheduler.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
       volumes:
-      - configMap:
-          name: scheduler
-        name: config
-      - configMap:
-          name: common
-        name: common
+      - name: configs
+        projected:
+          sources:
+          - configMap:
+              name: scheduler
+              items:
+              - key: scheduler.jsonnet
+                path: scheduler.jsonnet
+          - configMap:
+              name: common
+              items:
+              - key: common.libsonnet
+                path: common.libsonnet
 ---
 apiVersion: v1
 kind: Service

@@ -24,12 +24,9 @@ spec:
         image: buildbarn/bb-worker:20200102T102244Z-300a067
         name: worker
         volumeMounts:
-        - mountPath: /config/worker-ubuntu16-04.jsonnet
-          name: worker-config
-          subPath: worker-ubuntu16-04.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
         - mountPath: /worker
           name: worker
         env:
@@ -46,12 +43,9 @@ spec:
         image: buildbarn/bb-runner-ubuntu16-04:20200102T102244Z-300a067
         name: runner
         volumeMounts:
-        - mountPath: /config/runner-ubuntu16-04.jsonnet
-          name: runner-config
-          subPath: runner-ubuntu16-04.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
         - mountPath: /worker
           name: worker
       initContainers:
@@ -65,14 +59,23 @@ spec:
         - mountPath: /worker
           name: worker
       volumes:
-      - configMap:
-          name: worker-ubuntu16-04
-        name: worker-config
-      - configMap:
-          name: runner-ubuntu16-04
-        name: runner-config
-      - configMap:
-          name: common
-        name: common
+      - name: configs
+        projected:
+          sources:
+          - configMap:
+              name: runner-ubuntu16-04
+              items:
+              - key: runner-ubuntu16-04.jsonnet
+                path: runner-ubuntu16-04.jsonnet
+          - configMap:
+              name: worker-ubuntu16-04
+              items:
+              - key: worker-ubuntu16-04.jsonnet
+                path: worker-ubuntu16-04.jsonnet
+          - configMap:
+              name: common
+              items:
+              - key: common.libsonnet
+                path: common.libsonnet
       - emptyDir: {}
         name: worker

@@ -22,19 +22,23 @@ spec:
         - containerPort: 80
           protocol: TCP
         volumeMounts:
-        - mountPath: /config/browser.jsonnet
-          name: config
-          subPath: browser.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
       volumes:
-      - configMap:
-          name: browser
-        name: config
-      - configMap:
-          name: common
-        name: common
+      - name: configs
+        projected:
+          sources:
+          - configMap:
+              name: browser
+              items:
+              - key: browser.jsonnet
+                path: browser.jsonnet
+          - configMap:
+              name: common
+              items:
+              - key: common.libsonnet
+                path: common.libsonnet
 ---
 apiVersion: v1
 kind: Service

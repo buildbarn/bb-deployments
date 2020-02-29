@@ -22,19 +22,23 @@ spec:
         - containerPort: 8980
           protocol: TCP
         volumeMounts:
-        - mountPath: /config/frontend.jsonnet
-          name: config
-          subPath: frontend.jsonnet
-        - mountPath: /config/common.libsonnet
-          name: common
-          subPath: common.libsonnet
+        - mountPath: /config/
+          name: configs
+          readOnly: true
       volumes:
-      - configMap:
-          name: frontend
-        name: config
-      - configMap:
-          name: common
-        name: common
+      - name: configs
+        projected:
+          sources:
+          - configMap:
+              name: frontend
+              items:
+              - key: frontend.jsonnet
+                path: frontend.jsonnet
+          - configMap:
+              name: common
+              items:
+              - key: common.libsonnet
+                path: common.libsonnet
 ---
 apiVersion: v1
 kind: Service
