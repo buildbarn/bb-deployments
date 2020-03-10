@@ -1,7 +1,7 @@
 version: '3'
 services:
   builder:
-    image: l.gcr.io/google/bazel:2.1.0
+    image: l.gcr.io/google/bazel:2.2.0
     command:
     - --bazelrc=/bazelrc
     - test
@@ -13,7 +13,7 @@ services:
     - ./bazelrc:/bazelrc
     - $BUILD_WORKING_DIRECTORY:/workdir
   imager:
-    image: l.gcr.io/google/bazel:2.1.0
+    image: l.gcr.io/google/bazel:2.2.0
     entrypoint: /bin/bash
     environment:
     - BUILDKITE_BRANCH
