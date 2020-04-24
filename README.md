@@ -26,49 +26,78 @@ are established.
   <img src="https://github.com/buildbarn/bb-deployments/raw/master/bb-overview.png" alt="Overview of the Buildbarn setup"/>
 </p>
 
-## Using these deployments with Bazel
+# Getting started
 
-Bazel can perform remote builds against these deployments by adding
-[the official Bazel toolchain definitions](https://releases.bazel.build/bazel-toolchains.html)
-for the RBE container images to the `WORKSPACE` file of your project:
+This example aims to showcase a very simple build and test with remote execution using docker-compose as the deployment for Buildbarn. We will be compiling examples from the [abseil-hello](https://github.com/abseil/abseil-hello) project using Bazel.
 
-```python
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+## Recommended setup
 
-http_archive(
-    name = "bazel_toolchains",
-    sha256 = "144290c4166bd67e76a54f96cd504ed86416ca3ca82030282760f0823c10be48",
-    strip_prefix = "bazel-toolchains-3.1.1",
-    urls = [
-        "https://github.com/bazelbuild/bazel-toolchains/releases/download/3.1.1/bazel-toolchains-3.1.1.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/releases/download/3.1.1/bazel-toolchains-3.1.1.tar.gz",
-    ],
-)
-
-load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
-
-rbe_autoconfig(name = "rbe_default")
+First clone the repo and start up a docker-compose example:
+```
+git clone https://github.com/buildbarn/bb-deployments.git
+cd bb-deployments/docker-compose
+./run.sh
 ```
 
-In addition to that, you will need to add
-[a list of generic build options](https://github.com/buildbarn/bb-deployments/blob/master/bazelrc)
-to your `~/.bazelrc`, followed by the following set of options that are
-specific to your environment:
-
+You may see initially see an error message along the lines of:
 ```
-build:mycluster --bes_backend=grpc://fill-in-the-event-service-hostname-here:8985
-build:mycluster --bes_results_url=http://fill-in-the-browser-service-hostname-here/build_events/bb-event-service/
-build:mycluster --remote_executor=grpc://fill-in-the-frontend-service-hostname-here:8980
+worker-ubuntu16-04_1  | xxxx/xx/xx xx:xx:xx rpc error: code = Unavailable desc = Failed to synchronize with scheduler: all SubConns are in TransientFailure, latest connection error: connection error: desc = "transport: Error while dialing dial tcp xxx.xx.x.x:xxxx: connect: connection refused"
+```
+
+This is usually because container of the worker has started before the scheduler and so it cannot connect. After a second or so, this error message should stop.
+
+## Remote execution
+
+Bazel can perform remote builds against these deployments by adding [the official Bazel toolchain definitions](https://releases.bazel.build/bazel-toolchains.html) for the RBE container images to the `WORKSPACE` file of your project. It is also possible to derive your own configuration files using the `rbe_autoconfig`. More information can be found by reading the documentation [here](https://github.com/bazelbuild/bazel-toolchains/blob/master/rules/rbe_repo.bzl).
+
+For this example, we have provided the necessary `WORKSPACE` setup already but we still need to create the `.bazelrc`. In a separate terminal to your docker-compose deployment, create your `.bazelrc` in the project root:
+```
+cd bb-deployments/
+cp bazelrc .bazelrc
+
+cat >> .bazelrc << EOF
+
+build:mycluster --remote_executor=grpc://localhost:8980
 build:mycluster --remote_instance_name=remote-execution
 
 build:mycluster-ubuntu16-04 --config=mycluster
 build:mycluster-ubuntu16-04 --config=rbe-ubuntu16-04
 build:mycluster-ubuntu16-04 --jobs=64
+EOF
 ```
 
-Once added, you may perform remote builds against Buildbarn by running
-the command below:
+Now try a build:
+```
+bazel build --config=mycluster-ubuntu16-04 @abseil-hello//:hello_main
+```
 
+The output should look something like:
 ```
-bazel build --config=mycluster-ubuntu16-04 //...
+INFO: 30 processes: 30 remote.
 ```
+
+You can check to see if the binary has built successfully by trying:
+```
+bazel run --config=mycluster-ubuntu16-04 @abseil-hello//:hello_main
+```
+
+Equally, you can try to execute a test remotely:
+```
+bazel test --config=mycluster-ubuntu16-04 @abseil-hello//:hello_test
+```
+
+Which will give you an output containing something like:
+```
+INFO: 29 processes: 29 remote.
+//:hello_test                                                            PASSED in 0.1s
+
+Executed 1 out of 1 test: 1 test passes.
+```
+
+Next, we will try out the remote caching capability. If you clean your local build cache and then rerun a build:
+```
+bazel clean
+bazel build --config=mycluster-ubuntu16-04 @abseil-hello//:hello_main
+```
+
+You'll see an output containing information that we hit the remote cache instead of executing on a worker.
