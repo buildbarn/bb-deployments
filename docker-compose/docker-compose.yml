@@ -74,7 +74,7 @@ services:
     - ./config:/config
     - ./worker-ubuntu16-04:/worker
   runner-ubuntu16-04:
-    image: buildbarn/bb-runner-ubuntu16-04:20200308T200719Z-6c18867
+    image: buildbarn/bb-runner-ubuntu16-04:20200402T064744Z-1497158
     command:
     - /config/runner-ubuntu16-04.jsonnet
     network_mode: none
