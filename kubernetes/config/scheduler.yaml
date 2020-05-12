@@ -13,7 +13,8 @@ data:
         listenAddresses: [':8983'],
         authenticationPolicy: { allow: {} },
       }],
-      blobstore: common.blobstore,
+      contentAddressableStorage: common.blobstore.contentAddressableStorage,
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
     }
 kind: ConfigMap
 metadata:
