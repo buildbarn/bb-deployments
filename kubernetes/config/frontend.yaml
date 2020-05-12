@@ -13,7 +13,7 @@ data:
       schedulers: {
         'remote-execution': { address: 'scheduler:8982' },
       },
-      verifyActionResultCompleteness: true,
+
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
     }
 kind: ConfigMap

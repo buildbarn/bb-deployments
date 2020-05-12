@@ -21,7 +21,7 @@ spec:
       containers:
       - args:
         - /config/worker-ubuntu16-04.jsonnet
-        image: buildbarn/bb-worker:20200102T102244Z-300a067
+        image: buildbarn/bb-worker:20200511T200952Z-aebf2a6
         name: worker
         volumeMounts:
         - mountPath: /config/
@@ -41,6 +41,9 @@ spec:
       - command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-ubuntu16-04.jsonnet]
         image: marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
         name: runner
+        securityContext:
+          runAsUser: 65534
+          allowPrivilegeEscalation: false
         volumeMounts:
         - mountPath: /config/
           name: configs
@@ -52,7 +55,7 @@ spec:
           readOnly: true
       initContainers:
       - name: bb-runner-installer
-        image: buildbarn/bb-runner-installer:20200102T102244Z-300a067
+        image: buildbarn/bb-runner-installer:20200511T200952Z-aebf2a6
         volumeMounts:
         - mountPath: /bb/
           name: bb-runner
