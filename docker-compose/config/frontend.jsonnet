@@ -10,6 +10,5 @@ local common = import 'common.libsonnet';
   schedulers: {
     'remote-execution': { address: 'scheduler:8982' },
   },
-  verifyActionResultCompleteness: true,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
 }

@@ -17,7 +17,7 @@ spec:
       containers:
       - args:
         - /config/storage.jsonnet
-        image: buildbarn/bb-storage:20200505T185354Z-e1deeaf
+        image: buildbarn/bb-storage:20200514T165628Z-886f511
         name: storage
         ports:
         - containerPort: 8981
