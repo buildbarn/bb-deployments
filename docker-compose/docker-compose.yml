@@ -54,15 +54,6 @@ services:
     - 7984:7984
     volumes:
     - ./config:/config
-  event-service:
-    image: buildbarn/bb-event-service:20200102T104139Z-c01f79c
-    command:
-    - /config/event-service.jsonnet
-    ports:
-    - 7985:7985
-    - 8985:8985
-    volumes:
-    - ./config:/config
 
   worker-ubuntu16-04:
     image: buildbarn/bb-worker:20200207T154821Z-fbf3806
