@@ -39,6 +39,9 @@ spec:
             fieldRef:
               fieldPath: metadata.name
       - command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-ubuntu16-04.jsonnet]
+        env:
+        - name: HOME
+          value: /tmp
         image: l.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
         name: runner
         securityContext:
