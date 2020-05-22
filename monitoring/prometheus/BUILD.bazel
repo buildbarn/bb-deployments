@@ -1,0 +1,7 @@
+load("@io_bazel_rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_to_json")
+
+jsonnet_to_json(
+    name = "recording-rules",
+    src = "recording-rules.jsonnet",
+    outs = ["recording-rules.json"],
+)

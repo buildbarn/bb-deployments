@@ -1,0 +1,44 @@
+load("@io_bazel_rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library", "jsonnet_to_json")
+
+jsonnet_library(
+    name = "grpc",
+    srcs = ["grpc.libsonnet"],
+)
+
+jsonnet_library(
+    name = "simpledash",
+    srcs = ["simpledash.libsonnet"],
+    deps = ["@com_github_grafana_grafonnet_lib//:grafonnet"],
+)
+
+[
+    jsonnet_to_json(
+        name = dashboard,
+        src = dashboard + ".jsonnet",
+        outs = [dashboard + ".json"],
+        deps = [":simpledash"],
+    )
+    for dashboard in [
+        "blobaccess",
+        "buildexecutor",
+        "centralized-storage",
+        "eviction-sets",
+        "scheduler",
+    ]
+]
+
+[
+    jsonnet_to_json(
+        name = dashboard,
+        src = dashboard + ".jsonnet",
+        outs = [dashboard + ".json"],
+        deps = [
+            ":grpc",
+            ":simpledash",
+        ],
+    )
+    for dashboard in [
+        "grpc-clients",
+        "grpc-servers",
+    ]
+]
