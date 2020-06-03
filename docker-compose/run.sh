@@ -9,8 +9,6 @@ docker volume rm "${worker_volume}" || true
 docker volume rm "${tini_volume}" || true
 
 docker volume create "${worker_volume}"
-docker volume create "${tini_volume}"
-
 docker run --rm \
   -v "${worker_volume}:/worker" \
   busybox:latest \
