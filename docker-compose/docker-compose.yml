@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   frontend:
     image: buildbarn/bb-storage:20200520T103928Z-32c5ba0
