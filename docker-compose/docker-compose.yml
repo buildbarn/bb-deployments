@@ -91,7 +91,7 @@ services:
     - ./config:/config
     depends_on:
     - runner-installer
- 
+
   runner-installer:
     image: buildbarn/bb-runner-installer:20200528T061211Z-4dfbe5b
     volumes:
