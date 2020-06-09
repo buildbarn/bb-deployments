@@ -10,16 +10,9 @@ simplified configuration:
   <img src="https://github.com/buildbarn/bb-deployments/raw/master/bare/bb-overview-simplified.png" alt="Overview of the simplified Buildbarn setup"/>
 </p>
 
-Buildbarn can be launched by running `run.sh`, providing it paths of
-checkouts of [Buildbarn Storage](https://github.com/buildbarn/bb-storage),
-[Buildbarn Browser](https://github.com/buildbarn/bb-browser) and
-[Buildbarn Remote Execution](https://github.com/buildbarn/bb-remote-execution),
-respectively. The script assumes that these projects have been built
-(`bazel build //...`).
-
-```sh
-./run.sh ~/projects/bb-storage ~/projects/bb-browser ~/projects/bb-remote-execution ~/projects/bb-event-service
-```
+Buildbarn can be launched by running `bazel run //bare:bare`, which will fetch
+and build the different Buildbarn binaries, start them, and load the
+configuration found in the `config` directory.
 
 This deployment is known to work on FreeBSD, Linux and macOS.
 

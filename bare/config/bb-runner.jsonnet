@@ -1,4 +1,0 @@
-{
-  buildDirectoryPath: 'build',
-  listenPath: 'runner',
-}
