@@ -22,6 +22,8 @@ In addition to [the generic build options](https://github.com/buildbarn/bb-deplo
 the following options should be added to `~/.bazelrc`:
 
 ```
+build:local --bes_backend=localhost:8983
+build:local --bes_results_url=http://localhost:7984/build_events/bb-event-service/
 build:local --config=remote
 build:local --jobs=8
 build:local --remote_executor=localhost:8980
