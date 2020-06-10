@@ -24,7 +24,7 @@ the following options should be added to `~/.bazelrc`:
 ```
 build:local --config=rbe-ubuntu16-04
 build:local --jobs=8
-build:local --remote_executor=localhost:8980
+build:local --remote_executor=grpc://localhost:8980
 build:local --remote_instance_name=local
 ```
 
