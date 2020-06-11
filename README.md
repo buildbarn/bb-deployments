@@ -23,7 +23,7 @@ diagram, the arrows represent the direction in which network connections
 are established.
 
 <p align="center">
-  <img src="https://github.com/buildbarn/bb-deployments/raw/master/bb-overview.png" alt="Overview of the Buildbarn setup"/>
+  <img src="bb-overview.png" alt="Overview of the Buildbarn setup"/>
 </p>
 
 # Getting started

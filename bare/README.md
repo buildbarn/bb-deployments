@@ -7,7 +7,7 @@ all of Buildbarn's processes directly. This setup uses the following
 simplified configuration:
 
 <p align="center">
-  <img src="https://github.com/buildbarn/bb-deployments/raw/master/bare/bb-overview-simplified.png" alt="Overview of the simplified Buildbarn setup"/>
+  <img src="bb-overview-simplified.png" alt="Overview of the simplified Buildbarn setup"/>
 </p>
 
 Buildbarn can be launched by running `bazel run //bare:bare`, which will fetch
@@ -18,7 +18,7 @@ This deployment is known to work on FreeBSD, Linux and macOS.
 
 # Using this deployment with Bazel
 
-In addition to [the generic build options](https://github.com/buildbarn/bb-deployments/blob/master/bazelrc),
+In addition to [the generic build options](../bazelrc),
 the following options should be added to `~/.bazelrc`:
 
 ```
