@@ -44,6 +44,7 @@ func main() {
 		{config: "bare/config/browser.jsonnet", binary: "bb_browser"},
 	}
 	for _, bb := range bbs {
+		log.Println("Starting", bb.binary)
 		go bbStart(bb)
 	}
 
