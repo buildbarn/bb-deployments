@@ -15,6 +15,7 @@ data:
       }],
       contentAddressableStorage: common.blobstore.contentAddressableStorage,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      browserUrl: common.browserUrl,
     }
 kind: ConfigMap
 metadata:
