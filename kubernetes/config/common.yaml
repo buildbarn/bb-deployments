@@ -8,11 +8,11 @@ data:
             hashInitialization: 11946695773637837490,
             shards: [
               {
-                backend: { grpc: { address: 'storage-0.storage:8981' } },
+                backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
                 weight: 1,
               },
               {
-                backend: { grpc: { address: 'storage-1.storage:8981' } },
+                backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
                 weight: 1,
               },
             ],
