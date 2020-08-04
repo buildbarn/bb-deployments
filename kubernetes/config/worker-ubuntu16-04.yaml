@@ -10,6 +10,7 @@ data:
       httpListenAddress: common.httpListenAddress,
       maximumMemoryCachedDirectories: 1000,
       instanceName: 'remote-execution',
+      browserUrl: common.browserUrl,
       buildDirectories: [{
         native: {
           buildDirectoryPath: '/worker/build',
