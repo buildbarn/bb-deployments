@@ -46,6 +46,35 @@ worker-ubuntu16-04_1  | xxxx/xx/xx xx:xx:xx rpc error: code = Unavailable desc =
 
 This is usually because container of the worker has started before the scheduler and so it cannot connect. After a second or so, this error message should stop.
 
+## Platform properties
+
+For clients to be able to use Buildbarn, clients need to send actions with platform properties that
+match the platform properties that Buildbarn workers register themselves with.
+
+For Bazel clients, platform properties can be set in the `.bazelrc` or as command line parameters:
+
+```
+--remote_default_exec_properties=OSFamily=Linux
+--remote_default_exec_properties=container-image=docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
+```
+
+Note this is only necessary when the [bazel-toolchains](https://github.com/bazelbuild/bazel-toolchains) repository is not being used. Otherwise, platform properties are set via the [bazel platform](https://github.com/bazelbuild/bazel-toolchains/blob/master/configs/ubuntu16_04_clang/11.0.0/bazel_3.1.0/config/BUILD#L43) selected in [`rbe_autoconfig`](https://github.com/buildbarn/bb-deployments/blob/master/WORKSPACE#L93), and referenced using the [`--extra_execution_platforms`](https://github.com/buildbarn/bb-deployments/blob/master/bazelrc#L4) parameter.
+
+Buildbarn workers are configured with its associated `.jsonnet` configuration file as part of the [runner](https://github.com/buildbarn/bb-remote-execution/blob/master/pkg/proto/configuration/bb_worker/bb_worker.proto#L102) configuration.
+
+```
+# See worker-ubuntu16-04.jsonnet for the full worker configuration.
+  runners: [{
+    # .. Additional runner configuration here
+    platform: {
+      properties: [
+        { name: 'OSFamily', value: 'Linux' },
+        { name: 'container-image', value: 'docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272' },
+      ],
+    },
+  }],
+```
+
 ## Remote execution
 
 Bazel can perform remote builds against these deployments by adding [the official Bazel toolchain definitions](https://releases.bazel.build/bazel-toolchains.html) for the RBE container images to the `WORKSPACE` file of your project. It is also possible to derive your own configuration files using the `rbe_autoconfig`. More information can be found by reading the documentation [here](https://github.com/bazelbuild/bazel-toolchains/blob/master/rules/rbe_repo.bzl).
