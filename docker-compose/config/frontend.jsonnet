@@ -8,7 +8,7 @@ local common = import 'common.libsonnet';
     authenticationPolicy: { allow: {} },
   }],
   schedulers: {
-    'remote-execution': { address: 'scheduler:8982' },
+    '': { endpoint: { address: 'scheduler:8982' } },
   },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
 }

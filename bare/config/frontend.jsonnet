@@ -8,7 +8,7 @@ local common = import 'common.libsonnet';
     authenticationPolicy: { allow: {} },
   }],
   schedulers: {
-    'local': { address: 'localhost:8982' },
+    '': { endpoint: { address: 'localhost:8982' } },
   },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
 }
