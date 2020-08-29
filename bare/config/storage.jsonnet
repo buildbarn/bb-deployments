@@ -27,6 +27,6 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8981'],
     authenticationPolicy: { allow: {} },
   }],
-  allowAcUpdatesForInstances: ['local'],
+  allowAcUpdatesForInstanceNamePrefixes: [''],
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
 }
