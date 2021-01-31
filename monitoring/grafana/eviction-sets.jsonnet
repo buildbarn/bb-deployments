@@ -43,9 +43,10 @@ simpledash.dashboard(
       ]
     )
     for set in [
-      'DirectoryCachingContentAddressableStorage',
+      'CachingDirectoryFetcher',
+      'DataIntegrityValidationCache',
       'ExistenceCachingBlobAccess',
-      'HardlinkingContentAddressableStorage',
+      'HardlinkingFileFetcher',
       'QueuedBlobReplicator',
     ]
   ]
