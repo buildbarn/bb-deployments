@@ -79,69 +79,70 @@
           record: 'le_name:buildbarn_blobstore_hashing_key_location_map_put_iterations_bucket:irate1m',
         },
 
-        // Rate at which operations are processed by the scheduler.
+        // Rate at which tasks are processed by the scheduler.
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_queued:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_queued:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_executing:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_executing:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (grpc_code, instance_name, platform, result)',
-          record: 'grpc_code_instance_name_platform_result:buildbarn_builder_in_memory_build_queue_operations_completed:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (grpc_code, instance_name, platform, result)',
+          record: 'grpc_code_instance_name_platform_result:buildbarn_builder_in_memory_build_queue_tasks_completed:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_removed:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_removed:irate1m',
         },
 
         // Subtract counters of consecutive scheduler stages to derive
-        // how many operations are in each of the stages.
+        // how many tasks are in each of the stages.
         {
           expr: |||
 
-            sum(buildbarn_builder_in_memory_build_queue_operations_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
             -
-            sum(buildbarn_builder_in_memory_build_queue_operations_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_queued:sum',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_queued:sum',
         },
         {
           expr: |||
 
-            sum(buildbarn_builder_in_memory_build_queue_operations_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
             -
-            sum(buildbarn_builder_in_memory_build_queue_operations_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_executing:sum',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_executing:sum',
         },
         {
           expr: |||
-            sum(buildbarn_builder_in_memory_build_queue_operations_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
             -
-            sum(buildbarn_builder_in_memory_build_queue_operations_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_operations_completed:sum',
+          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_completed:sum',
         },
 
-        // Duration of how long operations remain in scheduler stages.
+        // Duration of how long tasks remain in scheduler stages.
+
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_queued_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_operations_queued_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
+          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_executing_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_operations_executing_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
+          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_completed_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_operations_completed_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
+          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_operations_executing_retries_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_operations_executing_retries_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
+          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket:irate1m',
         },
 
         // Recording rules used by the "BuildExecutor" dashboard.
