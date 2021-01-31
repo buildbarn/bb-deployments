@@ -4,8 +4,9 @@ local show_row(title, create_graph) =
   simpledash.row(
     title=title,
     panels=[
-      create_graph('Action Cache', '$ac_backend', 1 / 2),
-      create_graph('Content Addressable Storage', '$cas_backend', 1 / 2),
+      create_graph('Action Cache', '$ac_backend', 1 / 3),
+      create_graph('Content Addressable Storage', '$cas_backend', 1 / 3),
+      create_graph('Indirect Content Addressable Storage', '$icas_backend', 1 / 3),
     ]
   );
 
@@ -23,6 +24,12 @@ simpledash.dashboard(
       query='label_values(kubernetes_service_name_operation:buildbarn_blobstore_blob_access_operations_started:irate1m{name=~"cas.*"}, name)',
       label='Content Addressable Storage backend',
       selectionStyle=simpledash.selectSingleWithDefault('cas_grpc'),
+    ),
+    simpledash.template(
+      name='icas_backend',
+      query='label_values(kubernetes_service_name_operation:buildbarn_blobstore_blob_access_operations_started:irate1m{name=~"icas.*"}, name)',
+      label='Indirect Content Addressable Storage backend',
+      selectionStyle=simpledash.selectSingleWithDefault('icas_grpc'),
     ),
     simpledash.template(
       name='kubernetes_service',
