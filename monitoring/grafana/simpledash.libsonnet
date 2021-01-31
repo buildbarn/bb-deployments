@@ -65,6 +65,7 @@ local setAggregationPeriod(panels, aggregationPeriods) = (
       schemaVersion=16,
       time_from='now-3h',
       refresh='10s',
+      timezone='utc',
     ).addPanels(
       setAggregationPeriod(
         setPanelPositions(rows), aggregationPeriods
