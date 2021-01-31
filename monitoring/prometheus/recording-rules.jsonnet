@@ -295,6 +295,30 @@
           expr: 'sum(irate(grpc_server_handling_seconds_bucket{job="kubernetes-service-endpoints"}[1m])) by (grpc_method, grpc_service, kubernetes_service, le)',
           record: 'grpc_method_grpc_service_kubernetes_service_le:grpc_server_handling_seconds_bucket:irate1m',
         },
+
+        // Recording rules used by the 'FUSE' dashboard.
+        {
+          expr: |||
+            sum(
+              irate(buildbarn_fuse_raw_file_system_callbacks_total{job="kubernetes-service-endpoints"}[1m])
+              or
+              irate(buildbarn_fuse_raw_file_system_operations_duration_seconds_count{job="kubernetes-service-endpoints"}[1m])
+            ) by (status_code)
+          |||,
+          record: 'status_code:buildbarn_fuse_raw_file_system_callbacks_and_operations:irate1m',
+        },
+        {
+          expr: 'sum(irate(buildbarn_fuse_raw_file_system_operations_duration_seconds_count{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, operation, status_code)',
+          record: 'kubernetes_service_operation_status_code:buildbarn_fuse_raw_file_system_operations_duration_seconds_count:irate1m',
+        },
+        {
+          expr: 'sum(irate(buildbarn_fuse_raw_file_system_operations_duration_seconds_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le, operation, status_code)',
+          record: 'kubernetes_service_le_operation_status_code:buildbarn_fuse_raw_file_system_operations_duration_seconds_bucket:irate1m',
+        },
+        {
+          expr: 'sum(irate(buildbarn_fuse_raw_file_system_callbacks_total{job="kubernetes-service-endpoints"}[1m])) by (callback, kubernetes_service, status_code)',
+          record: 'callback_kubernetes_service_status_code:buildbarn_fuse_raw_file_system_callbacks:irate1m',
+        },
       ],
     },
   ],

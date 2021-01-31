@@ -23,6 +23,7 @@ jsonnet_library(
         "buildexecutor",
         "centralized-storage",
         "eviction-sets",
+        "fuse",
         "scheduler",
     ]
 ]
