@@ -7,7 +7,7 @@ data:
       blobstore: common.blobstore,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       scheduler: { address: 'scheduler:8983' },
-      httpListenAddress: common.httpListenAddress,
+      global: common.global,
       maximumMemoryCachedDirectories: 1000,
       instanceName: 'remote-execution',
       browserUrl: common.browserUrl,

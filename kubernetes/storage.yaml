@@ -17,7 +17,7 @@ spec:
       containers:
       - args:
         - /config/storage.jsonnet
-        image: buildbarn/bb-storage:20200904T173922Z-e3f0e59
+        image: buildbarn/bb-storage:20210312T082612Z-b15cd28
         name: storage
         ports:
         - containerPort: 8981
@@ -26,6 +26,18 @@ spec:
         - mountPath: /config/
           name: configs
           readOnly: true
+        - mountPath: /cas
+          name: cas
+        - mountPath: /ac
+          name: ac
+      initContainers:
+      - name: volume-init
+        image: busybox:1.31.1-uclibc
+        command:
+        - sh
+        - -c
+        - mkdir -p /cas/persistent_state /ac/persistent_state
+        volumeMounts:
         - mountPath: /cas
           name: cas
         - mountPath: /ac
@@ -70,11 +82,16 @@ metadata:
     prometheus.io/scrape: "true"
   name: storage
   namespace: buildbarn
+  labels:
+    app: storage
 spec:
   clusterIP: None
   ports:
   - port: 8981
     protocol: TCP
     name: grpc
+  - port: 80
+    protocol: TCP
+    name: health-http
   selector:
     app: storage

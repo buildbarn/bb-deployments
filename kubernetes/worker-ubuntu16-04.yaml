@@ -21,7 +21,7 @@ spec:
       containers:
       - args:
         - /config/worker-ubuntu16-04.jsonnet
-        image: buildbarn/bb-worker:20200904T190834Z-91bd2dc
+        image: buildbarn/bb-worker:20210316T054813Z-6d277d6
         name: worker
         volumeMounts:
         - mountPath: /config/

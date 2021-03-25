@@ -4,7 +4,7 @@ data:
     local common = import 'common.libsonnet';
 
     {
-      httpListenAddress: common.httpListenAddress,
+      adminHttpListenAddress: common.httpListenAddress,
       clientGrpcServers: [{
         listenAddresses: [':8982'],
         authenticationPolicy: { allow: {} },

@@ -37,9 +37,16 @@ data:
         },
       },
       # Remember to set your browserUrl to the ingress of the browser deployment
-      # browserUrl: 'http://address-of-bb-browser-ingress:80',
+      browserUrl: 'http://address-of-bb-browser-ingress:80',
       maximumMessageSizeBytes: 16 * 1024 * 1024,
-      httpListenAddress: ':80'
+      httpListenAddress: ':80',
+      global: {
+        diagnosticsHttpServer: {
+          listenAddress: ':80',
+          enablePrometheus: true,
+          enablePprof: true,
+        }
+      }
     }
 kind: ConfigMap
 metadata:
