@@ -12,19 +12,27 @@ spec:
     metadata:
       labels:
         app: frontend
+        cluster: buildbarn
     spec:
       containers:
       - args:
         - /config/frontend.jsonnet
-        image: buildbarn/bb-storage:20200904T173922Z-e3f0e59
+        image: buildbarn/bb-storage:20210312T082612Z-b15cd28
         name: storage
         ports:
         - containerPort: 8980
+          protocol: TCP
+        ports:
+        - containerPort: 80
           protocol: TCP
         volumeMounts:
         - mountPath: /config/
           name: configs
           readOnly: true
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
       volumes:
       - name: configs
         projected:
@@ -48,11 +56,16 @@ metadata:
     prometheus.io/scrape: "true"
   name: frontend
   namespace: buildbarn
+  labels:
+    app: frontend
 spec:
   ports:
   - port: 8980
     protocol: TCP
     name: grpc
+  - port: 80
+    protocol: TCP
+    name: health-http
   selector:
     app: frontend
   type: LoadBalancer

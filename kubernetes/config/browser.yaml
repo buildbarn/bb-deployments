@@ -4,7 +4,7 @@ data:
     local common = import 'common.libsonnet';
 
     {
-      blobstore: common.blobstore,
+      blobstore: common.blobstoreFrontend,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       listenAddress: common.httpListenAddress,
     }
