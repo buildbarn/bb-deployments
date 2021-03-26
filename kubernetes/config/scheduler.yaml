@@ -13,7 +13,7 @@ data:
         listenAddresses: [':8983'],
         authenticationPolicy: { allow: {} },
       }],
-      contentAddressableStorage: common.blobstore.contentAddressableStorage,
+      contentAddressableStorage: common.blobstoreFrontend.contentAddressableStorage,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       browserUrl: common.browserUrl,
     }

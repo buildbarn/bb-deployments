@@ -4,7 +4,7 @@ data:
     local common = import 'common.libsonnet';
 
     {
-      blobstore: common.blobstore,
+      blobstore: common.blobstoreStorage,
       grpcServers: [{
         listenAddresses: [':8980'],
         authenticationPolicy: { allow: {} },

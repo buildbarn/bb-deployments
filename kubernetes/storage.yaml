@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         app: storage
+        cluster: buildbarn
     spec:
       containers:
       - args:
@@ -30,6 +31,10 @@ spec:
           name: cas
         - mountPath: /ac
           name: ac
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
       initContainers:
       - name: volume-init
         image: busybox:1.31.1-uclibc

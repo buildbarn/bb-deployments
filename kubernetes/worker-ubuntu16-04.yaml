@@ -17,12 +17,17 @@ spec:
       labels:
         app: worker
         instance: ubuntu16-04
+        cluster: buildbarn
     spec:
       containers:
       - args:
         - /config/worker-ubuntu16-04.jsonnet
         image: buildbarn/bb-worker:20210316T054813Z-6d277d6
         name: worker
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: health-http
         volumeMounts:
         - mountPath: /config/
           name: configs
@@ -38,8 +43,12 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
       - command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-ubuntu16-04.jsonnet]
-        image: l.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
+        image: l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1
         name: runner
         securityContext:
           runAsUser: 65534
@@ -53,9 +62,13 @@ spec:
         - mountPath: /bb
           name: bb-runner
           readOnly: true
+        resources:
+          limits:
+            cpu: 1
+            memory: 2Gi
       initContainers:
       - name: bb-runner-installer
-        image: buildbarn/bb-runner-installer:20200904T190834Z-91bd2dc
+        image: buildbarn/bb-runner-installer:20210308T120007Z-65e13c1
         volumeMounts:
         - mountPath: /bb/
           name: bb-runner

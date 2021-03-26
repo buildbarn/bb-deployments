@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: frontend
+        cluster: buildbarn
     spec:
       containers:
       - args:
@@ -28,6 +29,10 @@ spec:
         - mountPath: /config/
           name: configs
           readOnly: true
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
       volumes:
       - name: configs
         projected:

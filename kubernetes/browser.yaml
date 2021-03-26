@@ -4,7 +4,7 @@ metadata:
   name: browser
   namespace: buildbarn
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: browser
@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         app: browser
+        cluster: buildbarn
     spec:
       containers:
       - image: buildbarn/bb-browser:20200816T120922Z-6dc5c54
@@ -25,6 +26,10 @@ spec:
         - mountPath: /config/
           name: configs
           readOnly: true
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
       volumes:
       - name: configs
         projected:

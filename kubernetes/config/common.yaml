@@ -36,6 +36,14 @@ data:
           },
         },
       },
+      blobstoreFrontend: {
+        contentAddressableStorage: {
+          grpc: { address: 'frontend.buildbarn:8980' },
+        },
+        actionCache: {
+          grpc: { address: 'frontend.buildbarn:8980' },
+        },
+      },
       # Remember to set your browserUrl to the ingress of the browser deployment
       browserUrl: 'http://address-of-bb-browser-ingress:80',
       maximumMessageSizeBytes: 16 * 1024 * 1024,
@@ -45,7 +53,8 @@ data:
           listenAddress: ':80',
           enablePrometheus: true,
           enablePprof: true,
-        }
+        },
+        setUmask: { umask: 0 }
       }
     }
 kind: ConfigMap
