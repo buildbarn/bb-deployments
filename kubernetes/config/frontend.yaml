@@ -13,7 +13,8 @@ data:
         '': { endpoint: { address: 'scheduler:8982' } },
       },
 
-      allowAcUpdatesForInstanceNamePrefixes: [''],
+      # Uncomment to allow remote clients to write to the cache
+      # allowAcUpdatesForInstanceNamePrefixes: [''],
 
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       global: common.global,
