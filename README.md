@@ -48,7 +48,7 @@ This is usually because container of the worker has started before the scheduler
 
 ## Remote execution
 
-Bazel can perform remote builds against these deployments by adding [the official Bazel toolchain definitions](https://releases.bazel.build/bazel-toolchains.html) for the RBE container images to the `WORKSPACE` file of your project. It is also possible to derive your own configuration files using the `rbe_autoconfig`. More information can be found by reading the documentation [here](https://github.com/bazelbuild/bazel-toolchains/blob/master/rules/rbe_repo.bzl).
+Bazel can perform remote builds against these deployments by adding [the official Bazel toolchain definitions](https://releases.bazel.build/bazel-toolchains.html) for the RBE container images to the `WORKSPACE` file of your project. It is also possible to derive your own configuration files using the `rbe_autoconfig`. More information can be found by reading the documentation [here](https://github.com/bazelbuild/bazel-toolchains/blob/4.0.0/rules/rbe_repo.bzl).
 
 After installing the bazel_toolchains repository in your `WORKSPACE`, ensure that the Worker & Runner configuration for the "worker-ubuntu16-04" image SHA matches the version that is expected from the toolchain version. Note: this SHA is must match both in the jsonnet configuration and the configuration used to pull and run the actual container (docker compose, kubernetes yaml, etc...)
 
