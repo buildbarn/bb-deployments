@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  runner-1.jsonnet: |
+    {
+      buildDirectoryPath: '/worker/build',
+      grpcServers: [{
+        listenPaths: ['/worker/runner-1'],
+        authenticationPolicy: { allow: {} },
+      }],
+    }
+kind: ConfigMap
+metadata:
+  name: runner-1
+  namespace: buildbarn

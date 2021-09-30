@@ -2,10 +2,8 @@ apiVersion: v1
 data:
   frontend.jsonnet: |
     local common = import 'common.libsonnet';
-
     {
-      blobstore: common.blobstore,
-      httpListenAddress: common.httpListenAddress,
+      blobstore: common.blobstoreStorage,
       grpcServers: [{
         listenAddresses: [':8980'],
         authenticationPolicy: { allow: {} },
@@ -13,8 +11,18 @@ data:
       schedulers: {
         '': { endpoint: { address: 'scheduler:8982' } },
       },
-
+      contentAddressableStorageAuthorizers: {
+        get: { allow: {} },
+        put: { allow: {} },
+        findMissing: { allow: {} },
+      },
+      actionCacheAuthorizers: {
+        get: { allow: {} },
+        put: { allow: {} },
+      },
+      # Uncomment to allow remote clients to write to the cache
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      global: common.global,
     }
 kind: ConfigMap
 metadata:

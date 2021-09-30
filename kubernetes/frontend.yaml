@@ -12,47 +12,61 @@ spec:
     metadata:
       labels:
         app: frontend
+        cluster: buildbarn
     spec:
+      nodeSelector:
+        agentpool: workerpool01
       containers:
-      - args:
-        - /config/frontend.jsonnet
-        image: buildbarn/bb-storage:20200904T173922Z-e3f0e59
-        name: storage
-        ports:
-        - containerPort: 8980
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config/
-          name: configs
-          readOnly: true
+        - args:
+            - /config/frontend.jsonnet
+          image: buildbarn/bb-storage:20210811T060635Z-8cbbc00
+          name: storage
+          ports:
+            - containerPort: 8980
+              protocol: TCP
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 1
+              memory: 1Gi
       volumes:
-      - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: frontend
-              items:
-              - key: frontend.jsonnet
-                path: frontend.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: frontend
+                  items:
+                    - key: frontend.jsonnet
+                      path: frontend.jsonnet
+              - configMap:
+                  name: common
+                  items:
+                    - key: common.libsonnet
+                      path: common.libsonnet
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    prometheus.io/port: "80"
-    prometheus.io/scrape: "true"
   name: frontend
   namespace: buildbarn
+  labels:
+    app: frontend
 spec:
   ports:
-  - port: 8980
-    protocol: TCP
-    name: grpc
+    - port: 8980
+      protocol: TCP
+      name: grpc
+    - port: 80
+      protocol: TCP
+      name: health-http
   selector:
     app: frontend
-  type: LoadBalancer
+  type: ClusterIP

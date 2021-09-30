@@ -2,7 +2,7 @@ apiVersion: v1
 data:
   common.libsonnet: |
     {
-      blobstore: {
+      blobstoreStorage: {
         contentAddressableStorage: {
           sharding: {
             hashInitialization: 11946695773637837490,
@@ -13,6 +13,14 @@ data:
               },
               {
                 backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
+                weight: 1,
+              },
+              {
+                backend: { grpc: { address: 'storage-2.storage.buildbarn:8981' } },
+                weight: 1,
+              },
+              {
+                backend: { grpc: { address: 'storage-3.storage.buildbarn:8981' } },
                 weight: 1,
               },
             ],
@@ -31,15 +39,40 @@ data:
                   backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
                   weight: 1,
                 },
+                {
+                  backend: { grpc: { address: 'storage-2.storage.buildbarn:8981' } },
+                  weight: 1,
+                },
+                {
+                  backend: { grpc: { address: 'storage-3.storage.buildbarn:8981' } },
+                  weight: 1,
+                },
               ],
             },
           },
         },
       },
+      blobstoreFrontend: {
+        contentAddressableStorage: {
+          grpc: { address: 'frontend.buildbarn:8980' },
+        },
+        actionCache: {
+          grpc: { address: 'frontend.buildbarn:8980' },
+        },
+      },
       # Remember to set your browserUrl to the ingress of the browser deployment
-      # browserUrl: 'http://address-of-bb-browser-ingress:80',
+      browserUrl: 'https://bb-browser.example.com',
       maximumMessageSizeBytes: 16 * 1024 * 1024,
-      httpListenAddress: ':80'
+      httpListenAddress: ':80',
+      global: {
+        diagnosticsHttpServer: {
+          listenAddress: ':80',
+          enablePrometheus: true,
+          enablePprof: true,
+          enableActiveSpans: true,
+        },
+        setUmask: { umask: 0 }
+      }
     }
 kind: ConfigMap
 metadata:

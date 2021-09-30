@@ -4,7 +4,7 @@ metadata:
   name: storage
   namespace: buildbarn
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: storage
@@ -13,68 +13,94 @@ spec:
     metadata:
       labels:
         app: storage
+        cluster: buildbarn
     spec:
+      nodeSelector:
+        agentpool: workerpool01
       containers:
-      - args:
-        - /config/storage.jsonnet
-        image: buildbarn/bb-storage:20200904T173922Z-e3f0e59
-        name: storage
-        ports:
-        - containerPort: 8981
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config/
-          name: configs
-          readOnly: true
-        - mountPath: /cas
-          name: cas
-        - mountPath: /ac
-          name: ac
+        - args:
+            - /config/storage.jsonnet
+          image: buildbarn/bb-storage:20210811T060635Z-8cbbc00
+          name: storage
+          ports:
+            - containerPort: 8981
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+            - mountPath: /cas
+              name: cas
+            - mountPath: /ac
+              name: ac
+          resources:
+            requests:
+              cpu: 0.1
+              memory: 4Gi
+            limits:
+              cpu: 0.5
+              memory: 4Gi
+      initContainers:
+        - name: volume-init
+          image: busybox:1.31.1-uclibc
+          command:
+            - sh
+            - -c
+            - mkdir -p /cas/persistent_state /ac/persistent_state
+          volumeMounts:
+            - mountPath: /cas
+              name: cas
+            - mountPath: /ac
+              name: ac
       volumes:
-      - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: storage
-              items:
-              - key: storage.jsonnet
-                path: storage.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: storage
+                  items:
+                    - key: storage.jsonnet
+                      path: storage.jsonnet
+              - configMap:
+                  name: common
+                  items:
+                    - key: common.libsonnet
+                      path: common.libsonnet
   volumeClaimTemplates:
-  - metadata:
-      name: cas
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 12Gi
-  - metadata:
-      name: ac
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: cas
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: managed-premium
+        resources:
+          requests:
+            storage: 120Gi
+    - metadata:
+        name: ac
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: managed-premium
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    prometheus.io/port: "80"
-    prometheus.io/scrape: "true"
   name: storage
   namespace: buildbarn
+  labels:
+    app: storage
 spec:
   clusterIP: None
   ports:
-  - port: 8981
-    protocol: TCP
-    name: grpc
+    - port: 8981
+      protocol: TCP
+      name: grpc
+    - port: 80
+      protocol: TCP
+      name: health-http
   selector:
     app: storage

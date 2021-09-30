@@ -1,0 +1,68 @@
+apiVersion: v1
+data:
+  worker.jsonnet: |
+    local common = import 'common.libsonnet';
+    {
+      blobstore: common.blobstoreStorage,
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      scheduler: { address: 'scheduler:8983' },
+      global: common.global,
+      maximumMemoryCachedDirectories: 1000,
+      browserUrl: common.browserUrl,
+      buildDirectories: [{
+        native: {
+          buildDirectoryPath: '/worker/build',
+          cacheDirectoryPath: '/worker/cache',
+          maximumCacheFileCount: 10000,
+          maximumCacheSizeBytes: 1024 * 1024 * 1024,
+          cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+        },
+        runners: [{
+          endpoint: { address: 'unix:///worker/runner-1' },
+          concurrency: 1,
+          platform: {
+            properties: [
+              { name: 'OSFamily', value: 'Linux' },
+              { name: 'container-image', value: 'docker://l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1' },
+            ],
+          },
+          workerId: {
+            'pod': std.extVar("POD_NAME"),
+            'node': std.extVar("NODE_NAME"),
+            'runner': 'runner-1'
+          },
+        },{
+          endpoint: { address: 'unix:///worker/runner-2' },
+          concurrency: 1,
+          platform: {
+            properties: [
+              { name: 'OSFamily', value: 'Linux' },
+              { name: 'container-image', value: 'docker://l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1' },
+            ],
+          },
+          workerId: {
+            'pod': std.extVar("POD_NAME"),
+            'node': std.extVar("NODE_NAME"),
+            'runner': 'runner-2'
+          },
+        },{
+          endpoint: { address: 'unix:///worker/runner-3' },
+          concurrency: 1,
+          platform: {
+            properties: [
+              { name: 'OSFamily', value: 'Linux' },
+              { name: 'container-image', value: 'docker://l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1' },
+            ],
+          },
+          workerId: {
+            'pod': std.extVar("POD_NAME"),
+            'node': std.extVar("NODE_NAME"),
+            'runner': 'runner-3'
+          },
+        }],
+      }],
+    }
+kind: ConfigMap
+metadata:
+  name: worker
+  namespace: buildbarn

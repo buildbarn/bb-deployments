@@ -4,7 +4,7 @@ metadata:
   name: browser
   namespace: buildbarn
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: browser
@@ -12,47 +12,54 @@ spec:
     metadata:
       labels:
         app: browser
+        cluster: buildbarn
     spec:
+      nodeSelector:
+        agentpool: workerpool01
       containers:
-      - image: buildbarn/bb-browser:20200816T120922Z-6dc5c54
-        args:
-        - /config/browser.jsonnet
-        name: browser
-        ports:
-        - containerPort: 80
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /config/
-          name: configs
-          readOnly: true
+        - image: buildbarn/bb-browser:20210811T090408Z-9f5dd80
+          args:
+            - /config/browser.jsonnet
+          name: browser
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 1
+              memory: 1Gi
       volumes:
-      - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: browser
-              items:
-              - key: browser.jsonnet
-                path: browser.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: browser
+                  items:
+                    - key: browser.jsonnet
+                      path: browser.jsonnet
+              - configMap:
+                  name: common
+                  items:
+                    - key: common.libsonnet
+                      path: common.libsonnet
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: browser
   namespace: buildbarn
-  annotations:
-    prometheus.io/port: "80"
-    prometheus.io/scrape: "true"
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    name: http
+    - port: 80
+      protocol: TCP
+      name: http
   selector:
     app: browser
   type: ClusterIP
@@ -62,12 +69,18 @@ kind: Ingress
 metadata:
   name: browser
   namespace: buildbarn
+  annotations:
+    kubernetes.io/ingress.class: nginx-internal
 spec:
   rules:
-  - host: bb-browser.example.com
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: browser
-          servicePort: 80
+    - host: bb-browser.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: browser
+              servicePort: 80
+  tls:
+    - hosts:
+      - bb-browser.example.com
+

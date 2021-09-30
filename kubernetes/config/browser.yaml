@@ -2,11 +2,11 @@ apiVersion: v1
 data:
   browser.jsonnet: |
     local common = import 'common.libsonnet';
-
     {
-      blobstore: common.blobstore,
+      blobstore: common.blobstoreFrontend,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       listenAddress: common.httpListenAddress,
+      authorizer: { allow: {} },
     }
 kind: ConfigMap
 metadata:

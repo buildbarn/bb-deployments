@@ -2,9 +2,8 @@ apiVersion: v1
 data:
   scheduler.jsonnet: |
     local common = import 'common.libsonnet';
-
     {
-      httpListenAddress: common.httpListenAddress,
+      adminHttpListenAddress: common.httpListenAddress,
       clientGrpcServers: [{
         listenAddresses: [':8982'],
         authenticationPolicy: { allow: {} },
@@ -13,7 +12,10 @@ data:
         listenAddresses: [':8983'],
         authenticationPolicy: { allow: {} },
       }],
-      contentAddressableStorage: common.blobstore.contentAddressableStorage,
+      defaultExecutionTimeout: '1800s',
+      maximumExecutionTimeout: '3600s',
+      executeAuthorizer: { allow: {} },
+      contentAddressableStorage: common.blobstoreStorage.contentAddressableStorage,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       browserUrl: common.browserUrl,
     }

@@ -1,0 +1,165 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: buildbarn
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: worker
+      instance: ubuntu16-04
+  template:
+    metadata:
+      labels:
+        app: worker
+        instance: ubuntu16-04
+        cluster: buildbarn
+    spec:
+      nodeSelector:
+        agentpool: workerpool01
+      containers:
+        - name: worker
+          args:
+            - /config/worker.jsonnet
+          image: buildbarn/bb-worker:20210811T074314Z-d63ad09
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: health-http
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+            - mountPath: /worker
+              name: worker
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          resources:
+            limits:
+              cpu: 3
+              memory: 6Gi
+            requests:
+              cpu: 3
+              memory: 6Gi
+        - name: runner-1
+          command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-1.jsonnet]
+          image: l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1
+          securityContext:
+            runAsUser: 65534
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+            - mountPath: /worker
+              name: worker
+            - mountPath: /bb
+              name: bb-runner
+              readOnly: true
+          resources:
+            limits:
+              cpu: 3
+              memory: 6Gi
+            requests:
+              cpu: 3
+              memory: 6Gi
+        - name: runner-2
+          command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-2.jsonnet]
+          image: l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1
+          securityContext:
+            runAsUser: 65534
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+            - mountPath: /worker
+              name: worker
+            - mountPath: /bb
+              name: bb-runner
+              readOnly: true
+          resources:
+            limits:
+              cpu: 3
+              memory: 6Gi
+            requests:
+              cpu: 3
+              memory: 6Gi
+        - name: runner-3
+          command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-3.jsonnet]
+          image: l.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1
+          securityContext:
+            runAsUser: 65534
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+            - mountPath: /worker
+              name: worker
+            - mountPath: /bb
+              name: bb-runner
+              readOnly: true
+          resources:
+            limits:
+              cpu: 3
+              memory: 6Gi
+            requests:
+              cpu: 3
+              memory: 6Gi
+      initContainers:
+        - name: bb-runner-installer
+          image: buildbarn/bb-runner-installer:20210308T120007Z-65e13c1
+          volumeMounts:
+            - mountPath: /bb/
+              name: bb-runner
+        - name: volume-init
+          image: busybox:1.31.1-uclibc
+          command:
+            - sh
+            - -c
+            - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && chmod 0777 /worker
+          volumeMounts:
+            - mountPath: /worker
+              name: worker
+      volumes:
+        - name: bb-runner
+          emptyDir: {}
+        - name: configs
+          projected:
+            sources:
+              - configMap:
+                  name: runner-1
+                  items:
+                    - key: runner-1.jsonnet
+                      path: runner-1.jsonnet
+              - configMap:
+                  name: runner-2
+                  items:
+                    - key: runner-2.jsonnet
+                      path: runner-2.jsonnet
+              - configMap:
+                  name: runner-3
+                  items:
+                    - key: runner-3.jsonnet
+                      path: runner-3.jsonnet
+              - configMap:
+                  name: worker
+                  items:
+                    - key: worker.jsonnet
+                      path: worker.jsonnet
+              - configMap:
+                  name: common
+                  items:
+                    - key: common.libsonnet
+                      path: common.libsonnet
+        - emptyDir: {}
+          name: worker
