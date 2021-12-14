@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Values.baseName }}-frontend
+  namespace: {{ $.Values.namespace }}
+data:
+  frontend.jsonnet: |
+    local common = import 'common.libsonnet';
+    {
+      blobstore: common.blobstore,
+      global: {
+        tracing: {
+          sampler: common.traceSampler,
+          resourceAttributes: {
+            "service.name": {string: 'buildbarn-frontend'},
+            "service.namespace": {string: '{{ $.Values.namespace }}'},
+          },
+          backends: [
+            common.openTelemetryBackend,
+          ],
+        },
+        diagnosticsHttpServer: {
+          listenAddress: ':{{ .Values.frontend.prometheusPort }}',
+          enablePrometheus: true,
+          enablePprof: true,
+        },
+      },
+      grpcServers: [{
+        listenAddresses: [':{{ .Values.frontend.port }}'],
+        authenticationPolicy: { allow: {} },
+      }],
+      actionCacheAuthorizers: {
+        get: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        put: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+      },
+      contentAddressableStorageAuthorizers: {
+        get: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        put: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        findMissing: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+      },
+      executeAuthorizer:{ instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+    }

@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Values.baseName }}-opentelemetry-collector
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app: {{ $.Release.Name }}-opentelemetry-collector
+    service: buildbarn
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+    processors:
+      batch:
+        timeout: 10s
+      k8sattributes:
+        passthrough: true
+    exporters:
+      datadog:
+        env: {{ $.Values.otelcol.env }}
+        service: {{ $.Values.namespace }}
+        tags:
+          - kube_namespace:{{ $.Values.namespace }}
+          - deployment:{{ $.Values.baseName }}
+        api:
+          key: example-key
+          site: datadoghq.com
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, k8sattributes]
+          exporters: [datadog]
+      telemetry:
+        logs:
+          level: "debug"

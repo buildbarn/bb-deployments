@@ -1,0 +1,61 @@
+baseName: buildbarn
+serviceDnsName: svc.mycompany.fake
+namespace: buildbarn
+# with the above settings, the first storage pod will be rendered into the configs as:
+# "buildbarn-storage-0.buildbarn-storage-headless.buildbarn.svc.mycompany.fake"
+
+
+# this is a list of the cache instances you want to allow clients to use.
+# it would be fairly straightforward to add some granularity here if you added more complex authorizers so that different authorizers draw from different instance lists.
+allInstanceNames:
+- remote-caching
+
+storage:
+  replicas: 10
+  image:
+    name: buildbarn/bb-storage
+    tag: 20211205T205823Z-634fb8e
+  port: 8980
+  prometheusPort: 8888
+  resources:
+    requests:
+      memory: "16Gi" # This is this high to reduce binpacking and provide a fat disk cache, the minimum for ok performance is at least a power of magnitude lower
+      cpu: "4000m" # this was chosen fairly arbitrarily
+    limits:
+      memory: "24Gi"
+      cpu: "8000m"
+
+
+frontend:
+  replicas: 10
+  image:
+    name: buildbarn/bb-storage
+    tag: 20211205T205823Z-634fb8e
+  port: 443
+  prometheusPort: 8888
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "300m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  podAnnotations:
+
+
+otelcol:
+  replicas: 3 # this is 3 for resilience, not resource demands. even at single-digit thousands of spans per second these pods are at ~0% CPU utilization
+  env: prod
+  port: 4317
+  prometheusPort: 8888
+  image:
+    name: otel/opentelemetry-collector
+    tag: 0.37.1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  podAnnotations:
