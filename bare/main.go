@@ -30,10 +30,10 @@ func bbStart(bbProcess buildbarnProcess) {
 }
 
 func main() {
-	os.Mkdir("build", 0755)
-	os.Mkdir("cache", 0755)
-	os.Mkdir("storage-ac", 0755)
-	os.Mkdir("storage-cas", 0755)
+	os.Mkdir("build", 0o755)
+	os.Mkdir("cache", 0o755)
+	os.Mkdir("storage-ac", 0o755)
+	os.Mkdir("storage-cas", 0o755)
 
 	log.Println("Don't worry if you see some \"Failed to synchronize with scheduler\" warnings on startup")
 	log.Println("\t- they should stop once bb_scheduler is ready")
