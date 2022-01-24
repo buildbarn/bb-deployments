@@ -6,7 +6,6 @@ local common = import 'common.libsonnet';
   scheduler: { address: 'scheduler:8983' },
   global: common.global,
   maximumMemoryCachedDirectories: 1000,
-  instanceName: 'remote-execution',
   buildDirectories: [{
     native: {
       buildDirectoryPath: '/worker/build',
@@ -20,12 +19,10 @@ local common = import 'common.libsonnet';
       concurrency: 8,
       platform: {
         properties: [
-          { name: "OSFamily", value: "Linux" },
-          { name: "container-image", value: "docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:f6568d8168b14aafd1b707019927a63c2d37113a03bcee188218f99bd0327ea1"}
-        ]
+          { name: 'OSFamily', value: 'Linux' },
+          { name: 'container-image', value: 'docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272' },
+        ],
       },
-      defaultExecutionTimeout: '1800s',
-      maximumExecutionTimeout: '3600s',
       workerId: {
         datacenter: 'paris',
         rack: '4',

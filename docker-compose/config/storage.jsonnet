@@ -14,7 +14,7 @@ local common = import 'common.libsonnet';
         keyLocationMapMaximumPutAttempts: 32,
         oldBlocks: 8,
         currentBlocks: 24,
-        newBlocks: 3,
+        newBlocks: 1,
         blocksOnBlockDevice: {
           source: {
             file: {
@@ -26,7 +26,7 @@ local common = import 'common.libsonnet';
         },
         persistent: {
           stateDirectoryPath: '/storage-cas/persistent_state',
-          minimumEpochInterval: '5m',
+          minimumEpochInterval: '300s',
         },
       },
     },
@@ -42,7 +42,7 @@ local common = import 'common.libsonnet';
         keyLocationMapMaximumPutAttempts: 32,
         oldBlocks: 8,
         currentBlocks: 24,
-        newBlocks: 3,
+        newBlocks: 1,
         blocksOnBlockDevice: {
           source: {
             file: {
@@ -54,7 +54,7 @@ local common = import 'common.libsonnet';
         },
         persistent: {
           stateDirectoryPath: '/storage-ac/persistent_state',
-          minimumEpochInterval: '5m',
+          minimumEpochInterval: '300s',
         },
       },
     },
@@ -64,6 +64,15 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8981'],
     authenticationPolicy: { allow: {} },
   }],
-  allowAcUpdatesForInstanceNamePrefixes: [''],
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+  executeAuthorizer: { allow: {} },
+  contentAddressableStorageAuthorizers: {
+    get: { allow: {} },
+    put: { allow: {} },
+    findMissing: { allow: {} },
+  },
+  actionCacheAuthorizers: {
+    get: { allow: {} },
+    put: { allow: {} },
+  },
 }
