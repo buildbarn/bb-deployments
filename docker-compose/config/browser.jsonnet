@@ -5,4 +5,5 @@ local common = import 'common.libsonnet';
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   listenAddress: ':7984',
   global: common.global,
+  authorizer: { allow: {} },
 }
