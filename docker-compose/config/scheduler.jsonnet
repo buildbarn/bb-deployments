@@ -15,7 +15,7 @@ local common = import 'common.libsonnet';
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   executeAuthorizer: { allow: {} },
-  action_router: {
+  actionRouter: {
     simple: {
       platformKeyExtractor: { actionAndCommand: {} },
       invocationKeyExtractors: [{ requestMetadata: {} }],

@@ -36,5 +36,12 @@
   browserUrl: 'http://localhost:7984',
   httpListenAddress: ':80',
   maximumMessageSizeBytes: 16 * 1024 * 1024,
-  global: {},
+  global: {
+    diagnosticsHttpServer: {
+      listenAddress: '127.0.0.1:12345',
+      enablePrometheus: true,
+      enablePprof: true,
+      enableActiveSpans: true,
+    },
+  },
 }
