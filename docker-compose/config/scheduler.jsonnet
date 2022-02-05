@@ -25,5 +25,5 @@ local common = import 'common.libsonnet';
       },
     },
   },
-  platform_queue_with_no_workers_timeout: '900s',
+  platformQueueWithNoWorkersTimeout: '900s',
 }
