@@ -38,7 +38,7 @@
   maximumMessageSizeBytes: 16 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {
-      listenAddress: '127.0.0.1:12345',
+      listenAddress: ':9980',
       enablePrometheus: true,
       enablePprof: true,
       enableActiveSpans: true,

@@ -67,7 +67,7 @@ services:
     - ./config:/config
 
   worker-ubuntu16-04:
-    image: buildbarn/bb-worker:20211222T101503Z-592ecb3
+    image: buildbarn/bb-worker:20220126T175529Z-d1a65e0
     command:
     - /config/worker-ubuntu16-04.jsonnet
     ports:
@@ -91,6 +91,6 @@ services:
     - runner-installer
 
   runner-installer:
-    image: buildbarn/bb-runner-installer:20201218T103144Z-6f7de1f
+    image: buildbarn/bb-runner-installer:20220126T175529Z-d1a65e0
     volumes:
     - ./bb:/bb
