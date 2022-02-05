@@ -4,9 +4,10 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path"
 	"os/signal"
+	"path"
 	"syscall"
+
 	"github.com/bazelbuild/rules_go/go/tools/bazel"
 )
 
@@ -27,7 +28,10 @@ func bbStart(bbProcess buildbarnProcess) *exec.Cmd {
 	cmd := exec.Command(path, configPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	cmd.Start()
+	startErr := cmd.Start()
+	if startErr != nil {
+		log.Printf("Failed starting %s:\n%s", bbProcess.binary, startErr.Error())
+	}
 	return cmd
 }
 
@@ -56,16 +60,11 @@ func main() {
 	}
 
 	// Kill all started processes if interrupted:
-	c := make(chan os.Signal)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		<-c
-		for _, command := range commands {
-			log.Printf("Killing proc: %d", command.Process.Pid)
-			command.Process.Kill()
-		}
-		os.Exit(1)
-	}()
-	// Wait forever or until stopped
-	<-(chan int)(nil)
+	interruptChan := make(chan os.Signal)
+	signal.Notify(interruptChan, os.Interrupt, syscall.SIGTERM)
+	<-interruptChan
+	for _, command := range commands {
+		log.Printf("Killing proc: %d", command.Process.Pid)
+		command.Process.Kill()
+	}
 }
