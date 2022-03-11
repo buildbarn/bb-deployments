@@ -1,5 +1,8 @@
+local common = import 'common.libsonnet';
+
 {
-  buildDirectoryPath: 'build',
+  buildDirectoryPath: std.extVar('PWD') + '/build',
+  global: common.globalWithDiagnosticsHttpServer(':9987'),
   grpcServers: [{
     listenPaths: ['runner'],
     authenticationPolicy: { allow: {} },

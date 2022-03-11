@@ -4,7 +4,7 @@ data:
     local common = import 'common.libsonnet';
 
     {
-      httpListenAddress: common.httpListenAddress,
+      adminHttpListenAddress: ':7982',
       clientGrpcServers: [{
         listenAddresses: [':8982'],
         authenticationPolicy: { allow: {} },
@@ -13,9 +13,25 @@ data:
         listenAddresses: [':8983'],
         authenticationPolicy: { allow: {} },
       }],
+      browserUrl: common.browserUrl,
       contentAddressableStorage: common.blobstore.contentAddressableStorage,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-      browserUrl: common.browserUrl,
+      global: common.global,
+      executeAuthorizer: { allow: {} },
+      actionRouter: {
+        simple: {
+          platformKeyExtractor: { actionAndCommand: {} },
+          invocationKeyExtractors: [
+            { correlatedInvocationsId: {} },
+            { toolInvocationId: {} },
+          ],
+          initialSizeClassAnalyzer: {
+            defaultExecutionTimeout: '1800s',
+            maximumExecutionTimeout: '7200s',
+          },
+        },
+      },
+      platformQueueWithNoWorkersTimeout: '900s',
     }
 kind: ConfigMap
 metadata:

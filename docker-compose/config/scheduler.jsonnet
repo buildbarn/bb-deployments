@@ -10,15 +10,18 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8983'],
     authenticationPolicy: { allow: {} },
   }],
-  global: common.global,
   browserUrl: common.browserUrl,
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+  global: common.global,
   executeAuthorizer: { allow: {} },
   actionRouter: {
     simple: {
       platformKeyExtractor: { actionAndCommand: {} },
-      invocationKeyExtractors: [{ requestMetadata: {} }],
+      invocationKeyExtractors: [
+        { correlatedInvocationsId: {} },
+        { toolInvocationId: {} },
+      ],
       initialSizeClassAnalyzer: {
         defaultExecutionTimeout: '1800s',
         maximumExecutionTimeout: '7200s',

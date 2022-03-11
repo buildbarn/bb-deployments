@@ -1,4 +1,13 @@
 {
+  globalWithDiagnosticsHttpServer(listenAddress): {
+    diagnosticsHttpServer: {
+      listenAddress: listenAddress,
+      enablePrometheus: true,
+      enablePprof: true,
+      enableActiveSpans: true,
+    },
+  },
+
   blobstore: {
     contentAddressableStorage: {
       grpc: {

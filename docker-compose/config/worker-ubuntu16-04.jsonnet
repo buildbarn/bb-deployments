@@ -2,10 +2,11 @@ local common = import 'common.libsonnet';
 
 {
   blobstore: common.blobstore,
+  browserUrl: common.browserUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },
-  global: common.global,
   maximumMemoryCachedDirectories: 1000,
+  global: common.global,
   buildDirectories: [{
     native: {
       buildDirectoryPath: '/worker/build',
@@ -31,4 +32,5 @@ local common = import 'common.libsonnet';
       },
     }],
   }],
+  outputUploadConcurrency: 11,
 }

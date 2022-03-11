@@ -6,7 +6,9 @@ data:
     {
       blobstore: common.blobstore,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-      listenAddress: common.httpListenAddress,
+      listenAddress: ':7984',
+      global: common.global,
+      authorizer: { allow: {} },
     }
 kind: ConfigMap
 metadata:

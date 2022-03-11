@@ -1,8 +1,14 @@
 local common = import 'common.libsonnet';
 
 {
-  blobstore: {
-    contentAddressableStorage: {
+  grpcServers: [{
+    listenAddresses: [':8981'],
+    authenticationPolicy: { allow: {} },
+  }],
+  maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+  global: common.global,
+  contentAddressableStorage: {
+    backend: {
       'local': {
         keyLocationMapOnBlockDevice: {
           file: {
@@ -30,7 +36,12 @@ local common = import 'common.libsonnet';
         },
       },
     },
-    actionCache: {
+    getAuthorizer: { allow: {} },
+    putAuthorizer: { allow: {} },
+    findMissingAuthorizer: { allow: {} },
+  },
+  actionCache: {
+    backend: {
       'local': {
         keyLocationMapOnBlockDevice: {
           file: {
@@ -58,21 +69,7 @@ local common = import 'common.libsonnet';
         },
       },
     },
-  },
-  global: common.global,
-  grpcServers: [{
-    listenAddresses: [':8981'],
-    authenticationPolicy: { allow: {} },
-  }],
-  maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-  executeAuthorizer: { allow: {} },
-  contentAddressableStorageAuthorizers: {
-    get: { allow: {} },
-    put: { allow: {} },
-    findMissing: { allow: {} },
-  },
-  actionCacheAuthorizers: {
-    get: { allow: {} },
-    put: { allow: {} },
+    getAuthorizer: { allow: {} },
+    putAuthorizer: { allow: {} },
   },
 }

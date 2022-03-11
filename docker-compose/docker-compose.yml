@@ -1,49 +1,42 @@
 version: '3'
 services:
   frontend:
-    image: buildbarn/bb-storage:20220118T100705Z-cd279b2
+    image: buildbarn/bb-storage:20220409T201227Z-01fc04b
     command:
     - /config/frontend.jsonnet
     expose:
     - 9980
     ports:
-    - 7980:7980
     - 8980:8980
     volumes:
     - ./config:/config
 
-
   storage-0:
-    image: buildbarn/bb-storage:20220118T100705Z-cd279b2
+    image: buildbarn/bb-storage:20220409T201227Z-01fc04b
     command:
     - /config/storage.jsonnet
     expose:
     - 8981
     - 9980
-    ports:
-    - 7981:7981
     volumes:
     - ./config:/config
     - ./storage-ac-0:/storage-ac
     - ./storage-cas-0:/storage-cas
 
   storage-1:
-    image: buildbarn/bb-storage:20220118T100705Z-cd279b2
+    image: buildbarn/bb-storage:20220409T201227Z-01fc04b
     command:
     - /config/storage.jsonnet
     expose:
     - 8981
     - 9980
-    ports:
-    - 17981:7981
     volumes:
     - ./config:/config
     - ./storage-ac-1:/storage-ac
     - ./storage-cas-1:/storage-cas
 
-
   scheduler:
-    image: buildbarn/bb-scheduler:20211222T101503Z-592ecb3
+    image: buildbarn/bb-scheduler:20220410T053240Z-c4bbd24
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -56,7 +49,7 @@ services:
     - ./config:/config
 
   browser:
-    image: buildbarn/bb-browser:20211222T121123Z-547095c
+    image: buildbarn/bb-browser:20220317T124113Z-edb6346
     command:
     - /config/browser.jsonnet
     expose:
@@ -67,7 +60,7 @@ services:
     - ./config:/config
 
   worker-ubuntu16-04:
-    image: buildbarn/bb-worker:20220126T175529Z-d1a65e0
+    image: buildbarn/bb-worker:20220410T053240Z-c4bbd24
     command:
     - /config/worker-ubuntu16-04.jsonnet
     ports:
@@ -91,6 +84,6 @@ services:
     - runner-installer
 
   runner-installer:
-    image: buildbarn/bb-runner-installer:20220126T175529Z-d1a65e0
+    image: buildbarn/bb-runner-installer:20220410T053240Z-c4bbd24
     volumes:
     - ./bb:/bb

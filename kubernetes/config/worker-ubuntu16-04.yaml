@@ -5,12 +5,14 @@ data:
 
     {
       blobstore: common.blobstore,
+      browserUrl: common.browserUrl,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       scheduler: { address: 'scheduler:8983' },
-      httpListenAddress: common.httpListenAddress,
       maximumMemoryCachedDirectories: 1000,
-      instanceName: 'remote-execution',
-      browserUrl: common.browserUrl,
+      global: std.mergePatch(
+        common.global,
+        { setUmask: { umask: 0 } },
+      ),
       buildDirectories: [{
         native: {
           buildDirectoryPath: '/worker/build',
@@ -28,16 +30,14 @@ data:
               { name: 'container-image', value: 'docker://marketplace.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272' },
             ],
           },
-          defaultExecutionTimeout: '1800s',
-          maximumExecutionTimeout: '3600s',
           workerId: {
             'pod': std.extVar("POD_NAME"),
             'node': std.extVar("NODE_NAME")
           },
         }],
       }],
+      outputUploadConcurrency: 11,
     }
-
 kind: ConfigMap
 metadata:
   name: worker-ubuntu16-04
