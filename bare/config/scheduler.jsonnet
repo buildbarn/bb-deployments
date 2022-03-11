@@ -1,7 +1,7 @@
 local common = import 'common.libsonnet';
 
 {
-  httpListenAddress: ':7982',
+  adminHttpListenAddress: ':7982',
   clientGrpcServers: [{
     listenAddresses: [':8982'],
     authenticationPolicy: { allow: {} },
@@ -13,4 +13,20 @@ local common = import 'common.libsonnet';
   browserUrl: common.browserUrl,
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+  global: common.globalWithDiagnosticsHttpServer(':9982'),
+  executeAuthorizer: { allow: {} },
+  actionRouter: {
+    simple: {
+      platformKeyExtractor: { actionAndCommand: {} },
+      invocationKeyExtractors: [
+        { correlatedInvocationsId: {} },
+        { toolInvocationId: {} },
+      ],
+      initialSizeClassAnalyzer: {
+        defaultExecutionTimeout: '1800s',
+        maximumExecutionTimeout: '7200s',
+      },
+    },
+  },
+  platformQueueWithNoWorkersTimeout: '900s',
 }

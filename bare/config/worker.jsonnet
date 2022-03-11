@@ -5,30 +5,28 @@ local common = import 'common.libsonnet';
   browserUrl: common.browserUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'localhost:8983' },
-  httpListenAddress: ':7986',
   maximumMemoryCachedDirectories: 1000,
-  instanceName: 'local',
-  build_directories: [{
+  global: common.globalWithDiagnosticsHttpServer(':9986'),
+  buildDirectories: [{
     native: {
-      buildDirectoryPath: 'build',
+      buildDirectoryPath: std.extVar('PWD') + '/build',
       cacheDirectoryPath: 'cache',
       maximumCacheFileCount: 10000,
       maximumCacheSizeBytes: 1024 * 1024 * 1024,
       cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
     },
     runners: [{
-      endpoint: { address: 'unix://runner' },
+      # https://github.com/grpc/grpc/blob/master/doc/naming.md
+      endpoint: { address: 'unix:runner' },
       concurrency: 8,
       platform: {},
-      defaultExecutionTimeout: '1800s',
-      maximumExecutionTimeout: '3600s',
       workerId: {
         datacenter: 'paris',
         rack: '4',
         slot: '15',
         hostname: 'ubuntu-worker.example.com',
       },
-
     }],
   }],
+  outputUploadConcurrency: 11,
 }

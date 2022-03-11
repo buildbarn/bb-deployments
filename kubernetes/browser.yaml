@@ -14,12 +14,12 @@ spec:
         app: browser
     spec:
       containers:
-      - image: buildbarn/bb-browser:20200816T120922Z-6dc5c54
+      - image: buildbarn/bb-browser:20220317T124113Z-edb6346
         args:
         - /config/browser.jsonnet
         name: browser
         ports:
-        - containerPort: 80
+        - containerPort: 7984
           protocol: TCP
         volumeMounts:
         - mountPath: /config/
@@ -50,14 +50,14 @@ metadata:
     prometheus.io/scrape: "true"
 spec:
   ports:
-  - port: 80
+  - port: 7984
     protocol: TCP
     name: http
   selector:
     app: browser
   type: ClusterIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: browser
@@ -68,6 +68,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: browser
-          servicePort: 80
+          service:
+            name: browser
+            port:
+              name: http

@@ -17,7 +17,7 @@ spec:
       containers:
       - args:
         - /config/storage.jsonnet
-        image: buildbarn/bb-storage:20200904T173922Z-e3f0e59
+        image: buildbarn/bb-storage:20220409T201227Z-01fc04b
         name: storage
         ports:
         - containerPort: 8981
@@ -26,9 +26,21 @@ spec:
         - mountPath: /config/
           name: configs
           readOnly: true
-        - mountPath: /cas
+        - mountPath: /storage-cas
           name: cas
-        - mountPath: /ac
+        - mountPath: /storage-ac
+          name: ac
+      initContainers:
+      - name: volume-init
+        image: busybox:1.31.1-uclibc
+        command:
+        - sh
+        - -c
+        - mkdir -m 0700 -p /storage-cas/persistent_state /storage-ac/persistent_state
+        volumeMounts:
+        - mountPath: /storage-cas
+          name: cas
+        - mountPath: /storage-ac
           name: ac
       volumes:
       - name: configs

@@ -15,9 +15,9 @@ jobs:
     - name: Gazelle
       run: bazel run //:gazelle
     - name: Gofmt
-      run: bazel run @go_sdk//:bin/gofmt -- -s -w .
+      run: bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.18 -w -extra $(pwd)
     - name: Clang format
-      run: find . -name '*.proto' -exec bazel run @llvm_toolchain//:bin/clang-format -- -i {} +
+      run: find . -name '*.proto' -exec bazel run @llvm_toolchain_llvm//:bin/clang-format -- -i {} +
     - name: Test style conformance
       run: git diff --exit-code HEAD --
     - name: Golint
