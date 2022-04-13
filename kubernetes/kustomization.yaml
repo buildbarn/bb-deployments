@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - bb-namespace.yaml
+  - config/
+  - browser.yaml
+  - frontend.yaml
+  - scheduler.yaml
+  - storage.yaml
+  - worker-ubuntu16-04.yaml
