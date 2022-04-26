@@ -5,7 +5,7 @@ resources:
   - browser.yaml
   - common.yaml
   - frontend.yaml
-  - runner-ubuntu16-04.yaml
+  - runner-ubuntu22-04.yaml
   - scheduler.yaml
   - storage.yaml
-  - worker-ubuntu16-04.yaml
+  - worker-ubuntu22-04.yaml

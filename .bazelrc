@@ -1,0 +1,35 @@
+# Don't inherit the user environment as that trashes the cache.
+build --incompatible_strict_action_env
+# Use the new way of defining toolchains.
+build --incompatible_enable_cc_toolchain_resolution=true
+build --incompatible_use_cc_configure_from_rules_cc=true
+
+# Print the errors in the terminal, not just log files.
+test --test_output=errors
+
+# Only download the final result, the intermediate files can stay on the
+# server side.
+build --remote_download_toplevel
+
+# TODO: Don't know why, but dynamic linking just doesn't work.
+build:remote-exec --dynamic_mode=off
+
+# Kubernetes will have a different host name than 'localhost'.
+build:remote-exec --remote_executor=grpc://localhost:8980
+# The Buildbarn worker can configure instance_name_prefix to create separate
+# execution bins within the cluster. Optional, but useful when trying new
+# worker configurations.
+build:remote-exec --remote_instance_name=remote-execution
+# Make sure to load Buildbarn with more requests than the number of CPUs on
+# your host machine.
+build:remote-exec --jobs=64
+# Make sure that the remote execution platform and the matching toolchains
+# take precedence over the other definitions in the WORKSPACE file.
+build:remote-exec --extra_toolchains=//tools/remote-toolchains:all
+
+# When running Ubuntu 22.04 executors.
+build:remote-ubuntu-22-04 --config=remote-exec
+build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/remote-toolchains:ubuntu-act-22-04-platform
+
+# When running bare executors on your own host machine.
+build:remote-local --config=remote-exec

@@ -1,0 +1,2 @@
+# DO NOT EDIT: automatically generated WORKSPACE file for sh_config rule
+workspace(name = "local_config_sh")

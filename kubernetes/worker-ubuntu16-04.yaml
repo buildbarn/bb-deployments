@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: worker-ubuntu16-04
+  name: worker-ubuntu22-04
   namespace: buildbarn
   annotations:
     prometheus.io/port: "80"
@@ -11,16 +11,16 @@ spec:
   selector:
     matchLabels:
       app: worker
-      instance: ubuntu16-04
+      instance: ubuntu22-04
   template:
     metadata:
       labels:
         app: worker
-        instance: ubuntu16-04
+        instance: ubuntu22-04
     spec:
       containers:
       - args:
-        - /config/worker-ubuntu16-04.jsonnet
+        - /config/worker-ubuntu22-04.jsonnet
         image: buildbarn/bb-worker:20220410T053240Z-c4bbd24
         name: worker
         volumeMounts:
@@ -38,8 +38,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-      - command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-ubuntu16-04.jsonnet]
-        image: l.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
+      - command: [/bb/tini, -v, -g, --, /bb/bb_runner, /config/runner-ubuntu22-04.jsonnet]
+        image: ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448
         name: runner
         securityContext:
           runAsUser: 65534
@@ -75,15 +75,15 @@ spec:
         projected:
           sources:
           - configMap:
-              name: runner-ubuntu16-04
+              name: runner-ubuntu22-04
               items:
-              - key: runner-ubuntu16-04.jsonnet
-                path: runner-ubuntu16-04.jsonnet
+              - key: runner-ubuntu22-04.jsonnet
+                path: runner-ubuntu22-04.jsonnet
           - configMap:
-              name: worker-ubuntu16-04
+              name: worker-ubuntu22-04
               items:
-              - key: worker-ubuntu16-04.jsonnet
-                path: worker-ubuntu16-04.jsonnet
+              - key: worker-ubuntu22-04.jsonnet
+                path: worker-ubuntu22-04.jsonnet
           - configMap:
               name: common
               items:

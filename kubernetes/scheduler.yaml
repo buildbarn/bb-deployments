@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scheduler-ubuntu16-04
+  name: scheduler-ubuntu22-04
   namespace: buildbarn
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: scheduler
-      instance: ubuntu16-04
+      instance: ubuntu22-04
   template:
     metadata:
       labels:
         app: scheduler
-        instance: ubuntu16-04
+        instance: ubuntu22-04
     spec:
       containers:
       - args:
@@ -67,5 +67,5 @@ spec:
     name: http
   selector:
     app: scheduler
-    instance: ubuntu16-04
+    instance: ubuntu22-04
   type: ClusterIP

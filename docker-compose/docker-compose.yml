@@ -59,25 +59,25 @@ services:
     volumes:
     - ./config:/config
 
-  worker-ubuntu16-04:
+  worker-ubuntu22-04:
     image: buildbarn/bb-worker:20220711T053610Z-2f8fb05
     command:
-    - /config/worker-ubuntu16-04.jsonnet
+    - /config/worker-ubuntu22-04.jsonnet
     ports:
     - 7986:7986
     volumes:
     - ./config:/config
-    - ./worker-ubuntu16-04:/worker
+    - ./worker-ubuntu22-04:/worker
 
-  runner-ubuntu16-04:
-    image: l.gcr.io/google/rbe-ubuntu16-04@sha256:b516a2d69537cb40a7c6a7d92d0008abb29fba8725243772bdaf2c83f1be2272
+  runner-ubuntu22-04:
+    image: ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448
     command:
     - sh
     - -c
-    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner-ubuntu16-04.jsonnet
+    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
     network_mode: none
     volumes:
-    - ./worker-ubuntu16-04:/worker
+    - ./worker-ubuntu22-04:/worker
     - ./config:/config
     - ./bb:/bb
     depends_on:

@@ -1,6 +1,6 @@
 workspace(name = "com_github_buildbarn_bb_deployments")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "io_bazel_rules_docker",
@@ -42,7 +42,7 @@ go_rules_dependencies()
 
 go_register_toolchains(version = "1.18")
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
 gazelle_dependencies()
 
@@ -59,43 +59,63 @@ protobuf_deps()
 
 # Below dependencies are for the example project.
 
-# abseil-cpp
 http_archive(
-    name = "com_google_absl",
-    sha256 = "8400c511d64eb4d26f92c5ec72535ebd0f843067515244e8b50817b0786427f9",
-    strip_prefix = "abseil-cpp-c512f118dde6ffd51cb7d8ac8804bbaf4d266c3a",
-    urls = ["https://github.com/abseil/abseil-cpp/archive/c512f118dde6ffd51cb7d8ac8804bbaf4d266c3a.zip"],
+    name = "com_grail_bazel_toolchain",
+    canonical_id = "0.6.3",
+    sha256 = "da607faed78c4cb5a5637ef74a36fdd2286f85ca5192222c4664efec2d529bb8",
+    strip_prefix = "bazel-toolchain-0.6.3",
+    url = "https://github.com/grailbio/bazel-toolchain/archive/0.6.3.tar.gz",
 )
 
-# Google Test
-http_archive(
-    name = "com_google_googletest",
-    sha256 = "7c7709af5d0c3c2514674261f9fc321b3f1099a2c57f13d0e56187d193c07e81",
-    strip_prefix = "googletest-10b1902d893ea8cc43c69541d70868f91af3646b",
-    urls = ["https://github.com/google/googletest/archive/10b1902d893ea8cc43c69541d70868f91af3646b.zip"],
+load("@com_grail_bazel_toolchain//toolchain:rules.bzl", "llvm_toolchain")
+
+llvm_toolchain(
+    name = "llvm_toolchain",
+    llvm_version = "13.0.0",
 )
 
 # C++ rules for Bazel.
 http_archive(
     name = "rules_cc",
-    sha256 = "954b7a3efc8752da957ae193a13b9133da227bdacf5ceb111f2e11264f7e8c95",
-    strip_prefix = "rules_cc-9e10b8a6db775b1ecd358d8ddd3dab379a2c29a5",
-    urls = ["https://github.com/bazelbuild/rules_cc/archive/9e10b8a6db775b1ecd358d8ddd3dab379a2c29a5.zip"],
+    sha256 = "fe1e7b1801a63e79eb1b40dc44bf0590117a399e118ac44afd6fa07bf63e9ece",
+    strip_prefix = "rules_cc-58f8e026c00a8a20767e3dc669f46ba23bc93bdb",
+    urls = ["https://github.com/bazelbuild/rules_cc/archive/58f8e026c00a8a20767e3dc669f46ba23bc93bdb.zip"],
 )
 
+# Register the auto configured rules_cc toolchain for local execution.
+load("@rules_cc//cc:repositories.bzl", "rules_cc_dependencies", "rules_cc_toolchains")
+
+rules_cc_dependencies()
+
+rules_cc_toolchains()
+
+# Import toolchain repositories for remote executions, but register the
+# toolchains using --extra_toolchains on the command line to get precedence.
+local_repository(
+    name = "remote_config_cc",
+    path = "tools/remote-toolchains/ubuntu-act-22-04/local_config_cc",
+)
+
+local_repository(
+    name = "remote_config_sh",
+    path = "tools/remote-toolchains/ubuntu-act-22-04/local_config_sh",
+)
+
+# abseil-cpp
 http_archive(
-    name = "bazel_toolchains",
-    sha256 = "144290c4166bd67e76a54f96cd504ed86416ca3ca82030282760f0823c10be48",
-    strip_prefix = "bazel-toolchains-3.1.1",
-    urls = [
-        "https://github.com/bazelbuild/bazel-toolchains/releases/download/3.1.1/bazel-toolchains-3.1.1.tar.gz",
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-toolchains/archive/3.1.1.tar.gz",
-    ],
+    name = "com_google_absl",
+    sha256 = "af7a1c42dc68c966e2451c3f2c6c9ff7b8b590d590f6078ed912dcb215a9f062",
+    strip_prefix = "abseil-cpp-731689ffc2ad7bb95cc86b5b6160dbe7858f27a0",
+    urls = ["https://github.com/abseil/abseil-cpp/archive/731689ffc2ad7bb95cc86b5b6160dbe7858f27a0.zip"],
 )
 
-load("@bazel_toolchains//rules:rbe_repo.bzl", "rbe_autoconfig")
-
-rbe_autoconfig(name = "rbe_default")
+# Google Test
+http_archive(
+    name = "com_google_googletest",
+    sha256 = "7e434199a53a71fd0f6ddd6d605e1bdcd65edbc2cefad8fb07a18347927f41d0",
+    strip_prefix = "googletest-c144d78f8295da3dbae3ad2d5fe66a9a42f8ce74",
+    urls = ["https://github.com/google/googletest/archive/c144d78f8295da3dbae3ad2d5fe66a9a42f8ce74.zip"],
+)
 
 http_archive(
     name = "abseil-hello",

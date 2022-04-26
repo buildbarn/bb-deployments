@@ -1,0 +1,2 @@
+# DO NOT EDIT: automatically generated WORKSPACE file for local_config_platform
+workspace(name = "local_config_platform")
