@@ -107,6 +107,10 @@
           name: 'Check for ineffective assignments',
           run: 'bazel run @com_github_gordonklaus_ineffassign//:ineffassign $(pwd)',
         },
+        {
+          name: 'Test docker-compose deployment',
+          run: 'tools/test-deployment-docker-compose.sh',
+        },
       ] + std.flattenArrays([
         [{
           name: platform.name + ': build and test',

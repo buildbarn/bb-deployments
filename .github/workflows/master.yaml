@@ -48,6 +48,10 @@
                "run": "bazel run @com_github_gordonklaus_ineffassign//:ineffassign $(pwd)"
             },
             {
+               "name": "Test docker-compose deployment",
+               "run": "tools/test-deployment-docker-compose.sh"
+            },
+            {
                "name": "linux_amd64: build and test",
                "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //..."
             },
