@@ -6,95 +6,95 @@
         // Take the existing blob size and batch size metrics and
         // turn them into a single aggregated metric per operation.
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_blob_size_bytes_count{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, name, operation)',
-          record: 'kubernetes_service_name_operation:buildbarn_blobstore_blob_access_operations_started:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_blob_size_bytes_count{job="kubernetes-service-endpoints"}[1m])) by (backend_type, kubernetes_service, operation, storage_type)',
+          record: 'backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_find_missing_batch_size_count{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, name)',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_find_missing_batch_size_count{job="kubernetes-service-endpoints"}[1m])) by (backend_type, kubernetes_service, storage_type)',
           labels: {
             operation: 'FindMissing',
           },
-          record: 'kubernetes_service_name_operation:buildbarn_blobstore_blob_access_operations_started:irate1m',
+          record: 'backend_type_kubernetes_service_operation_storage_type:buildbarn_blobstore_blob_access_operations_started:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_duration_seconds_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, name, le, operation)',
-          record: 'kubernetes_service_le_name_operation:buildbarn_blobstore_blob_access_operations_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_duration_seconds_bucket{job="kubernetes-service-endpoints"}[1m])) by (backend_type, kubernetes_service, le, operation, storage_type)',
+          record: 'backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_duration_seconds_count{job="kubernetes-service-endpoints"}[1m])) by (grpc_code, kubernetes_service, name)',
-          record: 'grpc_code_kubernetes_service_name:buildbarn_blobstore_blob_access_operations_duration_seconds_count:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_duration_seconds_count{job="kubernetes-service-endpoints"}[1m])) by (backend_type, grpc_code, kubernetes_service, storage_type)',
+          record: 'backend_type_grpc_code_kubernetes_service_storage_type:buildbarn_blobstore_blob_access_operations_duration_seconds_count:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, name, le)',
-          record: 'kubernetes_service_le_name:buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket{job="kubernetes-service-endpoints"}[1m])) by (backend_type, kubernetes_service, le, storage_type)',
+          record: 'backend_type_kubernetes_service_le_storage_type:buildbarn_blobstore_blob_access_operations_find_missing_batch_size_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, name, le, operation)',
-          record: 'kubernetes_service_le_name_operation:buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket{job="kubernetes-service-endpoints"}[1m])) by (backend_type, kubernetes_service, le, operation, storage_type)',
+          record: 'backend_type_kubernetes_service_le_operation_storage_type:buildbarn_blobstore_blob_access_operations_blob_size_bytes_bucket:irate1m',
         },
 
         // Statistics on retention of centralized storage.
         {
-          expr: 'min(time() - buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}) by (kubernetes_replica, kubernetes_shard, name)',
-          record: 'kubernetes_replica_kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds',
+          expr: 'min(time() - buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}) by (kubernetes_replica, kubernetes_shard, storage_type)',
+          record: 'kubernetes_replica_kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds',
         },
         {
-          expr: 'min(kubernetes_replica_kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_replica, name)',
-          record: 'kubernetes_replica_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+          expr: 'min(kubernetes_replica_kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_replica, storage_type)',
+          record: 'kubernetes_replica_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
         },
         {
-          expr: 'max(kubernetes_replica_kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, name)',
-          record: 'kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
+          expr: 'max(kubernetes_replica_kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
+          record: 'kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
         },
         {
-          expr: 'min(kubernetes_replica_kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, name)',
-          record: 'kuberentes_shard_name:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+          expr: 'min(kubernetes_replica_kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
+          record: 'kuberentes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_attempts_count{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (name, outcome)',
-          record: 'name_outcome:buildbarn_blobstore_hashing_key_location_map_get_attempts_count:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_attempts_count{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (storage_type, outcome)',
+          record: 'outcome_storage_type:buildbarn_blobstore_hashing_key_location_map_get_attempts_count:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_too_many_attempts_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (name)',
-          record: 'name:buildbarn_blobstore_hashing_key_location_map_get_too_many_attempts:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_too_many_attempts_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (storage_type)',
+          record: 'storage_type:buildbarn_blobstore_hashing_key_location_map_get_too_many_attempts:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_attempts_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (le, name)',
-          record: 'le_name:buildbarn_blobstore_hashing_key_location_map_get_attempts_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_attempts_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (le, storage_type)',
+          record: 'le_storage_type:buildbarn_blobstore_hashing_key_location_map_get_attempts_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_ignored_invalid_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (name)',
-          record: 'name:buildbarn_blobstore_hashing_key_location_map_put_ignored_invalid:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_ignored_invalid_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (storage_type)',
+          record: 'storage_type:buildbarn_blobstore_hashing_key_location_map_put_ignored_invalid:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_iterations_count{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (name, outcome)',
-          record: 'name_outcome:buildbarn_blobstore_hashing_key_location_map_put_iterations_count:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_iterations_count{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (outcome, storage_type)',
+          record: 'outcome_storage_type:buildbarn_blobstore_hashing_key_location_map_put_iterations_count:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_too_many_iterations_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (name)',
-          record: 'name:buildbarn_blobstore_hashing_key_location_map_put_too_many_iterations:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_too_many_iterations_total{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (storage_type)',
+          record: 'storage_type:buildbarn_blobstore_hashing_key_location_map_put_too_many_iterations:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_iterations_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (le, name)',
-          record: 'le_name:buildbarn_blobstore_hashing_key_location_map_put_iterations_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_put_iterations_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (le, storage_type)',
+          record: 'le_storage_type:buildbarn_blobstore_hashing_key_location_map_put_iterations_bucket:irate1m',
         },
 
         // Rate at which tasks are processed by the scheduler.
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_queued:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_scheduled_total{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, platform, size_class)',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_queued:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_executing:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, platform, size_class)',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_executing:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (grpc_code, instance_name, platform, result)',
-          record: 'grpc_code_instance_name_platform_result:buildbarn_builder_in_memory_build_queue_tasks_completed:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (grpc_code, instance_name_prefix, platform, result, size_class)',
+          record: 'grpc_code_instance_name_prefix_platform_result_size_class:buildbarn_builder_in_memory_build_queue_tasks_completed:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, platform)',
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_removed:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, platform, size_class)',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_removed:irate1m',
         },
 
         // Subtract counters of consecutive scheduler stages to derive
@@ -102,47 +102,47 @@
         {
           expr: |||
 
-            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_total{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_scheduled_total{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
             -
-            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_queued:sum',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_queued:sum',
         },
         {
           expr: |||
 
-            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
             -
-            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_executing:sum',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_executing:sum',
         },
         {
           expr: |||
-            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
             -
-            sum(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}) by (instance_name, platform)
+            sum(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_count{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}) by (instance_name_prefix, platform, size_class)
           |||,
-          record: 'instance_name_platform:buildbarn_builder_in_memory_build_queue_tasks_completed:sum',
+          record: 'instance_name_prefix_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_completed:sum',
         },
 
         // Duration of how long tasks remain in scheduler stages.
 
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, le, platform, size_class)',
+          record: 'instance_name_prefix_le_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_queued_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, le, platform, size_class)',
+          record: 'instance_name_prefix_le_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_executing_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, le, platform, size_class)',
+          record: 'instance_name_prefix_le_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_completed_duration_seconds_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket{job="kubernetes-service-endpoints",kubernetes_service="scheduler"}[1m])) by (instance_name, le, platform)',
-          record: 'instance_name_le_platform:buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket:irate1m',
+          expr: 'sum(irate(buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket{job="kubernetes-service-endpoints",kubernetes_service="bb-scheduler"}[1m])) by (instance_name_prefix, le, platform, size_class)',
+          record: 'instance_name_prefix_le_platform_size_class:buildbarn_builder_in_memory_build_queue_tasks_executing_retries_bucket:irate1m',
         },
 
         // Recording rules used by the "BuildExecutor" dashboard.
@@ -153,6 +153,10 @@
         {
           expr: 'sum(irate(buildbarn_builder_build_executor_duration_seconds_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le, stage)',
           record: 'kubernetes_service_le_stage:buildbarn_builder_build_executor_duration_seconds_bucket:irate1m',
+        },
+        {
+          expr: 'sum(irate(buildbarn_builder_build_executor_virtual_execution_duration_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le)',
+          record: 'kubernetes_service_le:buildbarn_builder_build_executor_virtual_execution_duration_bucket:irate1m',
         },
         {
           expr: 'sum(irate(buildbarn_builder_build_executor_posix_user_time_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le)',

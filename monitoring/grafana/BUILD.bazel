@@ -19,12 +19,12 @@ jsonnet_library(
         deps = [":simpledash"],
     )
     for dashboard in [
+        "bb-scheduler",
         "blobaccess",
         "buildexecutor",
         "centralized-storage",
         "eviction-sets",
         "fuse",
-        "scheduler",
     ]
 ]
 

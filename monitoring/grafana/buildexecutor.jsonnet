@@ -41,6 +41,17 @@ simpledash.dashboard(
           ],
         )
         for stage in ['FetchingInputs', 'Running', 'UploadingOutputs']
+      ] + [
+        simpledash.heatmap(
+          title='Virtual execution duration',
+          width=1,
+          unit=simpledash.unitDurationSeconds,
+          targets=[
+            simpledash.heatmapTarget(
+              expr='sum(kubernetes_service_le:buildbarn_builder_build_executor_virtual_execution_duration_bucket:irate1m{kubernetes_service=~"$kubernetes_service"}) by (le)',
+            ),
+          ],
+        ),
       ]
     ),
     simpledash.row(
