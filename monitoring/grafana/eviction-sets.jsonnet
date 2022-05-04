@@ -43,6 +43,7 @@ simpledash.dashboard(
       ]
     )
     for set in [
+      'AuthorizationHeaderParser',
       'CachingDirectoryFetcher',
       'DataIntegrityValidationCache',
       'ExistenceCachingBlobAccess',
