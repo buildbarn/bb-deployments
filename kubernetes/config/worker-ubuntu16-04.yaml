@@ -9,10 +9,9 @@ data:
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       scheduler: { address: 'scheduler:8983' },
       maximumMemoryCachedDirectories: 1000,
-      global: std.mergePatch(
-        common.global,
-        { setUmask: { umask: 0 } },
-      ),
+      global: common.global + {
+        setUmask: { umask: 0 },
+      },
       buildDirectories: [{
         native: {
           buildDirectoryPath: '/worker/build',
