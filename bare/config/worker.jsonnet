@@ -9,15 +9,15 @@ local common = import 'common.libsonnet';
   global: common.globalWithDiagnosticsHttpServer(':9986'),
   buildDirectories: [{
     native: {
-      buildDirectoryPath: std.extVar('PWD') + '/build',
-      cacheDirectoryPath: 'cache',
+      buildDirectoryPath: std.extVar('PWD') + '/worker/build',
+      cacheDirectoryPath: 'worker/cache',
       maximumCacheFileCount: 10000,
       maximumCacheSizeBytes: 1024 * 1024 * 1024,
       cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
     },
     runners: [{
       # https://github.com/grpc/grpc/blob/master/doc/naming.md
-      endpoint: { address: 'unix:runner' },
+      endpoint: { address: 'unix:worker/runner' },
       concurrency: 8,
       platform: {},
       workerId: {
