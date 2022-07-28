@@ -108,6 +108,10 @@
           run: 'bazel run @com_github_gordonklaus_ineffassign//:ineffassign $(pwd)',
         },
         {
+          name: 'Test bare deployment',
+          run: 'tools/test-deployment-bare.sh',
+        },
+        {
           name: 'Test docker-compose deployment',
           run: 'tools/test-deployment-docker-compose.sh',
         },
