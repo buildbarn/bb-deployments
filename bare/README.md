@@ -10,9 +10,11 @@ simplified configuration:
   <img src="bb-overview-simplified.png" alt="Overview of the simplified Buildbarn setup"/>
 </p>
 
-Buildbarn can be launched by running `bazel run //bare:bare`, which will fetch
+Buildbarn can be launched by running
+`bazel run -- //bare:bare [absolute-working-directory]`, which will fetch
 and build the different Buildbarn binaries, start them, and load the
-configuration found in the `config` directory.
+configuration found in the `config` directory. If no working directory is
+specified, the default location will be inside Bazel's runfiles tree.
 
 This deployment is known to work on FreeBSD, Linux and macOS.
 

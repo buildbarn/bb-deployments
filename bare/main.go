@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
@@ -19,8 +21,8 @@ type buildbarnProcess struct {
 	binary string
 }
 
-func bbStart(bbProcess *buildbarnProcess) *exec.Cmd {
-	path, found := bazel.FindBinary(path.Join("cmd", bbProcess.binary), bbProcess.binary)
+func bbStart(bbProcess *buildbarnProcess, workingDir string) *exec.Cmd {
+	binaryPath, found := bazel.FindBinary(path.Join("cmd", bbProcess.binary), bbProcess.binary)
 	if !found {
 		log.Printf("Couldn't find %s", bbProcess.binary)
 		return nil
@@ -30,9 +32,11 @@ func bbStart(bbProcess *buildbarnProcess) *exec.Cmd {
 		log.Print(err)
 		return nil
 	}
-	cmd := exec.Command(path, configPath)
+	// Both binaryPath and configPath are absolute, so the working directory can change.
+	cmd := exec.Command(binaryPath, configPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	cmd.Dir = workingDir
 	if err := cmd.Start(); err != nil {
 		log.Printf("Failed starting %s:\n%s", bbProcess.binary, err)
 		return nil
@@ -62,14 +66,36 @@ func bbWait(sigtermSignal, killSignal <-chan struct{}, bbProcess *buildbarnProce
 	<-finished
 }
 
+func mustMkdir(name string, perm os.FileMode) {
+	if err := os.Mkdir(name, perm); err != nil && !errors.Is(err, fs.ErrExist) {
+		log.Fatal(err)
+	}
+}
+
 func main() {
-	os.Mkdir("storage-ac", 0o755)
-	os.Mkdir("storage-ac/persistent_state", 0o755)
-	os.Mkdir("storage-cas", 0o755)
-	os.Mkdir("storage-cas/persistent_state", 0o755)
-	os.Mkdir("worker", 0o755)
-	os.Mkdir("worker/build", 0o755)
-	os.Mkdir("worker/cache", 0o755)
+	var workingDir string
+	if len(os.Args) > 2 {
+		log.Fatal("Usage: bare [absolute-working-directory]")
+	} else if len(os.Args) == 2 {
+		workingDir = os.Args[1]
+		// Avoid accidental subfolders within Bazel's runfiles tree.
+		if !path.IsAbs(workingDir) {
+			log.Fatalf("%s must be absolute", workingDir)
+		}
+		if _, err := os.Stat(workingDir); errors.Is(err, fs.ErrNotExist) {
+			log.Fatalf("%s does not exist", workingDir)
+		}
+	} else {
+		workingDir = ""
+	}
+
+	mustMkdir(path.Join(workingDir, "storage-ac"), 0o755)
+	mustMkdir(path.Join(workingDir, "storage-ac/persistent_state"), 0o755)
+	mustMkdir(path.Join(workingDir, "storage-cas"), 0o755)
+	mustMkdir(path.Join(workingDir, "storage-cas/persistent_state"), 0o755)
+	mustMkdir(path.Join(workingDir, "worker"), 0o755)
+	mustMkdir(path.Join(workingDir, "worker/build"), 0o755)
+	mustMkdir(path.Join(workingDir, "worker/cache"), 0o755)
 
 	log.Println("Don't worry if you see some \"Failed to synchronize with scheduler\" warnings on startup")
 	log.Println("\t- they should stop once bb_scheduler is ready")
@@ -89,7 +115,7 @@ func main() {
 
 	var commands []*exec.Cmd
 	for _, bb := range bbs {
-		command := bbStart(&bb)
+		command := bbStart(&bb, workingDir)
 		if command == nil {
 			cancelWithSigterm()
 			break
