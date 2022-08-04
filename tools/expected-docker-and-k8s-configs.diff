@@ -1,0 +1,82 @@
+diff --git a/- b/docker-compose/config/common.libsonnet
+index 0000000..1bab035 100644
+--- a/-
++++ b/docker-compose/config/common.libsonnet
+@@ -5,11 +5,11 @@
+         hashInitialization: 11946695773637837490,
+         shards: [
+           {
+-            backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
++            backend: { grpc: { address: 'storage-0:8981' } },
+             weight: 1,
+           },
+           {
+-            backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
++            backend: { grpc: { address: 'storage-1:8981' } },
+             weight: 1,
+           },
+         ],
+@@ -21,11 +21,11 @@
+           hashInitialization: 14897363947481274433,
+           shards: [
+             {
+-              backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
++              backend: { grpc: { address: 'storage-0:8981' } },
+               weight: 1,
+             },
+             {
+-              backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
++              backend: { grpc: { address: 'storage-1:8981' } },
+               weight: 1,
+             },
+           ],
+@@ -33,7 +33,7 @@
+       },
+     },
+   },
+-  browserUrl: 'http://bb-browser.example.com:80',
++  browserUrl: 'http://localhost:7984',
+   httpListenAddress: ':80',
+   maximumMessageSizeBytes: 16 * 1024 * 1024,
+   global: {
+diff --git a/- b/docker-compose/config/runner-ubuntu22-04.jsonnet
+index 0000000..7f08b6d 100644
+--- a/-
++++ b/docker-compose/config/runner-ubuntu22-04.jsonnet
+@@ -2,7 +2,7 @@ local common = import 'common.libsonnet';
+ 
+ {
+   buildDirectoryPath: '/worker/build',
+-  # global: common.global,
++  global: common.global,
+   grpcServers: [{
+     listenPaths: ['/worker/runner'],
+     authenticationPolicy: { allow: {} },
+diff --git a/- b/docker-compose/config/worker-ubuntu22-04.jsonnet
+index 0000000..64e5805 100644
+--- a/-
++++ b/docker-compose/config/worker-ubuntu22-04.jsonnet
+@@ -6,9 +6,7 @@ local common = import 'common.libsonnet';
+   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+   scheduler: { address: 'scheduler:8983' },
+   maximumMemoryCachedDirectories: 1000,
+-  global: common.global + {
+-    setUmask: { umask: 0 },
+-  },
++  global: common.global,
+   buildDirectories: [{
+     native: {
+       buildDirectoryPath: '/worker/build',
+@@ -27,8 +25,10 @@ local common = import 'common.libsonnet';
+         ],
+       },
+       workerId: {
+-        'pod': std.extVar("POD_NAME"),
+-        'node': std.extVar("NODE_NAME")
++        datacenter: 'paris',
++        rack: '4',
++        slot: '15',
++        hostname: 'ubuntu-worker.example.com',
+       },
+     }],
+   }],
