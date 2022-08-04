@@ -20,7 +20,7 @@ rm -rf storage-*
 ./run.sh -d
 bazel_command_log="$(bazel info output_base)/command.log"
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
 # INFO: 39 processes: 9 internal, 30 remote.
 cat "$bazel_command_log" | grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' | grep -v 'remote cache hit'
@@ -32,7 +32,7 @@ docker-compose down
 docker-compose up -d --force-recreate
 
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote cache hits but no remote executions.
 # INFO: 39 processes: 30 remote cache hit, 9 internal.
 cat "$bazel_command_log" | grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote cache hit[.,]' | grep -v 'remote[,.]'
