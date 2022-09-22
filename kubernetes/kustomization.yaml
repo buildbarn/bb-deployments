@@ -8,4 +8,4 @@ resources:
   - frontend.yaml
   - scheduler.yaml
   - storage.yaml
-  - worker-ubuntu16-04.yaml
+  - worker-ubuntu22-04.yaml
