@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: buildbarn/bb-storage:20220718T171335Z-35abb67
+    image: buildbarn/bb-storage:20220912T104841Z-b7137ec
     command:
     - /config/frontend.jsonnet
     expose:
@@ -12,7 +12,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: buildbarn/bb-storage:20220718T171335Z-35abb67
+    image: buildbarn/bb-storage:20220912T104841Z-b7137ec
     command:
     - /config/storage.jsonnet
     expose:
@@ -24,7 +24,7 @@ services:
     - ./storage-cas-0:/storage-cas
 
   storage-1:
-    image: buildbarn/bb-storage:20220718T171335Z-35abb67
+    image: buildbarn/bb-storage:20220912T104841Z-b7137ec
     command:
     - /config/storage.jsonnet
     expose:
@@ -36,7 +36,7 @@ services:
     - ./storage-cas-1:/storage-cas
 
   scheduler:
-    image: buildbarn/bb-scheduler:20220711T053610Z-2f8fb05
+    image: buildbarn/bb-scheduler:20220912T200427Z-e664853
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -49,7 +49,7 @@ services:
     - ./config:/config
 
   browser:
-    image: buildbarn/bb-browser:20220702T043727Z-002b284
+    image: buildbarn/bb-browser:20220908T160318Z-f32489a
     command:
     - /config/browser.jsonnet
     expose:
@@ -60,7 +60,7 @@ services:
     - ./config:/config
 
   worker-ubuntu22-04:
-    image: buildbarn/bb-worker:20220711T053610Z-2f8fb05
+    image: buildbarn/bb-worker:20220912T200427Z-e664853
     command:
     - /config/worker-ubuntu22-04.jsonnet
     ports:
@@ -84,6 +84,6 @@ services:
     - runner-installer
 
   runner-installer:
-    image: buildbarn/bb-runner-installer:20220711T053610Z-2f8fb05
+    image: buildbarn/bb-runner-installer:20220912T200427Z-e664853
     volumes:
     - ./bb:/bb
