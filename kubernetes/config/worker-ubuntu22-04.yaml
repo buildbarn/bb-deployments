@@ -8,7 +8,6 @@ data:
       browserUrl: common.browserUrl,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       scheduler: { address: 'scheduler:8983' },
-      maximumMemoryCachedDirectories: 1000,
       global: common.global + {
         setUmask: { umask: 0 },
       },
@@ -36,6 +35,11 @@ data:
         }],
       }],
       outputUploadConcurrency: 11,
+      directoryCache: {
+        maximumCount: 1000,
+        maximumSizeBytes: 1000 * 1024,
+        cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+      },
     }
 kind: ConfigMap
 metadata:

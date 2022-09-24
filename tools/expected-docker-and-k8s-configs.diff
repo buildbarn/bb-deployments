@@ -53,13 +53,13 @@ index 0000000..7f08b6d 100644
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
 diff --git a/- b/docker-compose/config/worker-ubuntu22-04.jsonnet
-index 0000000..64e5805 100644
+index 0000000..a9d763d 100644
 --- a/-
 +++ b/docker-compose/config/worker-ubuntu22-04.jsonnet
-@@ -6,9 +6,7 @@ local common = import 'common.libsonnet';
+@@ -5,9 +5,7 @@ local common = import 'common.libsonnet';
+   browserUrl: common.browserUrl,
    maximumMessageSizeBytes: common.maximumMessageSizeBytes,
    scheduler: { address: 'scheduler:8983' },
-   maximumMemoryCachedDirectories: 1000,
 -  global: common.global + {
 -    setUmask: { umask: 0 },
 -  },
@@ -67,7 +67,7 @@ index 0000000..64e5805 100644
    buildDirectories: [{
      native: {
        buildDirectoryPath: '/worker/build',
-@@ -27,8 +25,10 @@ local common = import 'common.libsonnet';
+@@ -26,8 +24,10 @@ local common = import 'common.libsonnet';
          ],
        },
        workerId: {

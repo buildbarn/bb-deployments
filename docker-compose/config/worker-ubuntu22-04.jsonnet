@@ -5,7 +5,6 @@ local common = import 'common.libsonnet';
   browserUrl: common.browserUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },
-  maximumMemoryCachedDirectories: 1000,
   global: common.global,
   buildDirectories: [{
     native: {
@@ -33,4 +32,9 @@ local common = import 'common.libsonnet';
     }],
   }],
   outputUploadConcurrency: 11,
+  directoryCache: {
+    maximumCount: 1000,
+    maximumSizeBytes: 1000 * 1024,
+    cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+  },
 }
