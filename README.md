@@ -87,7 +87,7 @@ You might experience problems loading `abseil-hellos/libhello.so`, in which case
 Next, we will try out the remote caching capability. If you clean your local build cache and then rerun a build:
 ```
 bazel clean
-bazel build --config=remote-ubuntu22-04 @abseil-hello//:hello_main
+bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main
 ```
 
 You'll see an output containing information that we hit the remote cache instead of executing on a worker.
