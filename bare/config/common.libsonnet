@@ -15,8 +15,10 @@
       },
     },
     actionCache: {
-      grpc: {
-        address: 'localhost:8981',
+      completenessChecking: {
+        grpc: {
+          address: 'localhost:8981',
+        },
       },
     },
   },
