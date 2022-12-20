@@ -16,9 +16,12 @@
     },
     actionCache: {
       completenessChecking: {
-        grpc: {
-          address: 'localhost:8981',
+        backend: {
+          grpc: {
+            address: 'localhost:8981',
+          },
         },
+        maximumTotalTreeSizeBytes: 64 * 1024 * 1024,
       },
     },
   },

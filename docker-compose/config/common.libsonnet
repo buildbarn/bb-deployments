@@ -17,19 +17,22 @@
     },
     actionCache: {
       completenessChecking: {
-        sharding: {
-          hashInitialization: 14897363947481274433,
-          shards: [
-            {
-              backend: { grpc: { address: 'storage-0:8981' } },
-              weight: 1,
-            },
-            {
-              backend: { grpc: { address: 'storage-1:8981' } },
-              weight: 1,
-            },
-          ],
+        backend: {
+          sharding: {
+            hashInitialization: 14897363947481274433,
+            shards: [
+              {
+                backend: { grpc: { address: 'storage-0:8981' } },
+                weight: 1,
+              },
+              {
+                backend: { grpc: { address: 'storage-1:8981' } },
+                weight: 1,
+              },
+            ],
+          },
         },
+        maximumTotalTreeSizeBytes: 64 * 1024 * 1024,
       },
     },
   },
