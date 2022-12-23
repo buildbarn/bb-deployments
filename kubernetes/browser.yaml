@@ -14,7 +14,7 @@ spec:
         app: browser
     spec:
       containers:
-      - image: buildbarn/bb-browser:20220908T160318Z-f32489a
+      - image: buildbarn/bb-browser:20221223T140241Z-6eaa092
         args:
         - /config/browser.jsonnet
         name: browser
