@@ -19,7 +19,7 @@ build:remote-exec --remote_executor=grpc://localhost:8980
 # The Buildbarn worker can configure instance_name_prefix to create separate
 # execution bins within the cluster. Optional, but useful when trying new
 # worker configurations.
-build:remote-exec --remote_instance_name=remote-execution
+build:remote-exec --remote_instance_name=fuse
 # Make sure to load Buildbarn with more requests than the number of CPUs on
 # your host machine.
 build:remote-exec --jobs=64
