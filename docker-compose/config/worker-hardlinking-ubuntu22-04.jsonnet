@@ -1,5 +1,8 @@
 local common = import 'common.libsonnet';
 
+// DO NOT USE the hardlinking configuration below unless really needed.
+// This example only exists for reference in situations
+// where the more efficient FUSE worker is not supported.
 {
   blobstore: common.blobstore,
   browserUrl: common.browserUrl,
@@ -17,6 +20,7 @@ local common = import 'common.libsonnet';
     runners: [{
       endpoint: { address: 'unix:///worker/runner' },
       concurrency: 8,
+      instanceNamePrefix: 'hardlinking',
       platform: {
         properties: [
           { name: 'OSFamily', value: 'Linux' },
@@ -24,7 +28,7 @@ local common = import 'common.libsonnet';
         ],
       },
       workerId: {
-        datacenter: 'paris',
+        datacenter: 'linkoping',
         rack: '4',
         slot: '15',
         hostname: 'ubuntu-worker.example.com',
