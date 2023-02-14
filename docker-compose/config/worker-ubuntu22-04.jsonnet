@@ -7,39 +7,39 @@ local common = import 'common.libsonnet';
       readCaching: {
         slow: common.blobstore.contentAddressableStorage,
         fast: {
-            'local': {
-                keyLocationMapOnBlockDevice: {
-                file: {
-                    path: '/storage-worker-cas/key_location_map',
-                    sizeBytes: 100 * 1024 * 1024,
-                },
-                },
-                keyLocationMapMaximumGetAttempts: 8,
-                keyLocationMapMaximumPutAttempts: 32,
-                oldBlocks: 8,
-                currentBlocks: 24,
-                newBlocks: 1,
-                blocksOnBlockDevice: {
-                  source: {
-                      file: {
-                      path: '/storage-worker-cas/blocks',
-                      sizeBytes: 8 * 1024 * 1024 * 1024,
-                      },
-                  },
-                  spareBlocks: 3,
-                  dataIntegrityValidationCache: {
-                      cacheSize: 50000,
-                      cacheDuration: '14400s',
-                      cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
-                  },
-                },
-                persistent: {
-                stateDirectoryPath: '/storage-worker-cas/persistent_state',
-                minimumEpochInterval: '300s',
-                },
+          'local': {
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: '/storage-worker-cas/key_location_map',
+                sizeBytes: 100 * 1024 * 1024,
+              },
             },
+            keyLocationMapMaximumGetAttempts: 8,
+            keyLocationMapMaximumPutAttempts: 32,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 1,
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                path: '/storage-worker-cas/blocks',
+                sizeBytes: 8 * 1024 * 1024 * 1024,
+                },
+              },
+              spareBlocks: 3,
+              dataIntegrityValidationCache: {
+                cacheSize: 50000,
+                cacheDuration: '14400s',
+                cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+              },
+            },
+            persistent: {
+              stateDirectoryPath: '/storage-worker-cas/persistent_state',
+              minimumEpochInterval: '300s',
+            },
+          },
         },
-        replicator: { 'local' : {} },
+        replicator: { deduplicating: { 'local': {} } },
       },
     },
   },
@@ -48,25 +48,16 @@ local common = import 'common.libsonnet';
   scheduler: { address: 'scheduler:8983' },
   global: common.global,
   buildDirectories: [{
-    // native: {
-    //   buildDirectoryPath: '/worker/build',
-    //   cacheDirectoryPath: '/worker/cache',
-    //   maximumCacheFileCount: 600000,
-    //   maximumCacheSizeBytes: 1024 * 1024 * 1024 * 8,
-    //   cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
-    // },
     virtual: {
-    // Perform builds in a virtual mount (e.g., FUSE) 
-    // Use if a lot of time spent on builds is on fetching inputs
-      maximum_execution_timeout_compensation: "3600s",
-      shuffle_directory_listings: true,
+      maximumExecutionTimeoutCompensation: "3600s",
+      shuffleDirectoryListings: true,
       mount: {
-        mount_path: '/worker/build',
+        mountPath: '/worker/build',
         fuse: {
-            directory_entry_validity: "300s",
-            inode_attribute_validity: "300s",
-            allow_other: true,
-            direct_mount: true,
+          directoryEntryValidity: "300s",
+          inodeAttributeValidity: "300s",
+          allowOther: true,
+          directMount: true,
         },
       },
     },
@@ -89,8 +80,8 @@ local common = import 'common.libsonnet';
       },
     }],
   }],
-  file_pool: {
-    in_memory: {},
+  filePool: {
+    directoryPath: '/worker/filepool_cache',
   },
   outputUploadConcurrency: 11,
   directoryCache: {
