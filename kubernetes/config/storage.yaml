@@ -10,6 +10,43 @@ data:
       }],
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       global: common.global,
+      fileSystemAccessCache: {
+        backend: {
+          'local': {
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: '/storage-fsac/key_location_map',
+                sizeBytes: 1024 * 1024,
+              },
+            },
+            keyLocationMapMaximumGetAttempts: 8,
+            keyLocationMapMaximumPutAttempts: 32,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 1,
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                  path: '/storage-fsac/blocks',
+                  sizeBytes: 20 * 1024 * 1024,
+                },
+              },
+              spareBlocks: 3,
+              dataIntegrityValidationCache: {
+                cacheSize: 10000,
+                cacheDuration: '14400s',
+                cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+              },
+            },
+            persistent: {
+              stateDirectoryPath: '/storage-fsac/persistent_state',
+              minimumEpochInterval: '300s',
+            },
+          },
+        },
+        getAuthorizer: { allow: {} },
+        putAuthorizer: { allow: {} },
+      },
       contentAddressableStorage: {
         backend: {
           'local': {

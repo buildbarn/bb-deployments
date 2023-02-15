@@ -30,18 +30,22 @@ spec:
           name: cas
         - mountPath: /storage-ac
           name: ac
+        - mountPath: /storage-fsac
+          name: fsac
       initContainers:
       - name: volume-init
         image: busybox:1.31.1-uclibc
         command:
         - sh
         - -c
-        - mkdir -m 0700 -p /storage-cas/persistent_state /storage-ac/persistent_state
+        - mkdir -m 0700 -p /storage-cas/persistent_state /storage-ac/persistent_state /storage-fsac/persistent_state
         volumeMounts:
         - mountPath: /storage-cas
           name: cas
         - mountPath: /storage-ac
           name: ac
+        - mountPath: /storage-fsac
+          name: fsac
       volumes:
       - name: configs
         projected:
@@ -73,6 +77,14 @@ spec:
       resources:
         requests:
           storage: 1Gi
+  - metadata:
+      name: fsac
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 12Gi
 ---
 apiVersion: v1
 kind: Service
