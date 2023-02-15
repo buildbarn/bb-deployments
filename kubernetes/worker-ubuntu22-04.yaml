@@ -97,3 +97,5 @@ spec:
                 path: common.libsonnet
       - emptyDir: {}
         name: worker
+      - emptyDir: {}
+        name: storage-worker-cas
