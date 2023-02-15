@@ -12,10 +12,10 @@ data:
             fast: {
               'local': {
                 keyLocationMapOnBlockDevice: {
-                file: {
-                  path: '/storage-worker-cas/key_location_map',
-                  sizeBytes: 100 * 1024 * 1024,
-                },
+                  file: {
+                    path: '/storage-worker-cas/key_location_map',
+                    sizeBytes: 100 * 1024 * 1024,
+                  },
                 },
                 keyLocationMapMaximumGetAttempts: 8,
                 keyLocationMapMaximumPutAttempts: 32,

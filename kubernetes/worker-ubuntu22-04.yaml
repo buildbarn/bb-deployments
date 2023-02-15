@@ -68,7 +68,7 @@ spec:
         command:
         - sh
         - -c
-        - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && mkdir -pm 0777 /storage-worker-cas && chmod 0777 /worker
+        - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && mkdir -pm 0777 /storage-worker-cas/persistent_state && chmod 0777 /worker
         volumeMounts:
         - mountPath: /worker
           name: worker
@@ -97,5 +97,6 @@ spec:
                 path: common.libsonnet
       - emptyDir: {}
         name: worker
-      - emptyDir: {}
-        name: storage-worker-cas
+      - name: storage-worker-cas
+        emptyDir: {}
+        
