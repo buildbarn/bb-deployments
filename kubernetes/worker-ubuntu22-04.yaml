@@ -7,7 +7,7 @@ metadata:
     prometheus.io/port: "80"
     prometheus.io/scrape: "true"
 spec:
-  replicas: 8
+  replicas: 2
   selector:
     matchLabels:
       app: worker
@@ -28,12 +28,10 @@ spec:
           name: configs
           readOnly: true
         - mountPath: /worker
+          mountPropagation: Bidirectional
           name: worker
         - mountPath: /storage-worker-cas
           name: storage-worker-cas
-        - mountPath: /worker-fuse
-          mountPropagation: Bidirectional
-          name: fuse-worker
         securityContext:
           privileged: true
         env:
@@ -55,12 +53,10 @@ spec:
           name: configs
           readOnly: true
         - mountPath: /worker
+          mountPropagation: HostToContainer
           name: worker
         - mountPath: /storage-worker-cas
           name: storage-worker-cas
-        - mountPath: /worker-fuse
-          mountPropagation: HostToContainer
-          name: fuse-worker
         - mountPath: /bb
           name: bb-runner
           readOnly: true
@@ -78,12 +74,10 @@ spec:
         - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && mkdir -pm 0777 /storage-worker-cas/persistent_state && mkdir -pm 0777 /worker-fuse && chmod 0777 /worker
         volumeMounts:
         - mountPath: /worker
+          mountPropagation: Bidirectional
           name: worker
         - mountPath: /storage-worker-cas
           name: storage-worker-cas
-        - mountPath: /worker-fuse
-          mountPropagation: Bidirectional
-          name: fuse-worker
         securityContext:
           privileged: true
       volumes:
@@ -107,9 +101,9 @@ spec:
               items:
               - key: common.libsonnet
                 path: common.libsonnet
-      - emptyDir: {}
-        name: worker
+      - name: worker
+        hostPath:
+          path: /worker-fuse
+          type: Directory
       - name: storage-worker-cas
-        emptyDir: {}
-      - name: fuse-worker
         emptyDir: {}
