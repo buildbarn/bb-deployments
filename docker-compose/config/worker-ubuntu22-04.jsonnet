@@ -81,7 +81,9 @@ local common = import 'common.libsonnet';
     }],
   }],
   filePool: {
-    directoryPath: '/worker/filepool_cache',
+    blockDevice: {
+      devicePath: '/worker/filepool_cache',
+    },
   },
   outputUploadConcurrency: 11,
   directoryCache: {

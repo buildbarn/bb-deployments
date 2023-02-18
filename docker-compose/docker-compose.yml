@@ -68,7 +68,7 @@ services:
     volumes:
     - ./config:/config
     - type: bind
-      source: ./worker-ubuntu20-04
+      source: ./worker-ubuntu22-04
       target: /worker
       bind:
         propagation: shared
@@ -83,13 +83,13 @@ services:
     volumes:
     - ./config:/config
     - ./bb:/bb
-    depends_on:
-    - runner-installer
     - type: bind
-      source: ./worker-ubuntu20-04
+      source: ./worker-ubuntu22-04
       target: /worker
       bind:
         propagation: shared
+    depends_on:
+    - runner-installer
 
   runner-installer:
     image: buildbarn/bb-runner-installer:20230125T082650Z-47f8d16
