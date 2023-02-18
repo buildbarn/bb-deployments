@@ -82,7 +82,7 @@ local common = import 'common.libsonnet';
   }],
   filePool: {
     blockDevice: {
-      devicePath: '/worker/filepool_cache',
+      devicePath: '/worker/filepool',
     },
   },
   outputUploadConcurrency: 11,
