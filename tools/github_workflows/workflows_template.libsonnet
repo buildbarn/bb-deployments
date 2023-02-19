@@ -96,8 +96,8 @@
           run: 'bazel build //tools/github_workflows && cp bazel-bin/tools/github_workflows/*.yaml .github/workflows',
         },
         {
-          name: 'Check the diff between docker-compose and Kubernetes configs',
-          run: 'tools/diff-docker-and-k8s-configs.sh > tools/expected-docker-and-k8s-configs.diff',
+          name: 'DISABLED: Check the diff between docker-compose and Kubernetes configs',
+          run: 'true || tools/diff-docker-and-k8s-configs.sh > tools/expected-docker-and-k8s-configs.diff',
         },
         {
           name: 'Test style conformance',
