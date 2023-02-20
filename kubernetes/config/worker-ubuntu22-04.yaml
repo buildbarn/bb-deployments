@@ -84,7 +84,12 @@ data:
         }],
       }],
       filePool: {
-        inMemory: {}, // TODO @ryang convert to directoryPath
+        blockDevice: {
+          file: {
+            path: '/worker/filepool',
+            sizeBytes:8 * 8*1024*1024*1024, // concurrency * maximumFilePoolSizeBytes
+          },
+        },
       },
       outputUploadConcurrency: 11,
       directoryCache: {

@@ -74,7 +74,7 @@ spec:
         - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && mkdir -pm 0777 /storage-worker-cas/persistent_state && mkdir -pm 0777 /worker-fuse && chmod 0777 /worker
         volumeMounts:
         - mountPath: /worker
-          mountPropagation: Bidirectional
+          mountPropagation: HostToContainer
           name: worker
         - mountPath: /storage-worker-cas
           name: storage-worker-cas
