@@ -16,7 +16,7 @@ cleanup() {
 trap cleanup EXIT
 
 # --- Run remote execution ---
-rm -rf storage-*
+rm -rf volumes/storage-*
 ./run.sh -d
 bazel_command_log="$(bazel info output_base)/command.log"
 bazel clean
