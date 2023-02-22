@@ -25,7 +25,7 @@ spec:
           protocol: TCP
         - containerPort: 8983
           protocol: TCP
-        - containerPort: 80
+        - containerPort: 7982
           protocol: TCP
         volumeMounts:
         - mountPath: /config/
@@ -62,7 +62,7 @@ spec:
   - port: 8983
     protocol: TCP
     name: worker-grpc
-  - port: 80
+  - port: 7982
     protocol: TCP
     name: http
   selector:
