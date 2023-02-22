@@ -69,3 +69,21 @@ spec:
     app: scheduler
     instance: ubuntu22-04
   type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: scheduler
+  namespace: buildbarn
+spec:
+  rules:
+  - host: bb-scheduler.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: scheduler
+            port:
+              name: http
