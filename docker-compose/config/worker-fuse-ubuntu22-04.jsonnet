@@ -13,7 +13,7 @@ local common = import 'common.libsonnet';
             keyLocationMapOnBlockDevice: {
               file: {
                 path: '/worker/cas/key_location_map',
-                sizeBytes: 100 * 1024 * 1024,
+                sizeBytes: 400 * 1024 * 1024,
               },
             },
             keyLocationMapMaximumGetAttempts: 8,
@@ -25,7 +25,7 @@ local common = import 'common.libsonnet';
               source: {
                 file: {
                   path: '/worker/cas/blocks',
-                  sizeBytes: 8 * 1024 * 1024 * 1024,
+                  sizeBytes: 32 * 1024 * 1024 * 1024,
                 },
               },
               spareBlocks: 3,
