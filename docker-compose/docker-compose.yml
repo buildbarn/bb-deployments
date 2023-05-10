@@ -124,3 +124,15 @@ services:
     - ./volumes/worker-hardlinking-ubuntu22-04:/worker
     depends_on:
     - runner-installer
+
+  remote-asset:
+    # TODO(minor-fixes): Replace with actual container once pushed to ghcr
+    image: bazel/cmd/bb_remote_asset:bb_remote_asset_container
+    command:
+    - /config/remote-asset.jsonnet
+    expose:
+    - 9980
+    ports:
+    - 8984:8984
+    volumes:
+    - ./config:/config
