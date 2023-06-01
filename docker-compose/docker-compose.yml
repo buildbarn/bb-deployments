@@ -85,7 +85,7 @@ services:
     command:
     - sh
     - -c
-    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
+    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
     network_mode: none
     volumes:
     - ./config:/config
@@ -116,7 +116,7 @@ services:
     command:
     - sh
     - -c
-    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -g -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
+    - while ! test -f /bb/installed; do sleep 1; done; exec /bb/tini -v -- /bb/bb_runner /config/runner-ubuntu22-04.jsonnet
     network_mode: none
     volumes:
     - ./config:/config
