@@ -191,11 +191,12 @@ local setAggregationPeriod(panels, aggregationPeriods) = (
 
   // Dashboard template variable creation (i.e., a dropdown at the top
   // of the dashboard to filter results).
-  template(name, query, label, selectionStyle):: grafana.template.new(
+  template(name, query, label, selectionStyle, regex=''):: grafana.template.new(
     name=name,
     datasource='Prometheus',
     query=query,
     label=label,
+    regex=regex,
     refresh='time',
     multi=selectionStyle.multi,
     includeAll=selectionStyle.includeAll,
