@@ -313,7 +313,7 @@ def _impl(ctx):
                 ],
                 flag_groups = [
                     flag_group(
-                        flags = ["-gsplit-dwarf"],
+                        flags = ["-gsplit-dwarf", "-g"],
                         expand_if_available = "per_object_debug_info_file",
                     ),
                 ],
@@ -354,8 +354,8 @@ def _impl(ctx):
                     flag_group(
                         flags = [
                             "-fprofile-use=%{fdo_profile_path}",
-                            "-Xclang-only=-Wno-profile-instr-unprofiled",
-                            "-Xclang-only=-Wno-profile-instr-out-of-date",
+                            "-Wno-profile-instr-unprofiled",
+                            "-Wno-profile-instr-out-of-date",
                             "-fprofile-correction",
                         ],
                         expand_if_available = "fdo_profile_path",
@@ -808,8 +808,8 @@ def _impl(ctx):
                 flag_groups = [
                     flag_group(
                         flags = [
-                            "-Xclang-only=-mllvm",
-                            "-Xclang-only=-prefetch-hints-file=%{fdo_prefetch_hints_path}",
+                            "-mllvm",
+                            "-prefetch-hints-file=%{fdo_prefetch_hints_path}",
                         ],
                         expand_if_available = "fdo_prefetch_hints_path",
                     ),
@@ -950,7 +950,6 @@ def _impl(ctx):
         ],
     )
 
-    dynamic_library_linker_tool_path = tool_paths
     dynamic_library_linker_tool_feature = feature(
         name = "dynamic_library_linker_tool",
         flag_sets = [
@@ -1114,6 +1113,8 @@ def _impl(ctx):
             strip_debug_symbols_feature,
             coverage_feature,
             supports_pic_feature,
+            gcc_coverage_map_format_feature,
+            llvm_coverage_map_format_feature,
         ] + (
             [
                 supports_start_end_lib_feature,
@@ -1150,6 +1151,8 @@ def _impl(ctx):
             user_compile_flags_feature,
             sysroot_feature,
             unfiltered_compile_flags_feature,
+            gcc_coverage_map_format_feature,
+            llvm_coverage_map_format_feature,
         ]
 
     return cc_common.create_cc_toolchain_config_info(
