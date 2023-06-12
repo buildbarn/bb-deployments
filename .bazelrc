@@ -1,3 +1,14 @@
+# # Bazel7
+# TODO: With bzlmod we cannot access the WORKSPACE file anymore
+#     $  bazel build //:gazelle
+#     ERROR: /.../external/bazel_gazelle_go_repository_config/BUILD.bazel: no such
+#     target '@@bazel_gazelle_go_repository_config//:WORKSPACE': target 'WORKSPACE'
+#     not declared in package '' defined by
+#     /CAS/bazel-cache/f1a15cfb78ca8fde7615be5d21224669/external/bazel_gazelle_go_repository_config/BUILD.bazel;
+#     however, a source file of this name exists.  (Perhaps add
+#     'exports_files(["WORKSPACE"])' to /BUILD?)
+build --noenable_bzlmod
+
 # Required for @com_google_absl and remoteapis that use it.
 build --cxxopt=-std=c++17
 build --host_cxxopt=-std=c++17

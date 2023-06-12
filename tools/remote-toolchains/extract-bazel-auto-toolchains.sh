@@ -7,7 +7,7 @@
 # `.bazelversion` in the repository root.
 #
 # Example usage: ./extract-bazel-auto-toolchains.sh ubuntu-act-22-04 ghcr.io/catthehacker/ubuntu:act-22.04
-set -eEuo pipefail
+set -eu -o pipefail
 
 script_dir="$(dirname "${BASH_SOURCE[0]}")"
 

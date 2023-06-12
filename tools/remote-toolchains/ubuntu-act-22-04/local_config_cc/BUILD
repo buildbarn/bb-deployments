@@ -106,10 +106,11 @@ cc_toolchain_config(
         "-Wl,-z,relro,-z,now",
         "-B/usr/bin",
         "-pass-exit-codes",
+    ],
+    link_libs = [
         "-lstdc++",
         "-lm",
     ],
-    link_libs = [],
     opt_compile_flags = [
         "-g0",
         "-O2",
