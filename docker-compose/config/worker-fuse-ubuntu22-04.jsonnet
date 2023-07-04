@@ -69,7 +69,7 @@ local common = import 'common.libsonnet';
       instanceNamePrefix: 'fuse',
       platform: {
         properties: [
-          { name: 'OSFamily', value: 'Linux' },
+          { name: 'OSFamily', value: 'linux' },
           { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448' },
         ],
       },
