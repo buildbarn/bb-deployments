@@ -92,6 +92,47 @@ bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main
 
 You'll see an output containing information that we hit the remote cache instead of executing on a worker.
 
+## Other Build Clients
+
+### Buck2
+
+There is a Buildbarn example in the Buck2 repository: [here](https://github.com/facebook/buck2/tree/main/examples/remote_execution/buildbarn)
+Platform properties are defined in [platform/defs.bzl](https://github.com/facebook/buck2/blob/main/examples/remote_execution/buildbarn/platforms/defs.bzl)
+and the rpc endpoints are set in [.buckconfig](https://github.com/facebook/buck2/blob/main/examples/remote_execution/buildbarn/.buckconfig).
+
+### Pants
+
+Pants define the endpoint and the properties in the main configuration file `pants.toml`.
+
+```
+[GLOBAL]
+remote_cache_read = true
+remote_cache_write = true
+remote_store_address = "grpc://localhost:8980"
+remote_execution_address = "grpc://localhost:8980"
+remote_execution = true
+remote_instance_name = "fuse"
+remote_execution_extra_platform_properties = [
+  "OSFamily=linux",
+  "container-image=docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448",
+]
+```
+
+### Bazel without a remote toolchain
+
+You do not need to define a toolchain for remote execution, like this repository does.
+For simple projects where all actions can build with the same executors
+you can use set the platform properties as command line arguments.
+
+```
+bazel build \
+    --remote_executor=grpc://localhost:8980 \
+    --remote_instance_name=fuse \
+    --remote_default_exec_properties OSFamily=linux \
+    --remote_default_exec_properties container-image="docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448" \
+    @abseil-hello//:hello_main
+```
+
 # Join us on Slack!
 
 There is a [#buildbarn channel on buildteamworld.slack.com](https://bit.ly/2SG1amT)
