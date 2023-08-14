@@ -64,7 +64,7 @@ spec:
       - ReadWriteOnce
       resources:
         requests:
-          storage: 12Gi
+          storage: 33Gi
   - metadata:
       name: ac
     spec:
