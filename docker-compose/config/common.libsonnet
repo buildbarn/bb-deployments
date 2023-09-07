@@ -37,11 +37,17 @@
     },
   },
   browserUrl: 'http://localhost:7984',
-  httpListenAddress: ':80',
+  httpServers: [{
+    listenAddresses: [':80'],
+    authenticationPolicy: { allow: {} },
+  }],
   maximumMessageSizeBytes: 16 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {
-      listenAddress: ':9980',
+      httpServers: [{
+        listenAddresses: [':80'],
+        authenticationPolicy: { allow: {} },
+      }],
       enablePrometheus: true,
       enablePprof: true,
       enableActiveSpans: true,

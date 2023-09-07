@@ -1,5 +1,5 @@
 diff --git a/- b/docker-compose/config/common.libsonnet
-index 0000000..e660b99 100644
+index 0000000..9c78f66 100644
 --- a/-
 +++ b/docker-compose/config/common.libsonnet
 @@ -5,11 +5,11 @@
@@ -36,9 +36,18 @@ index 0000000..e660b99 100644
    },
 -  browserUrl: 'http://bb-browser.example.com:80',
 +  browserUrl: 'http://localhost:7984',
-   httpListenAddress: ':80',
-   maximumMessageSizeBytes: 16 * 1024 * 1024,
+   httpServers: [{
+     listenAddresses: [':80'],
+     authenticationPolicy: { allow: {} },
+@@ -45,7 +45,7 @@
    global: {
+     diagnosticsHttpServer: {
+       httpServers: [{
+-        listenAddresses: [':9980'],
++        listenAddresses: [':80'],
+         authenticationPolicy: { allow: {} },
+       }],
+       enablePrometheus: true,
 diff --git a/- b/docker-compose/config/runner-ubuntu22-04.jsonnet
 index 0000000..7f08b6d 100644
 --- a/-
@@ -47,7 +56,7 @@ index 0000000..7f08b6d 100644
  
  {
    buildDirectoryPath: '/worker/build',
--  # global: common.global,
+-  # TODO: global: common.global,
 +  global: common.global,
    grpcServers: [{
      listenPaths: ['/worker/runner'],

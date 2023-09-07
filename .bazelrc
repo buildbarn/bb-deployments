@@ -1,3 +1,7 @@
+# Required for @com_google_absl and remoteapis that use it.
+build --cxxopt=-std=c++17
+build --host_cxxopt=-std=c++17
+
 # Don't inherit the user environment as that trashes the cache.
 build --incompatible_strict_action_env
 # Use the new way of defining toolchains.

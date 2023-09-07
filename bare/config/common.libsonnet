@@ -1,7 +1,10 @@
 {
   globalWithDiagnosticsHttpServer(listenAddress): {
     diagnosticsHttpServer: {
-      listenAddress: listenAddress,
+      httpServers: [{
+        listenAddresses: [listenAddress],
+        authenticationPolicy: { allow: {} },
+      }],
       enablePrometheus: true,
       enablePprof: true,
       enableActiveSpans: true,
