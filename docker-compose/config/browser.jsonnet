@@ -3,7 +3,10 @@ local common = import 'common.libsonnet';
 {
   blobstore: common.blobstore,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-  listenAddress: ':7984',
+  httpServers: [{
+    listenAddresses: [':7984'],
+    authenticationPolicy: { allow: {} },
+  }],
   global: common.global,
   authorizer: { allow: {} },
 }
