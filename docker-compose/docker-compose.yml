@@ -1,3 +1,29 @@
+# Update images from the github archive for each bump of `bb-*`
+# Take the version from `go.mod`, with the date field
+# and a hash truncated to seven characters.
+# The date separates the day and the time segment with a "T"
+# and must end with "Z".
+#
+# Example:
+#
+#   'go.mod' and 'docker-compose.yml'
+#   github.com/buildbarn/bb-browser v0.0.0-20230906070406-881fd822f75e
+#   github.com/buildbarn/bb-browser         v0.0.0-20230906 070406 -881fd822f75e
+#     browser.image:  ghcr.io/buildbarn/bb-browser:20230906T070406Z-881fd82
+#             differences: t, z and truncated hash.        ^      ^        ^^^^^
+#
+# The following modules give these images respectively:
+#
+#   github.com/buildbarn/bb-remote-execution v0.0.0-20230905173453-70efb72857b0
+#     worker-fuse-ubuntu22-04.image
+#     worker-hardlinking-ubuntu22-04.image
+#     runner-installer.image
+#
+#   github.com/buildbarn/bb-storage v0.0.0-20230905110346-c04246b462b6
+#     frontend.image
+#     storage-{0,1}.image
+#
+# It is possible to create script that automatically updates the images.
 version: '3'
 services:
   frontend:
