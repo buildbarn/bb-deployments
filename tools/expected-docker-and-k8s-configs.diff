@@ -52,11 +52,18 @@ index 0000000..7f08b6d 100644
    grpcServers: [{
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
-diff --git a/- b/docker-compose/config/worker-ubuntu22-04.jsonnet
-index 0000000..a9d763d 100644
+diff --git a/- b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
+index 0000000..3d24b61 100644
 --- a/-
-+++ b/docker-compose/config/worker-ubuntu22-04.jsonnet
-@@ -5,9 +5,7 @@ local common = import 'common.libsonnet';
++++ b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
+@@ -1,13 +1,14 @@
+ local common = import 'common.libsonnet';
+ 
++// DO NOT USE the hardlinking configuration below unless really needed.
++// This example only exists for reference in situations
++// where the more efficient FUSE worker is not supported.
+ {
+   blobstore: common.blobstore,
    browserUrl: common.browserUrl,
    maximumMessageSizeBytes: common.maximumMessageSizeBytes,
    scheduler: { address: 'scheduler:8983' },
@@ -67,13 +74,21 @@ index 0000000..a9d763d 100644
    buildDirectories: [{
      native: {
        buildDirectoryPath: '/worker/build',
-@@ -26,8 +24,10 @@ local common = import 'common.libsonnet';
+@@ -19,6 +20,7 @@ local common = import 'common.libsonnet';
+     runners: [{
+       endpoint: { address: 'unix:///worker/runner' },
+       concurrency: 8,
++      instanceNamePrefix: 'hardlinking',
+       platform: {
+         properties: [
+           { name: 'OSFamily', value: 'linux' },
+@@ -26,8 +28,10 @@ local common = import 'common.libsonnet';
          ],
        },
        workerId: {
 -        'pod': std.extVar("POD_NAME"),
 -        'node': std.extVar("NODE_NAME")
-+        datacenter: 'paris',
++        datacenter: 'linkoping',
 +        rack: '4',
 +        slot: '15',
 +        hostname: 'ubuntu-worker.example.com',
