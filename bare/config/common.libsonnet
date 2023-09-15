@@ -29,5 +29,5 @@
     },
   },
   browserUrl: 'http://localhost:7984',
-  maximumMessageSizeBytes: 16 * 1024 * 1024,
+  maximumMessageSizeBytes: 2 * 1024 * 1024,
 }
