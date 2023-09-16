@@ -1,5 +1,5 @@
 diff --git a/- b/docker-compose/config/common.libsonnet
-index 0000000..9c78f66 100644
+index 0000000..804ee57 100644
 --- a/-
 +++ b/docker-compose/config/common.libsonnet
 @@ -5,11 +5,11 @@
