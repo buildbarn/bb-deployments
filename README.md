@@ -182,3 +182,45 @@ endorsement.
 Buildbarn does not encourage commercial forks and is willing to engage with
 organisations to merge changes upstream in order to be maintained by the
 community.
+
+# Maintenance instructions
+
+## Updating Buildbarn version
+
+First make sure the different Buildbarn components are in sync. Then perform:
+
+```bash
+# Update go.mod.
+go mod tidy
+
+# Regenerate go_dependencies.bzl.
+bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune
+# Format go_dependencies.bzl according to GitHub Actions.
+sed -i '/^$/d' go_dependencies.bzl
+bazelisk run @com_github_bazelbuild_buildtools//:buildifier
+
+# Update the Kubernetes and Docker compose deployments.
+./tools/update-container-image-versions.sh
+```
+
+You might have to update the `WORKSPACE` file as well,
+until `MODULE.bazel` is in place.
+
+## Formatting
+
+A number of linting and formatting steps are performed in the GitHub Actions flow.
+Some of the steps are:
+
+```bash
+# Gazelle
+bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune
+bazel run //:gazelle
+# Buildifier
+sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new
+mv go_dependencies.bzl.new go_dependencies.bzl
+bazel run @com_github_bazelbuild_buildtools//:buildifier
+# Gofmt
+bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.19 -w -extra $(pwd)
+# Golint
+bazel run @org_golang_x_lint//golint -- -set_exit_status $(pwd)/...
+```
