@@ -23,19 +23,37 @@ get_image_version() {
         | sed 's,.* v0.0.0-\([0-9]\{8\}\)\([0-9]\{6\}\)-\([0-9a-f]\{7\}\)[0-9a-f]\+,\1T\2Z-\3,'
 }
 
-update_image_version() {
-    new_version="$1"
-    image_name="$2"
-    sed -i "s,\(image: ghcr\.io/buildbarn/${image_name}:\)\S*,\1${new_version}," \
-        docker-compose/docker-compose.yml kubernetes/*.yaml
+get_full_git_commit_hash() {
+    repo="$1"
+    # Reuse the same sed expression as in get_image_version.
+    short_commit_hash=$(grep -E "github\.com/buildbarn/${repo}" go.mod \
+        | sed 's,.* v0.0.0-\([0-9]\{8\}\)\([0-9]\{6\}\)-\([0-9a-f]\+\),\3,')
+    # Let GitHub resolve the full commit hash.
+    curl "https://github.com/buildbarn/$repo/commit/$short_commit_hash" \
+        | grep '<meta property="og:url" content="' \
+        | sed 's,.*<meta property="og:url" content="/buildbarn/'"$repo"'/commit/\([0-9a-f]*\)" />.*,\1,'
 }
 
-bb_browser_version=$(get_image_version bb-browser)
-bb_remote_execution_version=$(get_image_version bb-remote-execution)
-bb_storage_version=$(get_image_version bb-storage)
+update_image_version() {
+    repo="$1"
+    image_name="$2"
+    image_version=$(get_image_version "$repo")
+    timestamp=$(echo "$image_version" | sed 's,\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)Z.*,\1-\2-\3 \4:\5:\6,')
+    commit_hash=$(get_full_git_commit_hash "$repo")
 
-update_image_version "$bb_browser_version" bb-browser
-update_image_version "$bb_remote_execution_version" bb-runner-installer
-update_image_version "$bb_remote_execution_version" bb-scheduler
-update_image_version "$bb_remote_execution_version" bb-worker
-update_image_version "$bb_storage_version" bb-storage
+    # Replace image version.
+    sed -i "s,\(ghcr\.io/buildbarn/${image_name}:\)[0-9tz]*-[0-9a-f]*,\1${image_version},g" \
+        README.md docker-compose/docker-compose.yml kubernetes/*.yaml
+
+    # Replace timestamp and CI Build link.
+    sed -i \
+        -e "s,^\(| ${image_name} .*| \)\([^|]* UTC |\),\1${timestamp} UTC |," \
+        -e "s,| [^|]*/buildbarn/${repo}/commit/[0-9a-f]*/checks,| [\`${commit_hash}\`](https://github.com/buildbarn/${repo}/commit/${commit_hash}/checks," \
+        README.md
+}
+
+update_image_version bb-browser bb-browser
+update_image_version bb-remote-execution bb-runner-installer
+update_image_version bb-remote-execution bb-scheduler
+update_image_version bb-remote-execution bb-worker
+update_image_version bb-storage bb-storage
