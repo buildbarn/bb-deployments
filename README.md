@@ -26,6 +26,20 @@ are established.
   <img src="bb-overview.png" alt="Overview of the Buildbarn setup"/>
 </p>
 
+## Current versions
+
+This repository currently demonstrates the following versions.
+Binaries can be found under the CI Build link,
+at the top right in the GitHub Actions page.
+
+| Application         | Repository                                                              | Commit Timestamp        | Container Image                                                                                                                  | CI Build                                                                                                                                              |
+| ------------------- | ----------------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| bb-browser          | [bb-browser](https://github.com/buildbarn/bb-browser)                   | 2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-storage:20231008T111112Z-ba53c0a](ghcr.io/buildbarn/bb-storage:20231008T111112Z-ba53c0a)                   | [`daafd4f0e4e43140d6d0b5dfb04b1fb87b442910`](https://github.com/buildbarn/bb-browser/commit/daafd4f0e4e43140d6d0b5dfb04b1fb87b442910/checks)          |
+| bb-runner-installer | [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) | 2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20231004T102325Z-0bcfdc0](ghcr.io/buildbarn/bb-runner-installer:20231004T102325Z-0bcfdc0) | [`0bcfdc0d99acce9837486dd5ffc7faa591bb6b31`](https://github.com/buildbarn/bb-remote-execution/commit/0bcfdc0d99acce9837486dd5ffc7faa591bb6b31/checks) |
+| bb-scheduler        | [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) | 2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-scheduler:20231004T102325Z-0bcfdc0](ghcr.io/buildbarn/bb-scheduler:20231004T102325Z-0bcfdc0)               | [`0bcfdc0d99acce9837486dd5ffc7faa591bb6b31`](https://github.com/buildbarn/bb-remote-execution/commit/0bcfdc0d99acce9837486dd5ffc7faa591bb6b31/checks) |
+| bb-worker           | [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) | 2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-worker:20231004T102325Z-0bcfdc0](ghcr.io/buildbarn/bb-worker:20231004T102325Z-0bcfdc0)                     | [`0bcfdc0d99acce9837486dd5ffc7faa591bb6b31`](https://github.com/buildbarn/bb-remote-execution/commit/0bcfdc0d99acce9837486dd5ffc7faa591bb6b31/checks) |
+| bb-storage          | [bb-storage](https://github.com/buildbarn/bb-storage)                   | 2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20231008T111112Z-ba53c0a](ghcr.io/buildbarn/bb-storage:20231008T111112Z-ba53c0a)                   | [`ba53c0ad05f2d03d6c511129cb3fd4067674f21d`](https://github.com/buildbarn/bb-storage/commit/ba53c0ad05f2d03d6c511129cb3fd4067674f21d/checks)          |
+
 # Getting started
 
 This example aims to showcase a very simple build and test with remote execution using docker-compose as the deployment for Buildbarn. We will be compiling examples from the [abseil-hello](https://github.com/abseil/abseil-hello) project using Bazel.
