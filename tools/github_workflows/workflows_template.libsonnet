@@ -84,10 +84,6 @@
           run: 'bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune && bazel run //:gazelle',
         },
         {
-          name: 'Buildifier',
-          run: "sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new && mv go_dependencies.bzl.new go_dependencies.bzl && bazel run @com_github_bazelbuild_buildtools//:buildifier",
-        },
-        {
           name: 'Gofmt',
           run: 'bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.19 -w -extra $(pwd)',
         },
@@ -132,7 +128,12 @@
                 ]),
         }]
         for platform in platforms
-      ]),
+      ]) + [
+        {
+          name: 'Buildifier',
+          run: "sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new && mv go_dependencies.bzl.new go_dependencies.bzl && bazel run @com_github_bazelbuild_buildtools//:buildifier",
+        },
+      ],
     },
   },
 
