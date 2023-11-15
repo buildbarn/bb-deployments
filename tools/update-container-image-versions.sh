@@ -43,7 +43,7 @@ update_image_version() {
     commit_hash=$(get_full_git_commit_hash "$repo")
 
     # Replace image version.
-    sed -i "s#\(ghcr\.io/buildbarn/${image_name}:\)[0-9tz]*-[0-9a-f]*#\1${image_version}#g" \
+    sed -i "s#\(ghcr\.io/buildbarn/${image_name}:\)[0-9tzTZ]*-[0-9a-f]*#\1${image_version}#g" \
         README.md docker-compose/docker-compose.yml kubernetes/*.yaml
 
     # Replace timestamp and CI Build link.
