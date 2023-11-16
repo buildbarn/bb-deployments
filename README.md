@@ -42,7 +42,7 @@ at the top right in the GitHub Actions page.
 
 ## Changelog
 
-The changelog for each update to `bb-deployments` is maintained in [changelog.md](https://github.com/buildbarn/bb-deployments/changelog.md)
+The changelog for each update to `bb-deployments` is maintained in [changelog.md](changelog.md)
 
 # Getting started
 
