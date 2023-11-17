@@ -34,6 +34,29 @@ get_full_git_commit_hash() {
         | sed 's#.*<meta property="og:url" content="/buildbarn/'"$repo"'/commit/\([0-9a-f]*\)" />.*#\1#'
 }
 
+actions_summary_page() {
+    checks_url=$1; shift
+
+    ### The result is a nested span within a `href` tag.
+    # So we capture each href tag as we pass them,
+    # and when we see the needle "on: push"
+    # we can print the last href tag we encountered.
+    res="$(curl -s "$checks_url" | awk '
+    {
+        if ($0 ~/<a href/)
+            { link=$0 }
+            if ($0 ~/on: push/) {
+                split(link, parts, " ");
+                href=parts[2]
+                split(href, parts, "\"");
+                suffix=parts[2]
+                print("https://github.com" suffix)
+            }
+        }
+    ')"
+    echo "$res"
+}
+
 update_image_version() {
     repo="$1"; shift
     image_name="$1"; shift
@@ -42,15 +65,17 @@ update_image_version() {
     timestamp=$(echo "$image_version" | sed 's#\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)Z.*#\1-\2-\3 \4:\5:\6#')
     commit_hash=$(get_full_git_commit_hash "$repo")
     checks_url="https://github.com/buildbarn/$repo/commit/$commit_hash/checks"
+    summary_url=$(actions_summary_page "$checks_url")
 
     # Replace image version.
     sed -i "s#\(ghcr\.io/buildbarn/$image_name:\)[0-9tzTZ]*-[0-9a-f]*#\1$image_version#g" \
         README.md docker-compose/docker-compose.yml kubernetes/*.yaml
 
-    # Replace timestamp and CI Build link.
+    # Replace timestamp and CI build result link.
+    actions_url_stem="https://github.com/buildbarn/$repo/actions/runs"
     sed -i \
         -e "s#^\(| $image_name .*| \)\([^|]* UTC |\)#\1$timestamp UTC |#" \
-        -e "s#| [^|]*/buildbarn/$repo/commit/[0-9a-f]*/checks#| [\`$commit_hash\`]($checks_url#" \
+        -e "s#| [^|]*$actions_url_stem/[0-9a-f]*#| [\`$commit_hash\`]($summary_url#" \
         README.md
 }
 
