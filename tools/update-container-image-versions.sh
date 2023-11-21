@@ -64,18 +64,21 @@ update_image_version() {
     image_version=$(get_image_version "$repo")
     timestamp=$(echo "$image_version" | sed 's#\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)Z.*#\1-\2-\3 \4:\5:\6#')
     commit_hash=$(get_full_git_commit_hash "$repo")
+    short_commit_hash="${commit_hash:0:10}"
     checks_url="https://github.com/buildbarn/$repo/commit/$commit_hash/checks"
-    summary_url=$(actions_summary_page "$checks_url")
+    actions_url=$(actions_summary_page "$checks_url")
 
     # Replace image version.
     sed -i "s#\(ghcr\.io/buildbarn/$image_name:\)[0-9tzTZ]*-[0-9a-f]*#\1$image_version#g" \
         README.md docker-compose/docker-compose.yml kubernetes/*.yaml
 
-    # Replace timestamp and CI build result link.
+    # Replace timestamp, commit URLs and CI build result link.
+    git_log_stem="https://github.com/buildbarn/$repo/commits"
     actions_url_stem="https://github.com/buildbarn/$repo/actions/runs"
     sed -i \
         -e "s#^\(| $image_name .*| \)\([^|]* UTC |\)#\1$timestamp UTC |#" \
-        -e "s#| [^|]*$actions_url_stem/[0-9a-f]*#| [\`$commit_hash\`]($summary_url#" \
+        -e "s#\[\`[0-9a-f]*\`\]($git_log_stem/[0-9a-f]*)#[\`$short_commit_hash\`]($git_log_stem/$commit_hash)#" \
+        -e "s#$actions_url_stem/[0-9a-f]*#$actions_url#" \
         README.md
 }
 
