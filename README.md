@@ -40,7 +40,10 @@ at the top right in the GitHub Actions page.
 
 ## Changelog
 
-The changelog for each update to `bb-deployments` is maintained in [changelog.md](changelog.md)
+A changelog for each update to `bb-deployments` is maintained in [changelog.md](changelog.md).
+
+The [Meroton blog](https://meroton.com/blog/tags/buildbarn/) describes some of the changes and features in more detail
+and includes Jsonnet configuration migration examples.
 
 # Getting started
 
