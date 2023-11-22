@@ -26,8 +26,29 @@ http_archive(
     ],
 )
 
+# bb-storage is downloaded to separately to apply patches to gazelle.
+# Then the real `com_github_buildbarn_bb_storage` is downloaded through `go_dependencies.bzl`.
+http_archive(
+    name = "com_github_buildbarn_bb_storage_patches",
+    patch_cmds = [
+        # Delete everything except the patches directory.
+        "rm -r $(ls -A | grep -v patches)",
+        "touch WORKSPACE",
+        "touch BUILD.bazel",
+    ],
+    sha256 = "dcb436cd5a871c29f0a79363678aa54b6b2c1370e718f2384c37f683ae519b38",
+    strip_prefix = "bb-storage-ece87ab6dc2a9e1e592d2032f5a02c3694765cfc/",
+    urls = [
+        "https://github.com/buildbarn/bb-storage/archive/ece87ab6dc2a9e1e592d2032f5a02c3694765cfc.zip",
+    ],
+)
+
 http_archive(
     name = "bazel_gazelle",
+    patches = [
+        "@com_github_buildbarn_bb_storage_patches//:patches/bazel_gazelle/dont-flatten-srcs.diff",
+        "@com_github_buildbarn_bb_storage_patches//:patches/bazel_gazelle/issue-1595.diff",
+    ],
     sha256 = "29218f8e0cebe583643cbf93cae6f971be8a2484cdcfa1e45057658df8d54002",
     urls = [
         "https://mirror.bazel.build/github.com/bazelbuild/bazel-gazelle/releases/download/v0.32.0/bazel-gazelle-v0.32.0.tar.gz",
