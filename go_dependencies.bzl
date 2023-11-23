@@ -438,9 +438,8 @@ def go_dependencies():
             "@com_github_buildbarn_bb_storage//:patches/com_github_golang_mock/mocks-for-funcs.diff",
             "@com_github_buildbarn_bb_remote_execution//:patches/com_github_golang_mock/generics.diff",
         ],
-        replace = "github.com/golang/mock",
-        sum = "h1:DxRM2MRFDKF8JGaT1ZSsCZ9KxoOki+rrOoB011jIEDc=",
-        version = "v1.6.1-0.20220512030613-73266f9366fc",
+        sum = "h1:ErTB+efbowRARo13NNdxyJji2egdxLGQhRaY+DUumQc=",
+        version = "v1.6.0",
     )
     go_repository(
         name = "com_github_golang_protobuf",
