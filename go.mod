@@ -8,9 +8,6 @@ replace github.com/golang/mock => github.com/golang/mock v1.6.1-0.20220512030613
 // Use the same version as in bb-storage.
 replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20201223204552-cba2d2a1d5d9
 
-// Use the same version as in bb-storage.
-replace mvdan.cc/gofumpt => mvdan.cc/gofumpt v0.3.0
-
 // https://github.com/grpc-ecosystem/grpc-gateway/commit/5f9757f31b517d98095209636b2b88cd6326572f
 replace github.com/grpc-ecosystem/grpc-gateway/v2 => github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.1
 

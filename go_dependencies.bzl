@@ -4,9 +4,8 @@ def go_dependencies():
     go_repository(
         name = "cc_mvdan_gofumpt",
         importpath = "mvdan.cc/gofumpt",
-        replace = "mvdan.cc/gofumpt",
-        sum = "h1:kTojdZo9AcEYbQYhGuLf/zszYthRdhDNDUi2JKTxas4=",
-        version = "v0.3.0",
+        sum = "h1:0EQ+Z56k8tXjj/6TQD25BFNKQXpCvT0rnansIc7Ug5E=",
+        version = "v0.5.0",
     )
     go_repository(
         name = "co_honnef_go_tools",
@@ -283,12 +282,6 @@ def go_dependencies():
         version = "v0.0.0-20230607035331-e9ce68804cb4",
     )
     go_repository(
-        name = "com_github_creack_pty",
-        importpath = "github.com/creack/pty",
-        sum = "h1:uDmaGzcdjhF4i/plgjmEsriH11Y0o7RKapEf/LDaM3w=",
-        version = "v1.1.9",
-    )
-    go_repository(
         name = "com_github_davecgh_go_spew",
         importpath = "github.com/davecgh/go-spew",
         sum = "h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=",
@@ -327,8 +320,8 @@ def go_dependencies():
     go_repository(
         name = "com_github_frankban_quicktest",
         importpath = "github.com/frankban/quicktest",
-        sum = "h1:SPb1KFFmM+ybpEjPUhCCkZOM5xlovT5UbrMvWnXyBns=",
-        version = "v1.14.2",
+        sum = "h1:g2rn0vABPOOXmZUj+vbmUp0lPoXEMuhTpIluN0XL9UY=",
+        version = "v1.14.4",
     )
     go_repository(
         name = "com_github_fxtlabs_primes",
@@ -705,12 +698,6 @@ def go_dependencies():
         importpath = "github.com/phpdave11/gofpdi",
         sum = "h1:o61duiW8M9sMlkVXWlvP92sZJtGKENvW3VExs6dZukQ=",
         version = "v1.0.13",
-    )
-    go_repository(
-        name = "com_github_pkg_diff",
-        importpath = "github.com/pkg/diff",
-        sum = "h1:aoZm08cpOy4WuID//EZDgcC4zIxODThtZNPirFr42+A=",
-        version = "v0.0.0-20210226163009-20ebb0f2a09e",
     )
     go_repository(
         name = "com_github_pkg_errors",
@@ -1539,12 +1526,6 @@ def go_dependencies():
         importpath = "gopkg.in/check.v1",
         sum = "h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=",
         version = "v1.0.0-20201130134442-10cb98267c6c",
-    )
-    go_repository(
-        name = "in_gopkg_errgo_v2",
-        importpath = "gopkg.in/errgo.v2",
-        sum = "h1:0vLT13EuvQ0hNvakwLuFZ/jYrLp5F3kcWHXdRggjCE8=",
-        version = "v2.1.0",
     )
     go_repository(
         name = "in_gopkg_yaml_v2",
