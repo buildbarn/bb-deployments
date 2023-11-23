@@ -3,9 +3,6 @@ module github.com/buildbarn/bb-deployments
 go 1.20
 
 // Use the same version as in bb-storage.
-replace github.com/golang/mock => github.com/golang/mock v1.6.1-0.20220512030613-73266f9366fc
-
-// Use the same version as in bb-storage.
 replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20201223204552-cba2d2a1d5d9
 
 // https://github.com/grpc-ecosystem/grpc-gateway/commit/5f9757f31b517d98095209636b2b88cd6326572f
