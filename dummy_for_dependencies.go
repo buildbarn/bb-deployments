@@ -14,6 +14,5 @@ import (
 	"github.com/buildbarn/bb-remote-execution/cmd/bb_scheduler"
 	"github.com/buildbarn/bb-remote-execution/cmd/bb_worker"
 	"github.com/buildbarn/bb-storage/cmd/bb_storage"
-	"github.com/gordonklaus/ineffassign" // GitHub Workflow
-	"mvdan.cc/gofumpt"                   // GitHub Workflow
+	"mvdan.cc/gofumpt" // GitHub Workflow
 )

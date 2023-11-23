@@ -507,9 +507,8 @@ def go_dependencies():
     go_repository(
         name = "com_github_gordonklaus_ineffassign",
         importpath = "github.com/gordonklaus/ineffassign",
-        replace = "github.com/gordonklaus/ineffassign",
-        sum = "h1:ISiYmLMC4o0lTlN31qYlz2NTpU8Pgrv54nVAJMOf+Fw=",
-        version = "v0.0.0-20201223204552-cba2d2a1d5d9",
+        sum = "h1:PVRE9d4AQKmbelZ7emNig1+NT27DUmKZn5qXxfio54U=",
+        version = "v0.0.0-20210914165742-4cc7213b9bc8",
     )
     go_repository(
         name = "com_github_gorilla_mux",
@@ -1501,12 +1500,6 @@ def go_dependencies():
         importpath = "cloud.google.com/go/workflows",
         sum = "h1:qocsqETmLAl34mSa01hKZjcqAvt699gaoFbooGGMvaM=",
         version = "v1.12.3",
-    )
-    go_repository(
-        name = "com_shuralyov_dmitri_go_generated",
-        importpath = "dmitri.shuralyov.com/go/generated",
-        sum = "h1:TFutR9iGKTFjtYIYVhfMq94vxB0mACalKPHeOGH66gk=",
-        version = "v0.0.0-20230423232055-e1de01541153",
     )
     go_repository(
         name = "ht_sr_git_sbinet_cmpimg",
