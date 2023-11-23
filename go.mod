@@ -2,9 +2,6 @@ module github.com/buildbarn/bb-deployments
 
 go 1.20
 
-// Use the same version as in bb-storage.
-replace github.com/gordonklaus/ineffassign => github.com/gordonklaus/ineffassign v0.0.0-20201223204552-cba2d2a1d5d9
-
 // https://github.com/grpc-ecosystem/grpc-gateway/commit/5f9757f31b517d98095209636b2b88cd6326572f
 replace github.com/grpc-ecosystem/grpc-gateway/v2 => github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.1
 
@@ -16,7 +13,6 @@ require (
 	github.com/buildbarn/bb-browser v0.0.0-20231103134227-794e38071d7a
 	github.com/buildbarn/bb-remote-execution v0.0.0-20231114140735-33a02620cd6e
 	github.com/buildbarn/bb-storage v0.0.0-20231111202247-ece87ab6dc2a
-	github.com/gordonklaus/ineffassign v0.1.0
 	mvdan.cc/gofumpt v0.5.0
 )
 
@@ -27,7 +23,6 @@ require (
 	cloud.google.com/go/iam v1.1.5 // indirect
 	cloud.google.com/go/longrunning v0.5.4 // indirect
 	cloud.google.com/go/storage v1.35.1 // indirect
-	dmitri.shuralyov.com/go/generated v0.0.0-20230423232055-e1de01541153 // indirect
 	git.sr.ht/~sbinet/gg v0.5.0 // indirect
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b // indirect
 	github.com/aohorodnyk/mimeheader v0.0.6 // indirect
