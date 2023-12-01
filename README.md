@@ -121,7 +121,7 @@ and the rpc endpoints are set in [.buckconfig](https://github.com/facebook/buck2
 
 ### Pants
 
-Pants define the endpoint and the properties in the main configuration file `pants.toml`.
+Pants defines the endpoint and the properties in the main configuration file `pants.toml`.
 
 ```
 [GLOBAL]
