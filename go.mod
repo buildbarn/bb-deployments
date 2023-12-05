@@ -11,8 +11,8 @@ replace golang.org/x/tools => golang.org/x/tools v0.8.0
 require (
 	github.com/bazelbuild/rules_go v0.39.1
 	github.com/buildbarn/bb-browser v0.0.0-20231103134227-794e38071d7a
-	github.com/buildbarn/bb-remote-execution v0.0.0-20231114140735-33a02620cd6e
-	github.com/buildbarn/bb-storage v0.0.0-20231111202247-ece87ab6dc2a
+	github.com/buildbarn/bb-remote-execution v0.0.0-20231115102501-022742f996d6
+	github.com/buildbarn/bb-storage v0.0.0-20231205110558-8de3263d2a60
 	mvdan.cc/gofumpt v0.5.0
 )
 
@@ -46,7 +46,7 @@ require (
 	github.com/aws/smithy-go v1.16.0 // indirect
 	github.com/bazelbuild/remote-apis v0.0.0-20230822133051-6c32c3b917cc // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/buildbarn/go-xdr v0.0.0-20231002195348-0d2d95eab08c // indirect
+	github.com/buildbarn/go-xdr v0.0.0-20231115101217-a9e2aa4cf64b // indirect
 	github.com/buildkite/terminal-to-html v3.2.0+incompatible // indirect
 	github.com/campoy/embedmd v1.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect

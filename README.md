@@ -35,8 +35,8 @@ at the top right in the GitHub Actions page.
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
 | [bb-browser](https://github.com/buildbarn/bb-browser) [`794e38071d`](https://github.com/buildbarn/bb-browser/commits/794e38071d7a18babfc6c57643767d26415dcd63)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20231103T134227Z-794e380](https://ghcr.io/buildbarn/bb-browser:20231103T134227Z-794e380)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/6745964234) |
-| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`33a02620cd`](https://github.com/buildbarn/bb-remote-execution/commits/33a02620cd6efedf4963143a930df009f93493b5)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20231114T140735Z-33a0262](https://ghcr.io/buildbarn/bb-runner-installer:20231114T140735Z-33a0262)<br/>[ghcr.io/buildbarn/bb-scheduler:20231114T140735Z-33a0262](https://ghcr.io/buildbarn/bb-scheduler:20231114T140735Z-33a0262)<br/>[ghcr.io/buildbarn/bb-worker:20231114T140735Z-33a0262](https://ghcr.io/buildbarn/bb-worker:20231114T140735Z-33a0262)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/6864755846) |
-| [bb-storage](https://github.com/buildbarn/bb-storage) [`ece87ab6dc`](https://github.com/buildbarn/bb-storage/commits/ece87ab6dc2a9e1e592d2032f5a02c3694765cfc)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20231111T202247Z-ece87ab](https://ghcr.io/buildbarn/bb-storage:20231111T202247Z-ece87ab)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/6836384126) |
+| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`022742f996`](https://github.com/buildbarn/bb-remote-execution/commits/022742f996d61371a9e437eb4479cbef4b62c5a3)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20231115T102501Z-022742f](https://ghcr.io/buildbarn/bb-runner-installer:20231115T102501Z-022742f)<br/>[ghcr.io/buildbarn/bb-scheduler:20231115T102501Z-022742f](https://ghcr.io/buildbarn/bb-scheduler:20231115T102501Z-022742f)<br/>[ghcr.io/buildbarn/bb-worker:20231115T102501Z-022742f](https://ghcr.io/buildbarn/bb-worker:20231115T102501Z-022742f)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/6876003702) |
+| [bb-storage](https://github.com/buildbarn/bb-storage) [`8de3263d2a`](https://github.com/buildbarn/bb-storage/commits/8de3263d2a60e1d266d7da394f26a86ba31b1bea)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20231205T110558Z-8de3263](https://ghcr.io/buildbarn/bb-storage:20231205T110558Z-8de3263)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/7099832089) |
 
 ## Changelog
 
@@ -191,7 +191,7 @@ First make sure the different Buildbarn components are in sync. Then perform:
 
 ```bash
 # Update go.mod.
-go mod tidy
+go mod tidy -e
 
 # Regenerate go_dependencies.bzl.
 bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune

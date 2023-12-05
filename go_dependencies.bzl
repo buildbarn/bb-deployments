@@ -215,20 +215,20 @@ def go_dependencies():
     go_repository(
         name = "com_github_buildbarn_bb_remote_execution",
         importpath = "github.com/buildbarn/bb-remote-execution",
-        sum = "h1:XZs2tSEm8fSYr/Wxt7UPtfctOCTBNULstMdxGvPOV4M=",
-        version = "v0.0.0-20231114140735-33a02620cd6e",
+        sum = "h1:6Ah6Yyr0eDDlk0/XP9awgMF2qbTk3Mgz9k9KmBmCIBs=",
+        version = "v0.0.0-20231115102501-022742f996d6",
     )
     go_repository(
         name = "com_github_buildbarn_bb_storage",
         importpath = "github.com/buildbarn/bb-storage",
-        sum = "h1:lID82hHXshV67Qj0qCpWiPlJlPAoI/r/4viLuTxKnGc=",
-        version = "v0.0.0-20231111202247-ece87ab6dc2a",
+        sum = "h1:OkdOv+8YyAuDisWdKtWnx+qpw+/rrtGRad1YvKiDZTk=",
+        version = "v0.0.0-20231205110558-8de3263d2a60",
     )
     go_repository(
         name = "com_github_buildbarn_go_xdr",
         importpath = "github.com/buildbarn/go-xdr",
-        sum = "h1:lstSRIB5zQnvkSNjzUW8NS5Ox1u/sjL5gksFQ9VQUzo=",
-        version = "v0.0.0-20231002195348-0d2d95eab08c",
+        sum = "h1:/sKWC0Fs5fXNo/t72BRZRLERg4v2gFoEeg2Mk+a8xak=",
+        version = "v0.0.0-20231115101217-a9e2aa4cf64b",
     )
     go_repository(
         name = "com_github_buildkite_terminal_to_html",
