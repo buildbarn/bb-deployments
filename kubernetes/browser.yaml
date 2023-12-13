@@ -27,18 +27,13 @@ spec:
           readOnly: true
       volumes:
       - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: browser
-              items:
-              - key: browser.jsonnet
-                path: browser.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        configMap:
+          name: buildbarn-config
+          items:
+            - key: common.libsonnet
+              path: common.libsonnet
+            - key: browser.jsonnet
+              path: browser.jsonnet
 ---
 apiVersion: v1
 kind: Service
