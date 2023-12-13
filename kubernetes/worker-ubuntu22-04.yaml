@@ -51,14 +51,14 @@ spec:
         - mountPath: /worker
           name: worker
         - mountPath: /bb
-          name: bb-runner
+          name: empty
           readOnly: true
       initContainers:
       - name: bb-runner-installer
         image: ghcr.io/buildbarn/bb-runner-installer:20231222T105429Z-4b3a11b
         volumeMounts:
         - mountPath: /bb/
-          name: bb-runner
+          name: empty
       - name: volume-init
         image: busybox:1.31.1-uclibc
         command:
@@ -69,25 +69,17 @@ spec:
         - mountPath: /worker
           name: worker
       volumes:
-      - name: bb-runner
+      - name: empty
         emptyDir: {}
       - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: runner-ubuntu22-04
-              items:
-              - key: runner-ubuntu22-04.jsonnet
-                path: runner-ubuntu22-04.jsonnet
-          - configMap:
-              name: worker-ubuntu22-04
-              items:
-              - key: worker-ubuntu22-04.jsonnet
-                path: worker-ubuntu22-04.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        configMap:
+          name: buildbarn-config
+          items:
+          - key: common.libsonnet
+            path: common.libsonnet
+          - key: runner-ubuntu22-04.jsonnet
+            path: runner-ubuntu22-04.jsonnet
+          - key: worker-ubuntu22-04.jsonnet
+            path: worker-ubuntu22-04.jsonnet
       - emptyDir: {}
         name: worker

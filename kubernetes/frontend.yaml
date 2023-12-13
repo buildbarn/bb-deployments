@@ -26,19 +26,15 @@ spec:
           name: configs
           readOnly: true
       volumes:
-      - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: frontend
-              items:
-              - key: frontend.jsonnet
-                path: frontend.jsonnet
-          - configMap:
-              name: common
-              items:
+        - name: configs
+          configMap:
+            name: buildbarn-config
+            items:
               - key: common.libsonnet
                 path: common.libsonnet
+              - key: frontend.jsonnet
+                path: frontend.jsonnet
+
 ---
 apiVersion: v1
 kind: Service

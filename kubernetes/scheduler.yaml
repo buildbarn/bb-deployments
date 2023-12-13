@@ -32,19 +32,14 @@ spec:
           name: configs
           readOnly: true
       volumes:
-      - name: configs
-        projected:
-          sources:
-          - configMap:
-              name: scheduler
-              items:
-              - key: scheduler.jsonnet
-                path: scheduler.jsonnet
-          - configMap:
-              name: common
-              items:
-              - key: common.libsonnet
-                path: common.libsonnet
+        - name: configs
+          configMap:
+            name: buildbarn-config
+            items:
+            - key: common.libsonnet
+              path: common.libsonnet
+            - key: scheduler.jsonnet
+              path: scheduler.jsonnet
 ---
 apiVersion: v1
 kind: Service

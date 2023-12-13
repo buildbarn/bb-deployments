@@ -1,11 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
-  - browser.yaml
-  - common.yaml
-  - frontend.yaml
-  - runner-ubuntu22-04.yaml
-  - scheduler.yaml
-  - storage.yaml
-  - worker-ubuntu22-04.yaml
+configMapGenerator:
+- name: buildbarn-config
+  namespace: buildbarn
+  files:
+    - browser.jsonnet
+    - common.libsonnet
+    - frontend.jsonnet
+    - runner-ubuntu22-04.jsonnet
+    - scheduler.jsonnet
+    - storage.jsonnet
+    - worker-ubuntu22-04.jsonnet

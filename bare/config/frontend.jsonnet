@@ -9,9 +9,11 @@ local common = import 'common.libsonnet';
     '': {
       endpoint: {
         address: 'localhost:8982',
-        addMetadataJmespathExpression: '{
-          "build.bazel.remote.execution.v2.requestmetadata-bin": incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"
-        }',
+        addMetadataJmespathExpression: |||
+          {
+            "build.bazel.remote.execution.v2.requestmetadata-bin": incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"
+          }
+        |||,
       },
     },
   },
