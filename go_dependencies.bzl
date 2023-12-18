@@ -185,8 +185,8 @@ def go_dependencies():
     go_repository(
         name = "com_github_bazelbuild_rules_go",
         importpath = "github.com/bazelbuild/rules_go",
-        sum = "h1:wkJLUDx59dntWMghuL8++GteoU1To6sRoKJXuyFtmf8=",
-        version = "v0.39.1",
+        sum = "h1:Q+vDhH4yzafZ0xHBT0JEVawb+1nDHUXhjvWTqSGCCyU=",
+        version = "v0.43.0",
     )
     go_repository(
         name = "com_github_benbjohnson_clock",
@@ -215,14 +215,14 @@ def go_dependencies():
     go_repository(
         name = "com_github_buildbarn_bb_remote_execution",
         importpath = "github.com/buildbarn/bb-remote-execution",
-        sum = "h1:6Ah6Yyr0eDDlk0/XP9awgMF2qbTk3Mgz9k9KmBmCIBs=",
-        version = "v0.0.0-20231115102501-022742f996d6",
+        sum = "h1:3oNOGdE4Pkc+hWV/4KQ4tLNuiti21skBSdQ+z197Wrs=",
+        version = "v0.0.0-20231212221000-fb20d59cb701",
     )
     go_repository(
         name = "com_github_buildbarn_bb_storage",
         importpath = "github.com/buildbarn/bb-storage",
-        sum = "h1:OkdOv+8YyAuDisWdKtWnx+qpw+/rrtGRad1YvKiDZTk=",
-        version = "v0.0.0-20231205110558-8de3263d2a60",
+        sum = "h1:RY9vjnQFWAE8DzeRiAO1edSMrwZlR8NHn9nt2SSI15k=",
+        version = "v0.0.0-20231216205759-b14f4ae4a857",
     )
     go_repository(
         name = "com_github_buildbarn_go_xdr",

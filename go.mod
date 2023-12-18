@@ -9,10 +9,10 @@ replace github.com/grpc-ecosystem/grpc-gateway/v2 => github.com/grpc-ecosystem/g
 replace golang.org/x/tools => golang.org/x/tools v0.8.0
 
 require (
-	github.com/bazelbuild/rules_go v0.39.1
+	github.com/bazelbuild/rules_go v0.43.0
 	github.com/buildbarn/bb-browser v0.0.0-20231103134227-794e38071d7a
-	github.com/buildbarn/bb-remote-execution v0.0.0-20231115102501-022742f996d6
-	github.com/buildbarn/bb-storage v0.0.0-20231205110558-8de3263d2a60
+	github.com/buildbarn/bb-remote-execution v0.0.0-20231212221000-fb20d59cb701
+	github.com/buildbarn/bb-storage v0.0.0-20231216205759-b14f4ae4a857
 	mvdan.cc/gofumpt v0.5.0
 )
 
