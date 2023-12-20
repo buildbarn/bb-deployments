@@ -7,7 +7,7 @@ metadata:
     prometheus.io/port: "80"
     prometheus.io/scrape: "true"
 spec:
-  replicas: 8
+  replicas: 2
   selector:
     matchLabels:
       app: worker
@@ -28,7 +28,12 @@ spec:
           name: configs
           readOnly: true
         - mountPath: /worker
+          mountPropagation: Bidirectional
           name: worker
+        - mountPath: /storage-worker-cas
+          name: storage-worker-cas
+        securityContext:
+          privileged: true
         env:
         - name: NODE_NAME
           valueFrom:
@@ -42,14 +47,16 @@ spec:
         image: ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448
         name: runner
         securityContext:
-          runAsUser: 65534
-          allowPrivilegeEscalation: false
+          privileged: true
         volumeMounts:
         - mountPath: /config/
           name: configs
           readOnly: true
         - mountPath: /worker
+          mountPropagation: HostToContainer
           name: worker
+        - mountPath: /storage-worker-cas
+          name: storage-worker-cas
         - mountPath: /bb
           name: bb-runner
           readOnly: true
@@ -64,10 +71,15 @@ spec:
         command:
         - sh
         - -c
-        - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && chmod 0777 /worker
+        - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && mkdir -pm 0777 /storage-worker-cas/persistent_state && mkdir -pm 0777 /worker-fuse && chmod 0777 /worker
         volumeMounts:
         - mountPath: /worker
+          mountPropagation: HostToContainer
           name: worker
+        - mountPath: /storage-worker-cas
+          name: storage-worker-cas
+        securityContext:
+          privileged: true
       volumes:
       - name: bb-runner
         emptyDir: {}
@@ -89,5 +101,9 @@ spec:
               items:
               - key: common.libsonnet
                 path: common.libsonnet
-      - emptyDir: {}
-        name: worker
+      - name: worker
+        hostPath:
+          path: /worker-fuse
+          type: Directory
+      - name: storage-worker-cas
+        emptyDir: {}

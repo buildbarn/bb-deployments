@@ -4,7 +4,48 @@ data:
     local common = import 'common.libsonnet';
 
     {
-      blobstore: common.blobstore,
+      blobstore: {
+        actionCache: common.blobstore.actionCache,
+        contentAddressableStorage: {
+          readCaching: {
+            slow: common.blobstore.contentAddressableStorage,
+            fast: {
+              'local': {
+                keyLocationMapOnBlockDevice: {
+                  file: {
+                    path: '/storage-worker-cas/key_location_map',
+                    sizeBytes: 100 * 1024 * 1024,
+                  },
+                },
+                keyLocationMapMaximumGetAttempts: 8,
+                keyLocationMapMaximumPutAttempts: 32,
+                oldBlocks: 8,
+                currentBlocks: 24,
+                newBlocks: 1,
+                blocksOnBlockDevice: {
+                  source: {
+                    file: {
+                    path: '/storage-worker-cas/blocks',
+                    sizeBytes: 8 * 1024 * 1024 * 1024,
+                    },
+                  },
+                  spareBlocks: 3,
+                  dataIntegrityValidationCache: {
+                    cacheSize: 10000,
+                    cacheDuration: '14400s',
+                    cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+                  },
+                },
+                persistent: {
+                stateDirectoryPath: '/storage-worker-cas/persistent_state',
+                minimumEpochInterval: '300s',
+                },
+              },
+            },
+            replicator: { deduplicating: { 'local': {} } },
+          },
+        },
+      },
       browserUrl: common.browserUrl,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
       scheduler: { address: 'scheduler:8983' },
@@ -12,16 +53,24 @@ data:
         setUmask: { umask: 0 },
       },
       buildDirectories: [{
-        native: {
-          buildDirectoryPath: '/worker/build',
-          cacheDirectoryPath: '/worker/cache',
-          maximumCacheFileCount: 10000,
-          maximumCacheSizeBytes: 1024 * 1024 * 1024,
-          cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+        virtual: {
+          maximumExecutionTimeoutCompensation: "3600s",
+          shuffleDirectoryListings: true,
+          mount: {
+            mountPath: '/worker/build',
+            fuse: {
+              directoryEntryValidity: "300s",
+              inodeAttributeValidity: "300s",
+              allowOther: true,
+              directMount: true,
+            },
+          },
         },
         runners: [{
           endpoint: { address: 'unix:///worker/runner' },
           concurrency: 8,
+          maximumFilePoolFileCount: 10000,
+          maximumFilePoolSizeBytes: 8*1024*1024*1024,
           platform: {
             properties: [
               { name: 'OSFamily', value: 'linux' },
@@ -34,11 +83,63 @@ data:
           },
         }],
       }],
+      filePool: {
+        blockDevice: {
+          file: {
+            path: '/worker/filepool',
+            sizeBytes:8 * 8*1024*1024*1024, // concurrency * maximumFilePoolSizeBytes
+          },
+        },
+      },
       outputUploadConcurrency: 11,
       directoryCache: {
         maximumCount: 1000,
         maximumSizeBytes: 1000 * 1024,
         cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+      },
+      prefetching: {
+        fileSystemAccessCache:{
+          readCaching: {
+            slow: common.blobstore.contentAddressableStorage,
+            fast: {
+              'local': {
+                keyLocationMapOnBlockDevice: {
+                  file: {
+                    path: '/storage-worker-cas/key_location_map',
+                    sizeBytes: 100 * 1024 * 1024,
+                  },
+                },
+                keyLocationMapMaximumGetAttempts: 8,
+                keyLocationMapMaximumPutAttempts: 32,
+                oldBlocks: 8,
+                currentBlocks: 24,
+                newBlocks: 1,
+                blocksOnBlockDevice: {
+                  source: {
+                    file: {
+                    path: '/storage-worker-cas/blocks',
+                    sizeBytes: 8 * 1024 * 1024 * 1024,
+                    },
+                  },
+                  spareBlocks: 3,
+                  dataIntegrityValidationCache: {
+                    cacheSize: 10000,
+                    cacheDuration: '14400s',
+                    cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+                  },
+                },
+                persistent: {
+                stateDirectoryPath: '/storage-worker-cas/persistent_state',
+                minimumEpochInterval: '300s',
+                },
+              },
+            },
+            replicator: { 'local' : {} },
+          },
+        },
+        bloomFilterBitsPerPath: 14,
+        bloomFilterMaximumSizeBytes: 65536,
+        downloadConcurrency: 24,
       },
     }
 kind: ConfigMap
