@@ -441,7 +441,6 @@ def go_dependencies():
         name = "com_github_golang_mock",
         importpath = "github.com/golang/mock",
         patches = [
-            "@com_github_buildbarn_bb_storage//:patches/com_github_golang_mock/mocks-for-funcs.diff",
             "@com_github_buildbarn_bb_remote_execution//:patches/com_github_golang_mock/generics.diff",
         ],
         sum = "h1:ErTB+efbowRARo13NNdxyJji2egdxLGQhRaY+DUumQc=",
