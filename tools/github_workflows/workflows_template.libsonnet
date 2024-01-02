@@ -76,6 +76,10 @@
           |||,
         },
         {
+          name: 'Install k3d',
+          run: 'curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash',
+        },
+        {
           name: 'Check out source code',
           uses: 'actions/checkout@v1',
         },
@@ -118,6 +122,10 @@
         {
           name: 'Test docker-compose deployment',
           run: 'tools/test-deployment-docker-compose.sh',
+        },
+        {
+          name: 'Test Kubernetes deployment',
+          run: 'tools/test-deployment-kubernetes',
         },
       ] + std.flattenArrays([
         [{

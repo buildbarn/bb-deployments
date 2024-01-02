@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-set -eu -o pipefail
+
+set -eu -o pipefail -E
+
 # Updates the image version in the Docker Compose and Kubernetes deployments.
 #
 # Run this script as soon as go.mod has been updated.

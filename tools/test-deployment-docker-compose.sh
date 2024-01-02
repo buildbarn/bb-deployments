@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Verifies that the docker-compose deployment works.
-set -eux -o pipefail
+set -eux -o pipefail -E
 
 script_dir=$(dirname "${BASH_SOURCE[0]}")
 cd "${script_dir}/../docker-compose"

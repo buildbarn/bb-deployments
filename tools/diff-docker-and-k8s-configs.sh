@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu -o pipefail -E
 
 diff_config() {
     k8s_config="$1"; shift

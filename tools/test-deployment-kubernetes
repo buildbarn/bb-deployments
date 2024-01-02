@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Verifies that the Kuberenetes deployment works.
+
+set -eux -o pipefail -E
+
+script_dir=$(dirname "${BASH_SOURCE[0]}")
+root="$(realpath "$script_dir"/..)"
+cd "$root"
+
+# --- Launch Kubernetes deployment with k3d ---
+kubeconfig="$(realpath kubernetes/kubeconfig.yaml)"
+if test -e "$kubeconfig"; then
+    echo >&2 "ERROR: $kubeconfig already exists"
+    exit 1
+fi
+export KUBECONFIG="$kubeconfig"
+
+k3d cluster create bb-deployments-test
+
+cleanup() {
+    EXIT_STATUS=$?
+    # Ignore errors when tearing down.
+    set +e
+    k3d cluster delete bb-deployments-test
+    rm "$kubeconfig"
+    return "$EXIT_STATUS"
+}
+trap cleanup EXIT
+
+# Deploy Buildbarn.
+kubectl apply -k kubernetes
+kubectl rollout status --watch --namespace=buildbarn --timeout=300s statefulset
+kubectl rollout status --watch --namespace=buildbarn --timeout=300s deployment
+
+# Find the frontend.
+bb_frontend_ip=$(kubectl get service --namespace=buildbarn frontend -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
+bb_frontend_address="grpc://$bb_frontend_ip:8980"
+ingress_ip=$(kubectl get service --namespace=kube-system traefik -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
+
+# --- Test that the bb-browser and bb-scheduler UIs are responsive. ---
+curl --fail --header 'Host: bb-browser.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Browser</title>'
+curl --fail --header 'Host: bb-scheduler.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Scheduler</title>'
+
+# --- Run remote execution ---
+bazel_command_log="$(bazel info output_base)/command.log"
+bazel clean
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
+# Make sure there are remote executions but no cache hits.
+# INFO: 39 processes: 9 internal, 30 remote.
+grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
+    "$bazel_command_log" \
+    | grep -v 'remote cache hit'
+
+# --- Check that the hardlinking workers are available ---
+bazel clean
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --remote_instance_name=hardlinking --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
+# Make sure there are remote executions but no cache hits.
+# INFO: 39 processes: 9 internal, 30 remote.
+grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
+    "$bazel_command_log" \
+    | grep -v 'remote cache hit'
