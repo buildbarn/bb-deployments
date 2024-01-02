@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -eEuxo pipefail
+
+set -eux -o pipefail -E
 
 bazel_version="$1"
 
