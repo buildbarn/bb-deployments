@@ -105,8 +105,7 @@ services:
     image: ghcr.io/buildbarn/bb-worker:20231212T221000Z-fb20d59
     command:
     - /config/worker-hardlinking-ubuntu22-04.jsonnet
-    # Need to be privileged for the FUSE mounting to work.
-    privileged: true
+    privileged: false
     volumes:
     - ./config:/config
     - ./volumes/worker-hardlinking-ubuntu22-04:/worker
