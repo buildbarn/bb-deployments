@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: ghcr.io/buildbarn/bb-storage:20231222T105222Z-e7766ce
+    image: ghcr.io/buildbarn/bb-storage:20240108T141908Z-1ba9ed4
     command:
     - /config/frontend.jsonnet
     expose:
@@ -12,7 +12,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: ghcr.io/buildbarn/bb-storage:20231222T105222Z-e7766ce
+    image: ghcr.io/buildbarn/bb-storage:20240108T141908Z-1ba9ed4
     command:
     - /config/storage.jsonnet
     expose:
@@ -24,7 +24,7 @@ services:
     - ./volumes/storage-cas-0:/storage-cas
 
   storage-1:
-    image: ghcr.io/buildbarn/bb-storage:20231222T105222Z-e7766ce
+    image: ghcr.io/buildbarn/bb-storage:20240108T141908Z-1ba9ed4
     command:
     - /config/storage.jsonnet
     expose:
@@ -49,7 +49,7 @@ services:
     - ./config:/config
 
   browser:
-    image: ghcr.io/buildbarn/bb-browser:20231103T134227Z-794e380
+    image: ghcr.io/buildbarn/bb-browser:20231221T052638Z-c2f1079
     command:
     - /config/browser.jsonnet
     expose:
