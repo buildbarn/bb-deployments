@@ -36,7 +36,7 @@ services:
     - ./volumes/storage-cas-1:/storage-cas
 
   scheduler:
-    image: ghcr.io/buildbarn/bb-scheduler:20231222T105429Z-4b3a11b
+    image: ghcr.io/buildbarn/bb-scheduler:20240126T140954Z-fe4cf5d
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -45,11 +45,12 @@ services:
     - 9980
     ports:
     - 7982:7982
+    - 8983:8983
     volumes:
     - ./config:/config
 
   browser:
-    image: ghcr.io/buildbarn/bb-browser:20231221T052638Z-c2f1079
+    image: ghcr.io/buildbarn/bb-browser:20240126T143027Z-efa0bb9
     command:
     - /config/browser.jsonnet
     expose:
@@ -60,13 +61,13 @@ services:
     - ./config:/config
 
   runner-installer:
-    image: ghcr.io/buildbarn/bb-runner-installer:20231222T105429Z-4b3a11b
+    image: ghcr.io/buildbarn/bb-runner-installer:20240126T140954Z-fe4cf5d
     volumes:
     - ./volumes/bb:/bb
 
   # The FUSE worker is the most efficient configuration.
   worker-fuse-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20231222T105429Z-4b3a11b
+    image: ghcr.io/buildbarn/bb-worker:20240126T140954Z-fe4cf5d
     command:
     - /config/worker-fuse-ubuntu22-04.jsonnet
     # Need to be privileged for the FUSE mounting to work.
@@ -102,7 +103,7 @@ services:
   # For situations where the more efficient FUSE worker is not supported,
   # the classic hardlinking example is shown here.
   worker-hardlinking-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20231222T105429Z-4b3a11b
+    image: ghcr.io/buildbarn/bb-worker:20240126T140954Z-fe4cf5d
     command:
     - /config/worker-hardlinking-ubuntu22-04.jsonnet
     privileged: false

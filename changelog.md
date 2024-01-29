@@ -1,3 +1,12 @@
+# 2024-01-29
+
+* Support capturing server logs
+  This can be used to collect core dumps for crashed actions.
+  https://github.com/buildbarn/bb-remote-execution/commit/fe4cf5d42613d9b44be4ef969353fb1212222c73
+* Improve the bb-browser's performance by using REv2 Directory messages instead
+  of trees
+* Change the bb_clientd code snippet to a button.
+
 # 2023-12-22
 
 * Support Bazel 7
