@@ -11,7 +11,7 @@ setup () {
     set -x
 
     { sudo fusermount -u "$fuse_dir_to_unmount" && sleep 1; } || true
-    sudo rm -rf bb "volumes/${worker_fuse}" "volumes/${worker_hardlinking}"
+    sudo rm -rf volumes/bb "volumes/${worker_fuse}" "volumes/${worker_hardlinking}"
 
     mkdir -p volumes
     mkdir -m 0777 "volumes/${worker_fuse}" "volumes/${worker_fuse}"/{build,cas,cas/persistent_state}
