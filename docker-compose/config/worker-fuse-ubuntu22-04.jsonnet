@@ -73,7 +73,7 @@ local common = import 'common.libsonnet';
           { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448' },
         ],
       },
-      maximumFilePoolFileCount: 10000,
+      maximumFilePoolFileCount: 100000,
       maximumFilePoolSizeBytes: 1 * 1024 * 1024 * 1024,
       workerId: {
         datacenter: 'amsterdam',
