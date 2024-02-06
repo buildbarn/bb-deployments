@@ -37,10 +37,6 @@
     },
   },
   browserUrl: 'http://localhost:7984',
-  httpServers: [{
-    listenAddresses: [':80'],
-    authenticationPolicy: { allow: {} },
-  }],
   maximumMessageSizeBytes: 2 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {
