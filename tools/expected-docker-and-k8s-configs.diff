@@ -1,5 +1,5 @@
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index 33830d4..804ee57 100644
+index 10f6943..fab0328 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
 @@ -5,11 +5,11 @@
@@ -30,16 +30,13 @@ index 33830d4..804ee57 100644
                  weight: 1,
                },
              ],
-@@ -36,7 +36,7 @@
+@@ -36,12 +36,12 @@
        },
      },
    },
 -  browserUrl: 'http://bb-browser.example.com:80',
 +  browserUrl: 'http://localhost:7984',
-   httpServers: [{
-     listenAddresses: [':80'],
-     authenticationPolicy: { allow: {} },
-@@ -45,7 +45,7 @@
+   maximumMessageSizeBytes: 2 * 1024 * 1024,
    global: {
      diagnosticsHttpServer: {
        httpServers: [{
