@@ -97,14 +97,14 @@ http_archive(
 )
 
 http_archive(
-    name = "com_grail_bazel_toolchain",
+    name = "toolchains_llvm",
     canonical_id = "0.7.2",
-    sha256 = "f7aa8e59c9d3cafde6edb372d9bd25fb4ee7293ab20b916d867cd0baaa642529",
-    strip_prefix = "bazel-toolchain-0.7.2",
-    url = "https://github.com/grailbio/bazel-toolchain/archive/0.7.2.tar.gz",
+    sha256 = "ea7d247dd4a0058c008a6e8fa0855a69d57b0cb500271c7b48c1a28512608ecd",
+    strip_prefix = "toolchains_llvm-0.7.2",
+    url = "https://github.com/bazel-contrib/toolchains_llvm/archive/0.7.2.tar.gz",
 )
 
-load("@com_grail_bazel_toolchain//toolchain:rules.bzl", "llvm_toolchain")
+load("@toolchains_llvm//toolchain:rules.bzl", "llvm_toolchain")
 
 llvm_toolchain(
     name = "llvm_toolchain",
