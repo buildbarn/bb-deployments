@@ -1,3 +1,14 @@
+# 2024-02-28
+
+* Integrate kuberesolver into Buildbarn binaries
+  This makes it easier to run Buildbarn on bare metal Kubernetes clusters.
+  https://github.com/buildbarn/bb-storage/commit/a4267fc3c5c3a916004c5021fb13bc2bcf214e05
+* Delay uploads until output files are closed
+  This is needed for asynchronously written core dumps that are captured during execution.
+* Add the ability to link to external pages based on RequestMetadata
+  New required configuration for bb-browser, the nil values does not work.
+    requestMetadataLinksJmespathExpression: '`{}`'
+
 # 2024-01-29
 
 * Support capturing server logs
@@ -9,7 +20,7 @@
 
 # 2023-12-22
 
-* Support Bazel 7
+* bb-deployment supports Bazel 7
 * Improved readiness checks for FUSE/NFSv4 runners, better error handling
 * Support uploading output directories as Directory Messages
   For more background see https://github.com/bazelbuild/remote-apis/pull/258

@@ -53,6 +53,7 @@ local common = import 'common.libsonnet';
     virtual: {
       maximumExecutionTimeoutCompensation: '3600s',
       shuffleDirectoryListings: true,
+      maximumWritableFileUploadDelay: '60s',
       mount: {
         mountPath: '/worker/build',
         fuse: {
