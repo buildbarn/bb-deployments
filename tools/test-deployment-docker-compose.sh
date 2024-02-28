@@ -19,6 +19,7 @@ trap cleanup EXIT
 # --- Run remote execution ---
 rm -rf volumes/storage-*
 ./run.sh -d
+docker-compose up --wait || true
 bazel_command_log="$(bazel info output_base)/command.log"
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --disk_cache= @abseil-hello//:hello_test
