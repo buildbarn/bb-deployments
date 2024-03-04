@@ -18,7 +18,7 @@ trap cleanup EXIT
 
 # --- Run remote execution ---
 rm -rf volumes/storage-*
-./run.sh -d
+./run.sh --quiet-pull --detach
 # NB: 'up' exits with non-zero exit code.
 docker compose up --wait || true
 bazel_command_log="$(bazel info output_base)/command.log"
