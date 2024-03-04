@@ -18,13 +18,13 @@ trap cleanup EXIT
 
 # --- Run remote execution ---
 rm -rf volumes/storage-*
-./run.sh -d
+./run.sh --quiet-pull --detach
 # Wait for queues for all worker instance types to be available.
 docker compose up --wait frontend scheduler
 while : ; do
     instance_name_prefixes=$(grpcurl --plaintext localhost:8984 buildbarn.buildqueuestate.BuildQueueState.ListPlatformQueues |
         jq -r '(.platformQueues // []) | map(.name.instanceNamePrefix) | sort | join(",")')
-    [ "$instance_name_prefixes" != "fuse,hardlinking" ] || break
+    test "$instance_name_prefixes" != "fuse,hardlinking" || break
     sleep 1
 done
 
