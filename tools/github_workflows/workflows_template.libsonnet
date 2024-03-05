@@ -76,6 +76,14 @@
           |||,
         },
         {
+          name: 'Installing grpcurl',
+          run: |||
+            mkdir -p ~/.cache/grpcurl &&
+            curl -L https://github.com/fullstorydev/grpcurl/releases/download/v1.8.9/grpcurl_1.8.9_linux_x86_64.tar.gz | tar -xz -C ~/.cache/grpcurl &&
+            echo "~/.cache/grpcurl" >> ${GITHUB_PATH}
+          |||,
+        },
+        {
           name: 'Install k3d',
           run: 'curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash',
         },

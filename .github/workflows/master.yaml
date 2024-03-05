@@ -16,6 +16,10 @@
                "run": "bazelisk_fingerprint=231ec5ca8115e94c75a1f4fbada1a062b48822ca04f21f26e4cb1cd8973cd458 &&\n(echo \"${bazelisk_fingerprint} ${HOME}/.cache/bazelisk/bazel\" | sha256sum --check --quiet) || (\n  mkdir -p ~/.cache/bazelisk &&\n  curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.11.0/bazelisk-linux-amd64 > ~/.cache/bazelisk/bazelisk.tmp &&\n  chmod +x ~/.cache/bazelisk/bazelisk.tmp &&\n  mv ~/.cache/bazelisk/bazelisk.tmp ~/.cache/bazelisk/bazel\n) &&\n(echo \"${bazelisk_fingerprint} ${HOME}/.cache/bazelisk/bazel\" | sha256sum --check --quiet) &&\necho \"~/.cache/bazelisk\" >> ${GITHUB_PATH}\n"
             },
             {
+               "name": "Installing grpcurl",
+               "run": "mkdir -p ~/.cache/grpcurl &&\ncurl -L https://github.com/fullstorydev/grpcurl/releases/download/v1.8.9/grpcurl_1.8.9_linux_x86_64.tar.gz | tar -xz -C ~/.cache/grpcurl &&\necho \"~/.cache/grpcurl\" >> ${GITHUB_PATH}\n"
+            },
+            {
                "name": "Install k3d",
                "run": "curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash"
             },

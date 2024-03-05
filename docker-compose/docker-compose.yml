@@ -42,10 +42,12 @@ services:
     expose:
     - 8982
     - 8983
+    - 8984
     - 9980
     ports:
     - 7982:7982
     - 8983:8983
+    - 8984:8984
     volumes:
     - ./config:/config
 
