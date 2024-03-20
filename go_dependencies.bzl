@@ -209,20 +209,20 @@ def go_dependencies():
     go_repository(
         name = "com_github_buildbarn_bb_browser",
         importpath = "github.com/buildbarn/bb-browser",
-        sum = "h1:TFrbPxBWXCwVPIu9oIbmmJPGCjc7X+UfuYIt2As/veM=",
-        version = "v0.0.0-20240228152807-ab65d55144ae",
+        sum = "h1:CHnjjCXTIZjs91YjRMlwJv44nckJQOujHNZnWra95vg=",
+        version = "v0.0.0-20240310094611-10b339da6324",
     )
     go_repository(
         name = "com_github_buildbarn_bb_remote_execution",
         importpath = "github.com/buildbarn/bb-remote-execution",
-        sum = "h1:ziHMEhNit+rCTGk05+D9PfWbmVfFN+A/NTynkR2Nnm0=",
-        version = "v0.0.0-20240303174236-9791c09e5e22",
+        sum = "h1:wcGel3yU3FAENqRLzgZkg7xzuwlaY9H+Lphd46u5tyI=",
+        version = "v0.0.0-20240310090416-28dbdbb0a6b0",
     )
     go_repository(
         name = "com_github_buildbarn_bb_storage",
         importpath = "github.com/buildbarn/bb-storage",
-        sum = "h1:fHapKnQQLgJaMxGiBAUCPVHNfD5vV1LDfXqmyClJ6Lc=",
-        version = "v0.0.0-20240227100204-0aa40dfdbead",
+        sum = "h1:e71ZYLQ4QDIVgs/zRX8hNt57d7WomniH2DYZCv8thJ8=",
+        version = "v0.0.0-20240320095126-4bb23aaa40ae",
     )
     go_repository(
         name = "com_github_buildbarn_go_xdr",
@@ -1762,9 +1762,8 @@ def go_dependencies():
     go_repository(
         name = "org_golang_x_sys",
         importpath = "golang.org/x/sys",
-        patches = ["@com_github_buildbarn_bb_storage//:patches/org_golang_x_sys/golang-issue-59357.diff"],
-        sum = "h1:25cE3gD+tdBA7lp7QfhuV+rJiE9YXTcS3VG1SqssI/Y=",
-        version = "v0.17.0",
+        sum = "h1:DBdB3niSjOA/O0blCZBqDefyWNYveAYMNF1Wum0DYQ4=",
+        version = "v0.18.0",
     )
     go_repository(
         name = "org_golang_x_term",

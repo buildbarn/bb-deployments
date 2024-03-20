@@ -1,3 +1,10 @@
+# 2024-03-20
+
+* Rewrite Remote Output Service on top of Google's protocol
+* Using macOS Sonoma 14.4 or later is recommended for NFSv4.0
+* Remove support for FUSE mounts on macOS
+  Use NFS instead.
+
 # 2024-02-28
 
 * Integrate kuberesolver into Buildbarn binaries
