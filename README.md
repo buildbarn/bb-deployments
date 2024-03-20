@@ -157,7 +157,7 @@ remote_execution_extra_platform_properties = [
 ### Goma
 
 It is possible to use `goma`, the buildsystem in the `chromium` project with `Buildbarn`.
-The instructions are available here: [docs/goma.md].
+The instructions are available here: [docs/goma.md](docs/goma.md).
 
 ### Bazel without a remote toolchain
 
