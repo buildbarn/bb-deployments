@@ -18,7 +18,7 @@ spec:
       containers:
       - args:
         - /config/scheduler.jsonnet
-        image: ghcr.io/buildbarn/bb-scheduler:20240303T174236Z-9791c09
+        image: ghcr.io/buildbarn/bb-scheduler:20240310T090416Z-28dbdbb
         name: scheduler
         ports:
         - containerPort: 8982

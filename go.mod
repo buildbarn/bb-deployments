@@ -10,9 +10,9 @@ replace golang.org/x/tools => golang.org/x/tools v0.8.0
 
 require (
 	github.com/bazelbuild/rules_go v0.43.0
-	github.com/buildbarn/bb-browser v0.0.0-20240228152807-ab65d55144ae
-	github.com/buildbarn/bb-remote-execution v0.0.0-20240303174236-9791c09e5e22
-	github.com/buildbarn/bb-storage v0.0.0-20240227100204-0aa40dfdbead
+	github.com/buildbarn/bb-browser v0.0.0-20240310094611-10b339da6324
+	github.com/buildbarn/bb-remote-execution v0.0.0-20240310090416-28dbdbb0a6b0
+	github.com/buildbarn/bb-storage v0.0.0-20240320095126-4bb23aaa40ae
 	mvdan.cc/gofumpt v0.6.0
 )
 
@@ -101,7 +101,7 @@ require (
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/oauth2 v0.16.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
