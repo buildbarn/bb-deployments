@@ -34,9 +34,9 @@ at the top right in the GitHub Actions page.
 
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
-| [bb-browser](https://github.com/buildbarn/bb-browser) [`10b339da63`](https://github.com/buildbarn/bb-browser/commits/10b339da6324b00efb3e8a7cfb95f2f3790bed7f)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20240310T094611Z-10b339d](https://ghcr.io/buildbarn/bb-browser:20240310T094611Z-10b339d)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/8222809916) |
-| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`28dbdbb0a6`](https://github.com/buildbarn/bb-remote-execution/commits/28dbdbb0a6b077cb7f987393ce537b603da3d045)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20240310T090416Z-28dbdbb](https://ghcr.io/buildbarn/bb-runner-installer:20240310T090416Z-28dbdbb)<br/>[ghcr.io/buildbarn/bb-scheduler:20240310T090416Z-28dbdbb](https://ghcr.io/buildbarn/bb-scheduler:20240310T090416Z-28dbdbb)<br/>[ghcr.io/buildbarn/bb-worker:20240310T090416Z-28dbdbb](https://ghcr.io/buildbarn/bb-worker:20240310T090416Z-28dbdbb)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/8220869957) |
-| [bb-storage](https://github.com/buildbarn/bb-storage) [`4bb23aaa40`](https://github.com/buildbarn/bb-storage/commits/4bb23aaa40ae67adc57ea0b4662f8bfb6d747410)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20240320T095126Z-4bb23aa](https://ghcr.io/buildbarn/bb-storage:20240320T095126Z-4bb23aa)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/8356874426) |
+| [bb-browser](https://github.com/buildbarn/bb-browser) [`4d89722364`](https://github.com/buildbarn/bb-browser/commits/4d8972236425ce69f1bdca8da4bc78ce195f67b3)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20240401T204446Z-4d89722](https://ghcr.io/buildbarn/bb-browser:20240401T204446Z-4d89722)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/8513522355) |
+| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`ea22f37f62`](https://github.com/buildbarn/bb-remote-execution/commits/ea22f37f62b885026ad9e1aa0d62deb15dbb454a)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20240401T130706Z-ea22f37](https://ghcr.io/buildbarn/bb-runner-installer:20240401T130706Z-ea22f37)<br/>[ghcr.io/buildbarn/bb-scheduler:20240401T130706Z-ea22f37](https://ghcr.io/buildbarn/bb-scheduler:20240401T130706Z-ea22f37)<br/>[ghcr.io/buildbarn/bb-worker:20240401T130706Z-ea22f37](https://ghcr.io/buildbarn/bb-worker:20240401T130706Z-ea22f37)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/8508471496) |
+| [bb-storage](https://github.com/buildbarn/bb-storage) [`a9d0937955`](https://github.com/buildbarn/bb-storage/commits/a9d0937955fc44f23434b450608c9ebc8405ab05)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20240410T064031Z-a9d0937](https://ghcr.io/buildbarn/bb-storage:20240410T064031Z-a9d0937)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/8627077317) |
 
 ## Changelog
 
@@ -214,7 +214,7 @@ go mod tidy -e
 bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune
 # Format go_dependencies.bzl according to GitHub Actions.
 sed -i '/^$/d' go_dependencies.bzl
-bazelisk run @com_github_bazelbuild_buildtools//:buildifier
+bazelisk run //:buildifier.check
 
 # Update the Kubernetes and Docker compose deployments.
 ./tools/update-container-image-versions.sh
@@ -235,9 +235,9 @@ bazel run //:gazelle
 # Buildifier
 sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new
 mv go_dependencies.bzl.new go_dependencies.bzl
-bazel run @com_github_bazelbuild_buildtools//:buildifier
+bazel run //:buildifier.check
 # Gofmt
-bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.19 -w -extra $(pwd)
+bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.21 -w -extra $PWD
 # Golint
-bazel run @org_golang_x_lint//golint -- -set_exit_status $(pwd)/...
+bazel run @org_golang_x_lint//golint -- -set_exit_status $PWD/...
 ```

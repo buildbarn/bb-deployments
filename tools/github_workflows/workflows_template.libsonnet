@@ -93,11 +93,11 @@
         },
         {
           name: 'Gazelle',
-          run: 'bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune && bazel run //:gazelle',
+          run: 'bazel run //:gazelle',
         },
         {
           name: 'Buildifier',
-          run: "sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new && mv go_dependencies.bzl.new go_dependencies.bzl && bazel run @com_github_bazelbuild_buildtools//:buildifier",
+          run: 'bazel run //:buildifier.check',
         },
         {
           name: 'Gofmt',
@@ -138,7 +138,7 @@
       ] + std.flattenArrays([
         [{
           name: platform.name + ': build and test',
-          run: ('bazel %s --platforms=@io_bazel_rules_go//go/toolchain:%s //...' % [
+          run: ('bazel %s --platforms=@rules_go//go/toolchain:%s //...' % [
                   platform.buildAndTestCommand,
                   platform.name,
                 ]),

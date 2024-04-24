@@ -1,0 +1,155 @@
+module(name = "com_github_buildbarn_bb_deployments")
+
+bazel_dep(name = "abseil-cpp", version = "20240116.2")
+bazel_dep(name = "aspect_bazel_lib", version = "2.6.0")
+bazel_dep(name = "aspect_rules_js", version = "1.39.1")
+bazel_dep(name = "com_github_buildbarn_bb_browser")
+bazel_dep(name = "com_github_buildbarn_bb_remote_execution")
+bazel_dep(name = "com_github_buildbarn_bb_storage")
+bazel_dep(name = "com_github_buildbarn_go_xdr")
+bazel_dep(name = "gazelle", version = "0.35.0")
+bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")
+bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
+bazel_dep(name = "jsonnet_go", version = "0.20.0")
+bazel_dep(name = "opentelemetry-proto", version = "1.1.0")
+bazel_dep(name = "protobuf", version = "26.0")
+bazel_dep(name = "remote_config_cc")
+bazel_dep(name = "rules_antlr")
+bazel_dep(name = "rules_cc", version = "0.0.9")
+bazel_dep(name = "rules_go", version = "0.46.0")
+bazel_dep(name = "rules_jsonnet", version = "0.6.0")
+bazel_dep(name = "rules_oci", version = "1.7.5")
+bazel_dep(name = "rules_pkg", version = "0.10.1")
+bazel_dep(name = "rules_proto", version = "6.0.0-rc2")
+bazel_dep(name = "toolchains_llvm", version = "1.0.0")
+
+bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "grafonnet_lib",
+    build_file_content = """
+load("@rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library")
+
+jsonnet_library(
+    name = "grafonnet",
+    srcs = glob(["grafonnet/*.libsonnet"]),
+    imports = ["."],
+    visibility = ["//visibility:public"],
+)
+""",
+    sha256 = "ef8d75ab8633024f0a214f61e28ca8a5fe384467ce1151587eb812ddf7181e76",
+    strip_prefix = "grafonnet-lib-04f3e87e2d524c7aba936aae525f388290d94291",
+    urls = ["https://github.com/grafana/grafonnet-lib/archive/04f3e87e2d524c7aba936aae525f388290d94291.tar.gz"],
+)
+
+http_archive(
+    name = "abseil-hello",
+    patch_cmds = [
+        "sed -i 's/com_google_absl/abseil-cpp/' BUILD.bazel",
+        "sed -i 's/com_google_googletest/googletest/' BUILD.bazel",
+    ],
+    sha256 = "e676640e69e210636de795f571237bec09a9ad9af6e441bf56f0d193cfe1c9fc",
+    strip_prefix = "abseil-hello-b4803b41ab3d58c503265148e5a7d3fd2a8e46d3/bazel-hello",
+    urls = ["https://github.com/abseil/abseil-hello/archive/b4803b41ab3d58c503265148e5a7d3fd2a8e46d3.zip"],
+)
+
+# Import toolchain repositories for remote executions, but register the
+# toolchains using --extra_toolchains on the command line to get precedence.
+local_path_override(
+    module_name = "remote_config_cc",
+    path = "tools/remote-toolchains/ubuntu-act-22-04/local_config_cc",
+)
+
+git_override(
+    module_name = "com_github_buildbarn_bb_browser",
+    commit = "a644003a557767c736d8b45c9a50e1faf9c2e024",
+    remote = "https://github.com/buildbarn/bb-browser.git",
+)
+
+git_override(
+    module_name = "com_github_buildbarn_bb_remote_execution",
+    commit = "ea22f37f62b885026ad9e1aa0d62deb15dbb454a",
+    remote = "https://github.com/buildbarn/bb-remote-execution.git",
+)
+
+git_override(
+    module_name = "com_github_buildbarn_bb_storage",
+    commit = "a9d0937955fc44f23434b450608c9ebc8405ab05",
+    remote = "https://github.com/buildbarn/bb-storage.git",
+)
+
+git_override(
+    module_name = "com_github_buildbarn_go_xdr",
+    commit = "9cb8426d3e09e301c2b12c993e54ef795a665a92",
+    remote = "https://github.com/buildbarn/go-xdr.git",
+)
+
+git_override(
+    module_name = "rules_antlr",
+    commit = "89a29cca479363a5aee53e203719510bdc6be6ff",
+    patches = [
+        "//:patches/rules_antlr/antlr-4.10.diff",
+        "//:patches/rules_antlr/bzlmod.diff",
+    ],
+    remote = "https://github.com/marcohu/rules_antlr.git",
+)
+
+git_override(
+    module_name = "gazelle",
+    commit = "f5a5c5dc90b4d6a39f0f47d770eba27c6c1c1877",
+    patches = [
+        "//:patches/gazelle/dont-flatten-srcs.diff",
+        "//:patches/gazelle/googleapis.diff",
+    ],
+    remote = "https://github.com/bazelbuild/bazel-gazelle.git",
+)
+
+go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
+go_sdk.download(version = "1.22.1")
+
+go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
+go_deps.from_file(go_mod = "//:go.mod")
+use_repo(
+    go_deps,
+    "cc_mvdan_gofumpt",
+    "org_golang_x_lint",
+)
+
+go_deps_dev = use_extension("@gazelle//:extensions.bzl", "go_deps", dev_dependency = True)
+go_deps_dev.module_override(
+    patches = ["@com_github_buildbarn_bb_browser//:patches/com_github_buildkite_terminal_to_html/assets.diff"],
+    path = "github.com/buildkite/terminal-to-html",
+)
+go_deps_dev.gazelle_override(
+    build_file_generation = "on",
+    directives = [
+        "gazelle:go_grpc_compilers @io_bazel_rules_go//proto:go_proto,@io_bazel_rules_go//proto:go_grpc_v2",
+        "gazelle:resolve proto go build/bazel/semver/semver.proto //build/bazel/semver",
+        "gazelle:resolve proto go google/api/annotations.proto @org_golang_google_genproto_googleapis_api//annotations",
+        "gazelle:resolve proto go google/longrunning/operations.proto @com_google_cloud_go_longrunning//autogen/longrunningpb",
+        "gazelle:resolve proto go google/rpc/status.proto @org_golang_google_genproto_googleapis_rpc//status",
+        "gazelle:resolve proto google/api/annotations.proto @googleapis//google/api:annotations_proto",
+        "gazelle:resolve proto google/longrunning/operations.proto @googleapis//google/longrunning:operations_proto",
+        "gazelle:resolve proto google/rpc/status.proto @googleapis//google/rpc:status_proto",
+    ],
+    path = "github.com/bazelbuild/remote-apis",
+)
+go_deps_dev.module_override(
+    patches = ["@com_github_buildbarn_bb_storage//:patches/org_golang_google_genproto_googleapis_bytestream/service-registrar.diff"],
+    path = "google.golang.org/genproto/googleapis/bytestream",
+)
+go_deps_dev.module_override(
+    patches = [
+        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/direntrylist-offsets-and-testability.diff",
+        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/writeback-cache.diff",
+        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/notify-testability.diff",
+    ],
+    path = "github.com/hanwen/go-fuse/v2",
+)
+
+cc_configure = use_extension("@bazel_tools//tools/cpp:cc_configure.bzl", "cc_configure_extension")
+use_repo(cc_configure, "local_config_cc_toolchains")
+
+register_toolchains("@local_config_cc_toolchains//:all")

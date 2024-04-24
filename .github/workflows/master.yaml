@@ -29,11 +29,11 @@
             },
             {
                "name": "Gazelle",
-               "run": "bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune && bazel run //:gazelle"
+               "run": "bazel run //:gazelle"
             },
             {
                "name": "Buildifier",
-               "run": "sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new && mv go_dependencies.bzl.new go_dependencies.bzl && bazel run @com_github_bazelbuild_buildtools//:buildifier"
+               "run": "bazel run //:buildifier.check"
             },
             {
                "name": "Gofmt",
@@ -73,35 +73,35 @@
             },
             {
                "name": "linux_amd64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:linux_amd64 //..."
             },
             {
                "name": "linux_386: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_386 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:linux_386 //..."
             },
             {
                "name": "linux_arm: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:linux_arm //..."
             },
             {
                "name": "linux_arm64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_arm64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:linux_arm64 //..."
             },
             {
                "name": "darwin_amd64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:darwin_amd64 //..."
             },
             {
                "name": "darwin_arm64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_arm64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:darwin_arm64 //..."
             },
             {
                "name": "freebsd_amd64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:freebsd_amd64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:freebsd_amd64 //..."
             },
             {
                "name": "windows_amd64: build and test",
-               "run": "bazel build --platforms=@io_bazel_rules_go//go/toolchain:windows_amd64 //..."
+               "run": "bazel build --platforms=@rules_go//go/toolchain:windows_amd64 //..."
             }
          ]
       }

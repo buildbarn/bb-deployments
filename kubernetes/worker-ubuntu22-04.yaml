@@ -21,7 +21,7 @@ spec:
       containers:
       - args:
         - /config/worker-ubuntu22-04.jsonnet
-        image: ghcr.io/buildbarn/bb-worker:20240310T090416Z-28dbdbb
+        image: ghcr.io/buildbarn/bb-worker:20240401T130706Z-ea22f37
         name: worker
         volumeMounts:
         - mountPath: /config/
@@ -55,7 +55,7 @@ spec:
           readOnly: true
       initContainers:
       - name: bb-runner-installer
-        image: ghcr.io/buildbarn/bb-runner-installer:20240310T090416Z-28dbdbb
+        image: ghcr.io/buildbarn/bb-runner-installer:20240401T130706Z-ea22f37
         volumeMounts:
         - mountPath: /bb/
           name: empty

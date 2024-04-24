@@ -1,4 +1,4 @@
-load("@io_bazel_rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library", "jsonnet_to_json")
+load("@rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library", "jsonnet_to_json")
 
 jsonnet_library(
     name = "grpc",
@@ -8,7 +8,7 @@ jsonnet_library(
 jsonnet_library(
     name = "simpledash",
     srcs = ["simpledash.libsonnet"],
-    deps = ["@com_github_grafana_grafonnet_lib//:grafonnet"],
+    deps = ["@grafonnet_lib//:grafonnet"],
 )
 
 [

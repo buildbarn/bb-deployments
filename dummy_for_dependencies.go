@@ -9,10 +9,11 @@
 package dummyforgomod
 
 import (
-	"github.com/buildbarn/bb-browser/cmd/bb_browser"
-	"github.com/buildbarn/bb-remote-execution/cmd/bb_runner"
-	"github.com/buildbarn/bb-remote-execution/cmd/bb_scheduler"
-	"github.com/buildbarn/bb-remote-execution/cmd/bb_worker"
-	"github.com/buildbarn/bb-storage/cmd/bb_storage"
-	"mvdan.cc/gofumpt" // GitHub Workflow
+	_ "github.com/buildbarn/bb-browser/cmd/bb_browser"            // bb-browser
+	_ "github.com/buildbarn/bb-remote-execution/cmd/bb_runner"    // bb-runner
+	_ "github.com/buildbarn/bb-remote-execution/cmd/bb_scheduler" // bb-scheduler
+	_ "github.com/buildbarn/bb-remote-execution/cmd/bb_worker"    // bb-worker
+	_ "github.com/buildbarn/bb-storage/cmd/bb_storage"            // bb-stogare
+	_ "golang.org/x/lint"                                         // GitHub Workflow
+	_ "mvdan.cc/gofumpt"                                          // GitHub Workflow
 )
