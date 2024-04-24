@@ -1,7 +1,7 @@
+load(":constraints.bzl", "HOST_CONSTRAINTS")
+
 # DO NOT EDIT: automatically generated BUILD file for local_config_platform
 package(default_visibility = ["//visibility:public"])
-
-load(":constraints.bzl", "HOST_CONSTRAINTS")
 
 platform(
     name = "host",

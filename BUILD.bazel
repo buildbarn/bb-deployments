@@ -1,8 +1,18 @@
-load("@bazel_gazelle//:def.bzl", "gazelle")
-load("@com_github_bazelbuild_buildtools//buildifier:def.bzl", "buildifier")
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+load("@gazelle//:def.bzl", "gazelle")
 
 # gazelle:prefix github.com/buildbarn/bb-deployments
 # gazelle:exclude dummy_for_dependencies.go
 gazelle(
     name = "gazelle",
+)
+
+buildifier(
+    name = "buildifier.check",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    lint_mode = "warn",
+    lint_warnings = ["-module-docstring"],
+    mode = "diff",
 )

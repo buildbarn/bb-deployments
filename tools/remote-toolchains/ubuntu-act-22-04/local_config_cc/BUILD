@@ -14,17 +14,13 @@
 
 # This becomes the BUILD file for @local_config_cc// under non-FreeBSD unixes.
 
+load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
+load(":armeabi_cc_toolchain_config.bzl", "armeabi_cc_toolchain_config")
+load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+
 package(default_visibility = ["//visibility:public"])
 
-load(":cc_toolchain_config.bzl", "cc_toolchain_config")
-load(":armeabi_cc_toolchain_config.bzl", "armeabi_cc_toolchain_config")
-load("@rules_cc//cc:defs.bzl", "cc_toolchain", "cc_toolchain_suite")
-
 licenses(["notice"])  # Apache 2.0
-
-cc_library(
-    name = "malloc",
-)
 
 filegroup(
     name = "empty",
