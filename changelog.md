@@ -1,3 +1,11 @@
+# 2024-06-27
+
+* Better support for windows paths in the filesystem layer
+* Update to Bazel 7.2.0 and Go 1.22.4
+* JWT: Add a signature generator for Ed25519
+* Add support for TLS to HTTP servers
+* Build and use multi-architecture container images.
+
 # 2024-03-20
 
 * Rewrite Remote Output Service on top of Google's protocol

@@ -64,25 +64,25 @@ local_path_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_browser",
-    commit = "a644003a557767c736d8b45c9a50e1faf9c2e024",
+    commit = "f0fbe96530b0ea1e021ebf7230654fea8f049252",
     remote = "https://github.com/buildbarn/bb-browser.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    commit = "ea22f37f62b885026ad9e1aa0d62deb15dbb454a",
+    commit = "2bcc408397c4653598e2714a0206f909948b9b48",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
-    commit = "a9d0937955fc44f23434b450608c9ebc8405ab05",
+    commit = "221b6361e1782acb258afc37f4a8642ac333e301",
     remote = "https://github.com/buildbarn/bb-storage.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_go_xdr",
-    commit = "9cb8426d3e09e301c2b12c993e54ef795a665a92",
+    commit = "db84b3d958968890d3370a7a176a802f564b85e7",
     remote = "https://github.com/buildbarn/go-xdr.git",
 )
 
@@ -99,6 +99,7 @@ git_override(
 git_override(
     module_name = "gazelle",
     commit = "f5a5c5dc90b4d6a39f0f47d770eba27c6c1c1877",
+    init_submodules = True,
     patches = [
         "//:patches/gazelle/dont-flatten-srcs.diff",
         "//:patches/gazelle/googleapis.diff",
