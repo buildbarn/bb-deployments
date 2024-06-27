@@ -135,6 +135,10 @@
           name: 'Test Kubernetes deployment',
           run: 'tools/test-deployment-kubernetes',
         },
+        {
+          name: 'bazel mod integrity',
+          run: 'bazel mod graph',
+        },
       ] + std.flattenArrays([
         [{
           name: platform.name + ': build and test',
