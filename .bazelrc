@@ -37,3 +37,5 @@ build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/remote-toolchains:
 
 # When running bare executors on your own host machine.
 build:remote-local --config=remote-exec
+
+common --incompatible_enable_proto_toolchain_resolution
