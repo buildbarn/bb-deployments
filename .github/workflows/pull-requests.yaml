@@ -72,6 +72,10 @@
                "run": "tools/test-deployment-kubernetes"
             },
             {
+               "name": "bazel mod integrity",
+               "run": "bazel mod graph"
+            },
+            {
                "name": "linux_amd64: build and test",
                "run": "bazel build --platforms=@rules_go//go/toolchain:linux_amd64 //..."
             },
