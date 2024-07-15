@@ -1,3 +1,10 @@
+# 2024-07-15
+
+* Make input root population for hardlinking workers run in parallel
+* Automatic negotiation of NFSv4 minor version
+* Add an NFSv4.1 server
+* Better support for Windows filesystem operations
+
 # 2024-06-27
 
 * Better support for windows paths in the filesystem layer

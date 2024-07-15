@@ -93,6 +93,7 @@ local common = import 'common.libsonnet';
       },
     },
   },
+  inputDownloadConcurrency: 10,
   outputUploadConcurrency: 11,
   directoryCache: {
     maximumCount: 1000,

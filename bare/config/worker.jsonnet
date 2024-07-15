@@ -15,7 +15,7 @@ local common = import 'common.libsonnet';
       cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
     },
     runners: [{
-      # https://github.com/grpc/grpc/blob/master/doc/naming.md
+      // https://github.com/grpc/grpc/blob/master/doc/naming.md
       endpoint: { address: 'unix:worker/runner' },
       concurrency: 8,
       platform: {},
@@ -27,6 +27,7 @@ local common = import 'common.libsonnet';
       },
     }],
   }],
+  inputDownloadConcurrency: 10,
   outputUploadConcurrency: 11,
   directoryCache: {
     maximumCount: 1000,

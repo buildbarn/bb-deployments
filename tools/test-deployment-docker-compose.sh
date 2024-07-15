@@ -9,9 +9,9 @@ cd "${script_dir}/../docker-compose"
 cleanup() {
     EXIT_STATUS=$?
     if [ "$EXIT_STATUS" -ne "0" ]; then
-        docker-compose logs
+        docker compose logs
     fi
-    docker-compose down --remove-orphans || true
+    docker compose down --remove-orphans || true
     exit $EXIT_STATUS
 }
 trap cleanup EXIT
@@ -38,8 +38,8 @@ grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
     | grep -v 'remote cache hit'
 
 # --- Check that we get cache hit even after rebooting the server ---
-docker-compose down
-docker-compose up -d --force-recreate
+docker compose down
+docker compose up -d --force-recreate
 
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --disk_cache= @abseil-hello//:hello_test

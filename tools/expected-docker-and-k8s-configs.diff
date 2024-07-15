@@ -59,7 +59,7 @@ index 7e0103f..7f08b6d 100644
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
 diff --git a/kubernetes/config/worker-ubuntu22-04.jsonnet b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
-index 4e712e0..3d24b61 100644
+index 50cabe5..ab10376 100644
 --- a/kubernetes/config/worker-ubuntu22-04.jsonnet
 +++ b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
 @@ -1,13 +1,14 @@
