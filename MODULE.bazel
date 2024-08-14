@@ -7,7 +7,7 @@ bazel_dep(name = "com_github_buildbarn_bb_browser")
 bazel_dep(name = "com_github_buildbarn_bb_remote_execution")
 bazel_dep(name = "com_github_buildbarn_bb_storage")
 bazel_dep(name = "com_github_buildbarn_go_xdr")
-bazel_dep(name = "gazelle", version = "0.35.0")
+bazel_dep(name = "gazelle", version = "0.37.0")
 bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "jsonnet_go", version = "0.20.0")
@@ -79,13 +79,13 @@ git_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    commit = "f6cf6bb8e5e354f49d657dd72a2c1a15ab88dcec",
+    commit = "9850e82ad7d875aa2ab183a5a08d79725c10fa16",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
-    commit = "24d544b34a866f55838d576a0b110f4495f04450",
+    commit = "3f5e30c53d7b52036eb758a63bc98e706f5d4d5c",
     remote = "https://github.com/buildbarn/bb-storage.git",
 )
 
@@ -107,8 +107,7 @@ git_override(
 
 git_override(
     module_name = "gazelle",
-    commit = "f5a5c5dc90b4d6a39f0f47d770eba27c6c1c1877",
-    init_submodules = True,
+    commit = "4d0129d7adae33e8e648d3624aff8fa8f93f375b",
     patches = [
         "//:patches/gazelle/dont-flatten-srcs.diff",
         "//:patches/gazelle/googleapis.diff",
@@ -117,7 +116,7 @@ git_override(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.22.1")
+go_sdk.download(version = "1.22.4")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//:go.mod")
