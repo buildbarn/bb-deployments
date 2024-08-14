@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: ghcr.io/buildbarn/bb-storage:20240714T184744Z-24d544b
+    image: ghcr.io/buildbarn/bb-storage:20240810T092106Z-3f5e30c
     command:
     - /config/frontend.jsonnet
     expose:
@@ -12,7 +12,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: ghcr.io/buildbarn/bb-storage:20240714T184744Z-24d544b
+    image: ghcr.io/buildbarn/bb-storage:20240810T092106Z-3f5e30c
     command:
     - /config/storage.jsonnet
     expose:
@@ -24,7 +24,7 @@ services:
     - ./volumes/storage-cas-0:/storage-cas
 
   storage-1:
-    image: ghcr.io/buildbarn/bb-storage:20240714T184744Z-24d544b
+    image: ghcr.io/buildbarn/bb-storage:20240810T092106Z-3f5e30c
     command:
     - /config/storage.jsonnet
     expose:
@@ -36,7 +36,7 @@ services:
     - ./volumes/storage-cas-1:/storage-cas
 
   scheduler:
-    image: ghcr.io/buildbarn/bb-scheduler:20240715T102010Z-f6cf6bb
+    image: ghcr.io/buildbarn/bb-scheduler:20240716T044555Z-9850e82
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -63,13 +63,13 @@ services:
     - ./config:/config
 
   runner-installer:
-    image: ghcr.io/buildbarn/bb-runner-installer:20240715T102010Z-f6cf6bb
+    image: ghcr.io/buildbarn/bb-runner-installer:20240716T044555Z-9850e82
     volumes:
     - ./volumes/bb:/bb
 
   # The FUSE worker is the most efficient configuration.
   worker-fuse-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20240715T102010Z-f6cf6bb
+    image: ghcr.io/buildbarn/bb-worker:20240716T044555Z-9850e82
     command:
     - /config/worker-fuse-ubuntu22-04.jsonnet
     # Need to be privileged for the FUSE mounting to work.
@@ -105,7 +105,7 @@ services:
   # For situations where the more efficient FUSE worker is not supported,
   # the classic hardlinking example is shown here.
   worker-hardlinking-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20240715T102010Z-f6cf6bb
+    image: ghcr.io/buildbarn/bb-worker:20240716T044555Z-9850e82
     command:
     - /config/worker-hardlinking-ubuntu22-04.jsonnet
     privileged: false

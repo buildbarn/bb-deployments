@@ -1,3 +1,7 @@
+# 2024-08-14
+
+* Freshen up Windows Workers
+
 # 2024-07-15
 
 * Make input root population for hardlinking workers run in parallel
