@@ -34,6 +34,7 @@ kubectl rollout status --watch --namespace=buildbarn --timeout=300s deployment
 kubectl rollout status --watch --namespace=kube-system --timeout=300s statefulset
 kubectl rollout status --watch --namespace=kube-system --timeout=300s deployment
 kubectl rollout status --watch --namespace=kube-system --timeout=300s daemonset
+kubectl wait -n kube-system --for=jsonpath='{.status.loadBalancer.ingress}' service/traefik
 
 # Find the frontend.
 bb_frontend_ip=$(kubectl get service --namespace=buildbarn frontend -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
