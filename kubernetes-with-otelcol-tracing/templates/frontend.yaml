@@ -1,0 +1,110 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Values.baseName }}-frontend
+  namespace: {{ $.Values.namespace }}
+spec:
+  replicas: {{ $.Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $.Values.baseName }}
+      app.kubernetes.io/component: frontend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: frontend
+      annotations:
+        checksum/common.config: {{ include (print $.Template.BasePath "/config/common.yaml") . | sha256sum }}
+        checksum/frontend.config: {{ include (print $.Template.BasePath "/config/frontend.yaml") . | sha256sum }}
+        ad.datadoghq.com/frontend.check_names: |
+          ["openmetrics"]
+        ad.datadoghq.com/frontend.init_configs: |
+          [{}]
+        ad.datadoghq.com/frontend.instances: |
+          [
+            {
+              "prometheus_url": "http://%%host%%:%%port_http%%/metrics",
+              "namespace": "buildbarn",
+              "metrics": ["*"]
+            }
+          ]
+        ad.datadoghq.com/frontend.logs: |
+          [{
+            "source": "buildbarn",
+            "service": "frontend",
+          }]
+    spec:
+      serviceAccount: {{ $.Values.baseName }}
+      containers:
+      - name: frontend
+        args:
+        - /config/frontend.jsonnet
+        image: '{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}'
+        ports:
+        - containerPort: {{ .Values.frontend.port }}
+          protocol: TCP
+        - containerPort: {{ .Values.frontend.prometheusPort }}
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /config/frontend.jsonnet
+          subPath: frontend.jsonnet
+          readOnly: true
+        - name: common
+          mountPath: /config/common.libsonnet
+          subPath: common.libsonnet
+          readOnly: true
+        {{- if .Values.frontend.resources }}
+        resources:
+{{ toYaml .Values.frontend.resources | indent 10 }}
+        {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: {{ $.Values.baseName }}-frontend
+      - name: common
+        configMap:
+          name: {{ $.Values.baseName }}-common
+      - name: certs
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.baseName }}-frontend
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/component: frontend
+spec:
+  ports:
+  - name: grpc
+    port: {{ .Values.frontend.port }}
+    protocol: TCP
+  - name: http
+    port: {{ .Values.frontend.prometheusPort }}
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ $.Values.baseName }}
+    app.kubernetes.io/component: frontend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.baseName }}-frontend-headless
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/component: frontend
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: {{ .Values.frontend.port }}
+    protocol: TCP
+  - name: http
+    port: {{ .Values.frontend.prometheusPort }}
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ $.Values.baseName }}
+    app.kubernetes.io/component: frontend
