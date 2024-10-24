@@ -1,3 +1,8 @@
+# 2024-10-24
+
+* Use more dependencies through modules and avoid a few patches
+* Improved TLS Cert handling
+
 # 2024-08-14
 
 * Freshen up Windows Workers
