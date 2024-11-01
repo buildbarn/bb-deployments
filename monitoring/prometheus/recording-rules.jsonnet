@@ -35,20 +35,20 @@
 
         // Statistics on retention of centralized storage.
         {
-          expr: 'min(time() - buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}) by (kubernetes_replica, kubernetes_shard, storage_type)',
-          record: 'kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds',
+          expr: 'min(time() - buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}) by (kubernetes_replica, kubernetes_shard, storage_type)',
+          record: 'kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds',
         },
         {
-          expr: 'min(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_replica, storage_type)',
-          record: 'kubernetes_replica_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+          expr: 'min(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_replica, storage_type)',
+          record: 'kubernetes_replica_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
         },
         {
-          expr: 'max(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
-          record: 'kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
+          expr: 'max(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
+          record: 'kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
         },
         {
-          expr: 'min(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
-          record: 'kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+          expr: 'min(kubernetes_replica_kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds) by (kubernetes_shard, storage_type)',
+          record: 'kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
         },
         {
           expr: 'sum(irate(buildbarn_blobstore_hashing_key_location_map_get_attempts_count{job="kubernetes-service-endpoints",kubernetes_service="bb-storage"}[1m])) by (storage_type, outcome)',
