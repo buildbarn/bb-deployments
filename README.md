@@ -225,3 +225,29 @@ bazel run @cc_mvdan_gofumpt//:gofumpt -- -lang 1.21 -w -extra $PWD
 # Golint
 bazel run @org_golang_x_lint//golint -- -set_exit_status $PWD/...
 ```
+
+## CI: Manual adjustments
+
+### The module lock file sometime changes
+
+It is annoying to keep it up-to date. It seems to depend on the host system setup.
+The best way to solve CI errors is just to download the suggested patch from the action and apply it directly.
+
+* Open the failing Github action.
+* Click 'Download log archive' in the cog menu in the upper right.
+* Unpack the archive.
+* Format a useful patch from `logs/build_and_test/13_Test style conformance.txt`.
+
+Rough inspiration:
+```
+cp ~/Downloads/logs_*.zip .
+aunpack logs_*.zip
+cp logs_*/build_and_test/'13_Test style conformance.txt' lockfile.patch
+# Remove git action metadata
+sed -i -e '1,4d' -e '$d' lockfile.patch
+# Remove timestamps
+sed -i -E 's/^.{29}//' lockfile.patch
+
+git apply lockfile.patch
+git add lockfile.patch
+```
