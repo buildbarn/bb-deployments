@@ -29,17 +29,17 @@ simpledash.dashboard(
   rows=[
     showRetentionRow(
       title='Per-replica worst shard retention: whether it is safe to restart the other replica',
-      targetMetric='kubernetes_replica_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+      targetMetric='kubernetes_replica_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
       targetLegendFormat='{{kubernetes_replica}}',
     ),
     showRetentionRow(
       title='Per-shard best replica retention: amount of data accessible right now',
-      targetMetric='kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
+      targetMetric='kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:max',
       targetLegendFormat='{{kubernetes_shard}}',
     ),
     showRetentionRow(
       title='Per-shard worst replica retention: amount of data to remain accessible if a replica were to crash',
-      targetMetric='kubernetes_shard_storage_type:buildbarn_blobstore_old_new_current_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
+      targetMetric='kubernetes_shard_storage_type:buildbarn_blobstore_old_current_new_location_blob_map_last_removed_old_block_insertion_time_seconds:min',
       targetLegendFormat='{{kubernetes_shard}}',
     ),
 
