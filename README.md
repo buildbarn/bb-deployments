@@ -35,8 +35,8 @@ at the top right in the GitHub Actions page.
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
 | [bb-browser](https://github.com/buildbarn/bb-browser) [`af89e4bc66`](https://github.com/buildbarn/bb-browser/commits/af89e4bc66f01ec022f8473a0068b8b6866662e2)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20240930T111151Z-af89e4b](https://ghcr.io/buildbarn/bb-browser:20240930T111151Z-af89e4b)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/11104924905) |
-| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`2c788ba32d`](https://github.com/buildbarn/bb-remote-execution/commits/2c788ba32d1e2d5416002db8a361556eb02de469)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20241010T174523Z-2c788ba](https://ghcr.io/buildbarn/bb-runner-installer:20241010T174523Z-2c788ba)<br/>[ghcr.io/buildbarn/bb-scheduler:20241010T174523Z-2c788ba](https://ghcr.io/buildbarn/bb-scheduler:20241010T174523Z-2c788ba)<br/>[ghcr.io/buildbarn/bb-worker:20241010T174523Z-2c788ba](https://ghcr.io/buildbarn/bb-worker:20241010T174523Z-2c788ba)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/11279270098) |
-| [bb-storage](https://github.com/buildbarn/bb-storage) [`0941111f29`](https://github.com/buildbarn/bb-storage/commits/0941111f29e31905e4081e6262bccf0c123940ed)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20241007T042721Z-0941111](https://ghcr.io/buildbarn/bb-storage:20241007T042721Z-0941111)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/11208671455) |
+| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`8a43a77493`](https://github.com/buildbarn/bb-remote-execution/commits/8a43a7749390a8253a1cf17bae37cc2fe8617dad)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20241030T155505Z-8a43a77](https://ghcr.io/buildbarn/bb-runner-installer:20241030T155505Z-8a43a77)<br/>[ghcr.io/buildbarn/bb-scheduler:20241030T155505Z-8a43a77](https://ghcr.io/buildbarn/bb-scheduler:20241030T155505Z-8a43a77)<br/>[ghcr.io/buildbarn/bb-worker:20241030T155505Z-8a43a77](https://ghcr.io/buildbarn/bb-worker:20241030T155505Z-8a43a77)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/11596945646) |
+| [bb-storage](https://github.com/buildbarn/bb-storage) [`9cc3bc2af0`](https://github.com/buildbarn/bb-storage/commits/9cc3bc2af044eab9a9e11c9f461b0c1e7fc992f2)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20241117T113434Z-9cc3bc2](https://ghcr.io/buildbarn/bb-storage:20241117T113434Z-9cc3bc2)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/11878499223) |
 
 ## Changelog
 
@@ -249,5 +249,5 @@ sed -i -e '1,4d' -e '$d' lockfile.patch
 sed -i -E 's/^.{29}//' lockfile.patch
 
 git apply lockfile.patch
-git add lockfile.patch
+git add MODULE.bazel.lock
 ```

@@ -1,29 +1,31 @@
 module(name = "com_github_buildbarn_bb_deployments")
 
 bazel_dep(name = "abseil-cpp", version = "20240116.2")
-bazel_dep(name = "aspect_bazel_lib", version = "2.8.1")
-bazel_dep(name = "aspect_rules_js", version = "2.0.1")
-bazel_dep(name = "bazel_remote_apis", version = "0.0.0")
+bazel_dep(name = "aspect_bazel_lib", version = "2.9.4")
+bazel_dep(name = "aspect_rules_js", version = "2.1.0")
+bazel_dep(name = "bazel_remote_apis", version = "0")
 bazel_dep(name = "com_github_buildbarn_bb_browser")
 bazel_dep(name = "com_github_buildbarn_bb_remote_execution")
 bazel_dep(name = "com_github_buildbarn_bb_storage")
 bazel_dep(name = "com_github_buildbarn_go_xdr")
-bazel_dep(name = "gazelle", version = "0.38.0")
-bazel_dep(name = "googleapis", version = "0.0.0-20240326-1c8d509c5")
+bazel_dep(name = "gazelle", version = "0.40.0")
+bazel_dep(name = "googleapis", version = "0.0.0-20240819-fe8ba054a")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "jsonnet_go", version = "0.20.0")
 bazel_dep(name = "opentelemetry-proto", version = "1.3.2")
-bazel_dep(name = "protobuf", version = "27.3")
+bazel_dep(name = "protobuf", version = "28.3")
 bazel_dep(name = "remote_config_cc")
 bazel_dep(name = "rules_antlr")
 bazel_dep(name = "rules_cc", version = "0.0.9")
-bazel_dep(name = "rules_go", version = "0.50.0")
+bazel_dep(name = "rules_go", version = "0.50.1")
 bazel_dep(name = "rules_jsonnet", version = "0.6.0")
-bazel_dep(name = "rules_oci", version = "1.8.0")
+bazel_dep(name = "rules_oci", version = "2.0.1")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
+
+# NB 2024-11-18: rules_proto is 7.0.2 in bb-storage, but held back to be compatible with bb-remote-execution.
 bazel_dep(name = "rules_proto", version = "6.0.2")
-bazel_dep(name = "toolchains_llvm", version = "1.1.2")
-bazel_dep(name = "toolchains_protoc", version = "0.3.1")
+bazel_dep(name = "toolchains_llvm", version = "1.2.0")
+bazel_dep(name = "toolchains_protoc", version = "0.3.4")
 
 # # Workarounds 2026-06-27
 # ERROR: in tag at https://bcr.bazel.build/modules/grpc-java/1.62.2/MODULE.bazel:89:15: no repository visible as '@com_google_protobuf_javalite' to the repository '@@grpc-java~', but referenced by label '@com_google_protobuf_javalite//:protobuf_javalite' in attribute 'target' of tag 'override'. Is the module 'grpc-java' missing a bazel_dep or use_repo(..., "com_google_protobuf_javalite")?
@@ -75,8 +77,8 @@ local_path_override(
 
 git_override(
     module_name = "bazel_remote_apis",
-    # commit = "de1d77b12feb81f96909f0410991c3c966d9d8e7",  # bb-storage
-    commit = "a6328f5026d3b2ae27bd8efd86a0f1057ccab361",  # bb-remote-execution
+    commit = "253013303c9e1d52ebdeb5a3f0f869919e882f20",  # bb-storage
+    # commit = "a6328f5026d3b2ae27bd8efd86a0f1057ccab361",  # bb-remote-execution
     remote = "https://github.com/bazelbuild/remote-apis.git",
 )
 
@@ -88,13 +90,13 @@ git_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    commit = "2c788ba32d1e2d5416002db8a361556eb02de469",
+    commit = "8a43a7749390a8253a1cf17bae37cc2fe8617dad",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
-    commit = "0941111f29e31905e4081e6262bccf0c123940ed",
+    commit = "9cc3bc2af044eab9a9e11c9f461b0c1e7fc992f2",
     remote = "https://github.com/buildbarn/bb-storage.git",
 )
 
@@ -121,7 +123,7 @@ git_override(
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.23.0")
+go_sdk.download(version = "1.23.3")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//:go.mod")
@@ -165,6 +167,13 @@ go_deps_dev.module_override(
         "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/notify-testability.diff",
     ],
     path = "github.com/hanwen/go-fuse/v2",
+)
+
+# NB 2024-11-18: Solve issues with BUILD file paths in xds.
+# https://github.com/cncf/xds/issues/104
+go_deps_dev.gazelle_override(
+    build_file_generation = "on",
+    path = "github.com/cncf/xds/go",
 )
 
 cc_configure = use_extension("@bazel_tools//tools/cpp:cc_configure.bzl", "cc_configure_extension")
