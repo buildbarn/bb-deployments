@@ -1,3 +1,8 @@
+# 2024-11-12
+
+* Double the number of KeyLocationMap attempts
+* Rename Grafana metric name "old_current_new" to "old_new_current"
+
 # 2024-10-24
 
 * Use more dependencies through modules and avoid a few patches
