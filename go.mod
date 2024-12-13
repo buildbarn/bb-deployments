@@ -5,8 +5,8 @@ go 1.23.0
 // https://github.com/grpc-ecosystem/grpc-gateway/commit/5f9757f31b517d98095209636b2b88cd6326572f
 // replace github.com/grpc-ecosystem/grpc-gateway/v2 => github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.1
 
-// Gazelle does not like newer versions.
-replace golang.org/x/tools => golang.org/x/tools v0.8.0
+// https://github.com/bazel-contrib/rules_go/issues/4170
+replace golang.org/x/tools => golang.org/x/tools v0.26.0
 
 // Using the most recent version causes a cyclic dependency in protoc.
 replace google.golang.org/protobuf => google.golang.org/protobuf v1.32.0
@@ -24,8 +24,8 @@ replace cloud.google.com/go/storage v1.45.0 => cloud.google.com/go/storage v1.43
 require (
 	github.com/bazelbuild/rules_go v0.49.0
 	github.com/buildbarn/bb-browser v0.0.0-20240930111151-af89e4bc66f0
-	github.com/buildbarn/bb-remote-execution v0.0.0-20241030155505-8a43a7749390
-	github.com/buildbarn/bb-storage v0.0.0-20241117113434-9cc3bc2af044
+	github.com/buildbarn/bb-remote-execution v0.0.0-20241215094620-d03d5e3708ed
+	github.com/buildbarn/bb-storage v0.0.0-20241212082716-078d9d76e0f0
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067
 	mvdan.cc/gofumpt v0.7.0
 )
