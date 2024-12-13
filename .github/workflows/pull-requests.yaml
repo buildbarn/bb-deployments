@@ -29,7 +29,7 @@
             },
             {
                "name": "Gazelle",
-               "run": "bazel run //:gazelle"
+               "run": "set -x; ls -la ~/.cache/bazelisk; echo $HOME; echo $PATH; ls -la /usr/local/bin/bazel; which -a bazel; cat .bazelversion; USE_BAZEL_VERSION=7.2.0 ~/.cache/bazelisk/bazel version; bazel run //:gazelle"
             },
             {
                "name": "Buildifier",

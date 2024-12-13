@@ -93,7 +93,7 @@
         },
         {
           name: 'Gazelle',
-          run: 'bazel run //:gazelle',
+          run: 'which bazel; bazel run //:gazelle',
         },
         {
           name: 'Buildifier',
