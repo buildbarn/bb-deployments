@@ -57,25 +57,6 @@
       'runs-on': 'ubuntu-latest',
       steps: [
         {
-          name: 'Restore Bazelisk cache',
-          uses: 'actions/cache@v1',
-          with: { key: 'bazelisk', path: '~/.cache/bazelisk' },
-        },
-        {
-          name: 'Installing Bazelisk',
-          run: |||
-            bazelisk_fingerprint=231ec5ca8115e94c75a1f4fbada1a062b48822ca04f21f26e4cb1cd8973cd458 &&
-            (echo "${bazelisk_fingerprint} ${HOME}/.cache/bazelisk/bazel" | sha256sum --check --quiet) || (
-              mkdir -p ~/.cache/bazelisk &&
-              curl -L https://github.com/bazelbuild/bazelisk/releases/download/v1.11.0/bazelisk-linux-amd64 > ~/.cache/bazelisk/bazelisk.tmp &&
-              chmod +x ~/.cache/bazelisk/bazelisk.tmp &&
-              mv ~/.cache/bazelisk/bazelisk.tmp ~/.cache/bazelisk/bazel
-            ) &&
-            (echo "${bazelisk_fingerprint} ${HOME}/.cache/bazelisk/bazel" | sha256sum --check --quiet) &&
-            echo "~/.cache/bazelisk" >> ${GITHUB_PATH}
-          |||,
-        },
-        {
           name: 'Installing grpcurl',
           run: |||
             mkdir -p ~/.cache/grpcurl &&
@@ -90,6 +71,10 @@
         {
           name: 'Check out source code',
           uses: 'actions/checkout@v1',
+        },
+        {
+          name: 'Installing Bazel',
+          run: 'v=$(cat .bazelversion) && curl -L https://github.com/bazelbuild/bazel/releases/download/${v}/bazel-${v}-linux-x86_64 > ~/bazel && chmod +x ~/bazel && echo ~ >> ${GITHUB_PATH}',
         },
         {
           name: 'Gazelle',

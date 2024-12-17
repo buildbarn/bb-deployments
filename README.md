@@ -242,7 +242,7 @@ Rough inspiration:
 ```
 cp ~/Downloads/logs_*.zip .
 aunpack logs_*.zip
-cp logs_*/build_and_test/'13_Test style conformance.txt' lockfile.patch
+cp logs_*/build_and_test/*'_Test style conformance.txt' lockfile.patch
 # Remove git action metadata
 sed -i -e '1,4d' -e '$d' lockfile.patch
 # Remove timestamps
