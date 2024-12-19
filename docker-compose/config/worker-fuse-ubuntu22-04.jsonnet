@@ -60,7 +60,7 @@ local common = import 'common.libsonnet';
           directoryEntryValidity: '300s',
           inodeAttributeValidity: '300s',
           allowOther: true,
-          directMount: true,
+          mountMethod: 'DIRECT',
         },
       },
     },

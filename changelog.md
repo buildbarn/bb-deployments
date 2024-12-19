@@ -1,3 +1,8 @@
+# 2024-12-18
+
+* Change FUSE mount to not fallback to 'fusermount'
+  https://github.com/buildbarn/bb-remote-execution/commit/d03d5e3708ed851f7ec73a92e8ba155a97d88793
+
 # 2024-11-12
 
 * Double the number of KeyLocationMap attempts
