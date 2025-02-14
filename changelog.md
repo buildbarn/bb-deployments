@@ -1,3 +1,11 @@
+# 2025-02-19
+
+* Upgrade to Bazel 8 and Go 1.24.0
+* Enable round robin option in grpc client
+* Add grpc code to metrics replicator
+* Add missing label on replicator metrics and unit tests
+* Emit additional metrics on replicate blobs and refresh blobs
+
 # 2024-12-18
 
 * Change FUSE mount to not fallback to 'fusermount'
