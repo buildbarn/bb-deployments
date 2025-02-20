@@ -1,4 +1,4 @@
-load("@bazel_tools//tools/sh:sh_toolchain.bzl", "sh_toolchain")
+load("@rules_shell//shell/toolchains:sh_toolchain.bzl", "sh_toolchain")
 
 sh_toolchain(
     name = "local_sh",
