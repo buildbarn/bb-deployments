@@ -16,6 +16,7 @@ bazel_dep(name = "opentelemetry-proto", version = "1.5.0")
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "protobuf", version = "29.3")
 bazel_dep(name = "remote_config_cc")
+bazel_dep(name = "remote_config_sh")
 bazel_dep(name = "rules_antlr")
 bazel_dep(name = "rules_cc", version = "0.0.17")
 bazel_dep(name = "rules_go", version = "0.53.0")
@@ -94,6 +95,11 @@ http_archive(
 local_path_override(
     module_name = "remote_config_cc",
     path = "tools/remote-toolchains/ubuntu-act-22-04/local_config_cc",
+)
+
+local_path_override(
+    module_name = "remote_config_sh",
+    path = "tools/remote-toolchains/ubuntu-act-22-04/local_config_sh",
 )
 
 git_override(
