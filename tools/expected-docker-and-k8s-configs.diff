@@ -1,36 +1,36 @@
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index 10f6943..fab0328 100644
+index ed51f7a..ff8081f 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
-@@ -5,11 +5,11 @@
-         hashInitialization: 11946695773637837490,
-         shards: [
-           {
+@@ -4,11 +4,11 @@
+       sharding: {
+         shards: {
+           "0": {
 -            backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
 +            backend: { grpc: { address: 'storage-0:8981' } },
              weight: 1,
            },
-           {
+           "1": {
 -            backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
 +            backend: { grpc: { address: 'storage-1:8981' } },
              weight: 1,
            },
-         ],
-@@ -22,11 +22,11 @@
-             hashInitialization: 14897363947481274433,
-             shards: [
-               {
+         },
+@@ -20,11 +20,11 @@
+           sharding: {
+             shards: {
+               "0": {
 -                backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
 +                backend: { grpc: { address: 'storage-0:8981' } },
                  weight: 1,
                },
-               {
+               "1": {
 -                backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
 +                backend: { grpc: { address: 'storage-1:8981' } },
                  weight: 1,
                },
-             ],
-@@ -36,12 +36,12 @@
+             },
+@@ -34,12 +34,12 @@
        },
      },
    },

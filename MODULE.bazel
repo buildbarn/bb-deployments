@@ -111,19 +111,19 @@ git_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_browser",
-    commit = "9c1714be8cf55061c698b2e629e13496071e23a1",
+    commit = "9b44996f7d6a04185f61e7752cbe8649aaa59f16",
     remote = "https://github.com/buildbarn/bb-browser.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    commit = "31d23d1a2b0cf4c6785bc96e3576e439063d6b7c",
+    commit = "1c726bdc27e7793c685d8788913f8f91f59bc887",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
-    commit = "2600f229e4b68a92591109827f78b047a7fe4d01",
+    commit = "1d733a37487a01416bda38eff6f61eb78103c7f0",
     remote = "https://github.com/buildbarn/bb-storage.git",
 )
 

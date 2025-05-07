@@ -34,9 +34,9 @@ at the top right in the GitHub Actions page.
 
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
-| [bb-browser](https://github.com/buildbarn/bb-browser) [`9c1714be8c`](https://github.com/buildbarn/bb-browser/commits/9c1714be8cf55061c698b2e629e13496071e23a1)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20250212T055122Z-9c1714b](https://ghcr.io/buildbarn/bb-browser:20250212T055122Z-9c1714b)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/13278991952) |
-| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`31d23d1a2b`](https://github.com/buildbarn/bb-remote-execution/commits/31d23d1a2b0cf4c6785bc96e3576e439063d6b7c)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20250201T092335Z-31d23d1](https://ghcr.io/buildbarn/bb-runner-installer:20250201T092335Z-31d23d1)<br/>[ghcr.io/buildbarn/bb-scheduler:20250201T092335Z-31d23d1](https://ghcr.io/buildbarn/bb-scheduler:20250201T092335Z-31d23d1)<br/>[ghcr.io/buildbarn/bb-worker:20250201T092335Z-31d23d1](https://ghcr.io/buildbarn/bb-worker:20250201T092335Z-31d23d1)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/13087286762) |
-| [bb-storage](https://github.com/buildbarn/bb-storage) [`2600f229e4`](https://github.com/buildbarn/bb-storage/commits/2600f229e4b68a92591109827f78b047a7fe4d01)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20250213T085125Z-2600f22](https://ghcr.io/buildbarn/bb-storage:20250213T085125Z-2600f22)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/13303866642) |
+| [bb-browser](https://github.com/buildbarn/bb-browser) [`9b44996f7d`](https://github.com/buildbarn/bb-browser/commits/9b44996f7d6a04185f61e7752cbe8649aaa59f16)<br/>2023-09-17 04:20:39 UTC | [ghcr.io/buildbarn/bb-browser:20250414T180739Z-9b44996](https://ghcr.io/buildbarn/bb-browser:20250414T180739Z-9b44996)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/14452582814) |
+| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`1c726bdc27`](https://github.com/buildbarn/bb-remote-execution/commits/1c726bdc27e7793c685d8788913f8f91f59bc887)<br/>2023-10-04 10:23:25 UTC | [ghcr.io/buildbarn/bb-runner-installer:20250411T124310Z-1c726bd](https://ghcr.io/buildbarn/bb-runner-installer:20250411T124310Z-1c726bd)<br/>[ghcr.io/buildbarn/bb-scheduler:20250411T124310Z-1c726bd](https://ghcr.io/buildbarn/bb-scheduler:20250411T124310Z-1c726bd)<br/>[ghcr.io/buildbarn/bb-worker:20250411T124310Z-1c726bd](https://ghcr.io/buildbarn/bb-worker:20250411T124310Z-1c726bd)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/14403397088) |
+| [bb-storage](https://github.com/buildbarn/bb-storage) [`1d733a3748`](https://github.com/buildbarn/bb-storage/commits/1d733a37487a01416bda38eff6f61eb78103c7f0)<br/>2023-10-08 11:11:12 UTC | [ghcr.io/buildbarn/bb-storage:20250408T112116Z-1d733a3](https://ghcr.io/buildbarn/bb-storage:20250408T112116Z-1d733a3)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/14332223689) |
 
 ## Changelog
 
@@ -194,18 +194,11 @@ First make sure the different Buildbarn components are in sync. Then perform:
 # Update go.mod.
 go mod tidy -e
 
-# Regenerate go_dependencies.bzl.
-bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune
-# Format go_dependencies.bzl according to GitHub Actions.
-sed -i '/^$/d' go_dependencies.bzl
 bazelisk run //:buildifier.check
 
 # Update the Kubernetes and Docker compose deployments.
 ./tools/update-container-image-versions.sh
 ```
-
-You might have to update the `WORKSPACE` file as well,
-until `MODULE.bazel` is in place.
 
 ## Formatting
 
@@ -217,8 +210,6 @@ Some of the steps are:
 bazel run //:gazelle -- update-repos -from_file=go.mod -to_macro go_dependencies.bzl%go_dependencies -prune
 bazel run //:gazelle
 # Buildifier
-sed '/^$/d' go_dependencies.bzl > go_dependencies.bzl.new
-mv go_dependencies.bzl.new go_dependencies.bzl
 bazel run //:buildifier.check
 # Gofmt
 bazel run @cc_mvdan_gofumpt//:gofumpt -- -w -extra $PWD
