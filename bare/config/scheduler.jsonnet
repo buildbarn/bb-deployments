@@ -22,7 +22,7 @@ local common = import 'common.libsonnet';
   killOperationsAuthorizer: { allow: {} },
   actionRouter: {
     simple: {
-      platformKeyExtractor: { actionAndCommand: {} },
+      platformKeyExtractor: { action: {} },
       invocationKeyExtractors: [
         { correlatedInvocationsId: {} },
         { toolInvocationId: {} },
