@@ -1,3 +1,18 @@
+# 2025-08-19
+
+* Allow workers to be authorized
+* Improve OIDC authentication
+* Improve block and mmap storage on Windows
+* Support file mappings on Windows, mmap block device
+* Allow files to be read by JMESPath expressions, k8s service accounts
+* Support over-the-wire compression
+* Disable support for REv2.0 output_{files,directories} by default
+* Allow workers to be authorized
+* Add `QueuedOperationsCount.Indirect` to BuildQueueState API
+* Allow setting XCODE_VERSION_OVERRIDE to a DEVELOPER_DIR path
+* Add the ability to set owner user/group IDs on directories
+* Remove in_memory and directory_path file pools
+
 # 2025-05-30
 
 * Use Rendezvous hashing config (map instead of an array)

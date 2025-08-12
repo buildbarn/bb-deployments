@@ -9,5 +9,5 @@ local common = import 'common.libsonnet';
   }],
   global: common.global,
   authorizer: { allow: {} },
-  requestMetadataLinksJmespathExpression: '`{}`',
+  requestMetadataLinksJmespathExpression: { expression: '`{}`' },
 }
