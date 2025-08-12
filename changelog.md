@@ -1,3 +1,7 @@
+# 2025-05-30
+
+* Use Rendezvous hashing config (map instead of an array)
+
 # 2025-02-19
 
 * Upgrade to Bazel 8 and Go 1.24.0
