@@ -24,6 +24,7 @@ local common = import 'common.libsonnet';
   executeAuthorizer: { allow: {} },
   modifyDrainsAuthorizer: { allow: {} },
   killOperationsAuthorizer: { allow: {} },
+  synchronizeAuthorizer: { allow: {} },
   actionRouter: {
     simple: {
       platformKeyExtractor: { action: {} },
