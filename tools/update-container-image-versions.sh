@@ -84,29 +84,53 @@ check_module_overrides() {
 }
 
 update_image_version() {
-    repo="$1"; shift
-    image_name="$1"; shift
+    # Update kubernetes and docker-compose image versions.
+    local repo="$1"; shift
+    local image_name="$1"; shift
 
+    local image_version
     image_version=$(get_image_version "$repo")
+
+    sed -i "s#\(ghcr\.io/buildbarn/$image_name:\)[0-9tzTZ]*-[0-9a-f]*#\1$image_version#g" \
+        docker-compose/docker-compose.yml kubernetes/*.yaml
+}
+
+update_version_table() {
+    # Update the version table in the README.
+    local repo="$1"; shift
+    # images are left as arguments;
+
+    local image_version
+    image_version=$(get_image_version "$repo")
+    local timestamp
+    # shellcheck disable=SC2001
     timestamp=$(echo "$image_version" \
         | sed 's#\([0-9]\{4\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)T\([0-9]\{2\}\)\([0-9]\{2\}\)\([0-9]\{2\}\)Z.*#\1-\2-\3 \4:\5:\6#')
+    timestamp="$timestamp UTC"
+    local commit_hash
     commit_hash=$(get_full_git_commit_hash "$repo")
-    short_commit_hash="${commit_hash:0:10}"
-    checks_url="https://github.com/buildbarn/$repo/commit/$commit_hash/checks"
-    actions_url=$(actions_summary_page "$checks_url")
+    local short_commit_hash="${commit_hash:0:10}"
+    local github_project_url="https://github.com/buildbarn/$repo"
+    local checks_url="$github_project_url/commit/$commit_hash/checks"
+    local artifact_url
+    artifact_url=$(actions_summary_page "$checks_url")
 
-    # Replace image version.
-    sed -i "s#\(ghcr\.io/buildbarn/$image_name:\)[0-9tzTZ]*-[0-9a-f]*#\1$image_version#g" \
-        README.md docker-compose/docker-compose.yml kubernetes/*.yaml
+    local git_log_stem="https://github.com/buildbarn/$repo/commits"
+    local commit_url="$git_log_stem/$commit_hash"
 
-    # Replace timestamp, commit URLs and CI build result link.
-    git_log_stem="https://github.com/buildbarn/$repo/commits"
-    actions_url_stem="https://github.com/buildbarn/$repo/actions/runs"
-    sed -i \
-        -e "s#^\(| $image_name .*| \)\([^|]* UTC |\)#\1$timestamp UTC |#" \
-        -e "s#\[\`[0-9a-f]*\`\]($git_log_stem/[0-9a-f]*)#[\`$short_commit_hash\`]($git_log_stem/$commit_hash)#" \
-        -e "s#$actions_url_stem/[0-9a-f]*#$actions_url#" \
-        README.md
+    # TODO: move 'UTC' into the timestamp variable.
+    local images=""
+    for image_name in "$@"; do
+        image_timestamp=$image_version
+        local image_qualifier="ghcr.io/buildbarn/$image_name:$image_timestamp"
+        local image_url="https://$image_qualifier"
+        images="${images}[$image_qualifier]($image_url)<br/>"
+    done
+
+    local left="[$repo]($github_project_url) [\`$short_commit_hash\`]($commit_url)<br/>$timestamp"
+    local right="${images}[CI artifacts]($artifact_url)"
+    local entry="| $left | $right |"
+    sed -i "s#| \[$repo\].*#$entry#" README.md
 }
 
 update_image_version bb-browser bb-browser
@@ -114,6 +138,10 @@ update_image_version bb-remote-execution bb-runner-installer
 update_image_version bb-remote-execution bb-scheduler
 update_image_version bb-remote-execution bb-worker
 update_image_version bb-storage bb-storage
+
+update_version_table bb-browser bb-browser
+update_version_table bb-remote-execution bb-runner-installer bb-scheduler bb-worker
+update_version_table bb-storage bb-storage
 
 check_module_overrides bb-browser
 check_module_overrides bb-storage
