@@ -30,15 +30,6 @@ bazel_dep(name = "rules_shell", version = "0.3.0")
 bazel_dep(name = "rules_proto", version = "7.1.0")
 bazel_dep(name = "toolchains_llvm", version = "1.4.0")
 
-# # Workarounds 2024-06-27
-# ERROR: in tag at https://bcr.bazel.build/modules/grpc-java/1.62.2/MODULE.bazel:89:15: no repository visible as '@com_google_protobuf_javalite' to the repository '@@grpc-java~', but referenced by label '@com_google_protobuf_javalite//:protobuf_javalite' in attribute 'target' of tag 'override'. Is the module 'grpc-java' missing a bazel_dep or use_repo(..., "com_google_protobuf_javalite")?
-# https://github.com/grpc/grpc-java/issues/11275
-# This can be removed once the dep that introduces `grpc-java` as a transitive
-# dependency is updated to use a newer version.
-# ├───googleapis@0.0.0-20240326-1c8d509c5
-# │   ├───grpc-java@1.64.0 (*)
-bazel_dep(name = "grpc-java", version = "1.64.0")
-
 # # Workaround 2025-01-19: For some reason rules_apple fails to build.
 # ERROR: Traceback (most recent call last):
 #         File "/CAS/bazel-cache/f1a15cfb78ca8fde7615be5d21224669/external/rules_apple+/apple/internal/apple_xcframework_import.bzl", line 775, column 21, in <toplevel>
