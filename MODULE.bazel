@@ -49,14 +49,6 @@ single_version_override(
     version = "3.19.0",
 )
 
-# # Workaround 2025-03-03: re2 has not created a new version yet
-# This solves an issue with `bazel mod graph`.
-git_override(
-    module_name = "re2",
-    commit = "c84a140c93352cdabbfb547c531be34515b12228",
-    remote = "https://github.com/google/re2",
-)
-
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
