@@ -1,0 +1,6 @@
+# jsonnet fails to recognise blank lines with windows line endings,
+# so you get errors like:
+#   monitoring\prometheus\recording-rules.jsonnet:103:17
+#     Text block's first line must start with whitespace
+# Instead we disable all line ending translation.
+* -text

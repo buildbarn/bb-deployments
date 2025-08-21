@@ -10,7 +10,7 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/buildbarn/bb-deployments/bare",
     visibility = ["//visibility:public"],
-    deps = ["@rules_go//go/tools/bazel:go_default_library"],
+    deps = ["@rules_go//go/runfiles:go_default_library"],
 )
 
 go_binary(
