@@ -1,0 +1,100 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Values.baseName }}-storage
+  namespace: {{ $.Values.namespace }}
+data:
+  storage.jsonnet: |
+    local common = import 'common.libsonnet';
+    {
+      global: {
+        tracing: {
+          sampler: common.traceSampler,
+          resourceAttributes: {
+            "service.name": {string: 'buildbarn-storage'},
+            "service.namespace": {string: 'buildbarn'},
+          },
+          backends: [
+            common.openTelemetryBackend,
+          ],
+        },
+        diagnosticsHttpServer: { 
+          listenAddress: ':{{ .Values.storage.prometheusPort }}',
+          enablePrometheus: true,
+          enablePprof: true,
+        },
+      },
+      blobstore: {
+        actionCache: {
+          "local": {
+            persistent: {
+              stateDirectoryPath: "/persist/ac",
+              minimumEpochInterval: "300s",
+            },
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: "/ac-0/ac.keys",
+                size_bytes: 1*1024*1024*1024,
+              },
+            },
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                  path: "/ac-0/ac.blocks",
+                  size_bytes: 246*1024*1024*1024,
+                },
+              },
+              spareBlocks: 3,
+            },
+            keyLocationMapMaximumGetAttempts: 8,
+            keyLocationMapMaximumPutAttempts: 32,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 1,
+          },
+        },
+        contentAddressableStorage: {
+          "local": {
+            persistent: {
+              stateDirectoryPath: "/persist/cas",
+              minimumEpochInterval: "300s",
+            },
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: "/cas-0/cas.keys",
+                size_bytes: 1*1024*1024*1024,
+              },
+            },
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                  path: "/cas-0/cas.blocks",
+                  size_bytes: 246*1024*1024*1024,
+                },
+              },
+              spareBlocks: 3,
+            },
+            keyLocationMapMaximumGetAttempts: 8,
+            keyLocationMapMaximumPutAttempts: 32,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 3,
+          },
+        },
+      },
+      grpcServers: [{
+        listenAddresses: [':{{ .Values.storage.port }}'],
+        authenticationPolicy: { allow: {} },
+      }],
+      actionCacheAuthorizers: {
+        get: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        put: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+      },
+      contentAddressableStorageAuthorizers: {
+        get: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        put: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+        findMissing: { instanceNamePrefix: {allowedInstanceNamePrefixes: {{ mustToJson .Values.allInstanceNames }} }},
+      },
+      executeAuthorizer: { deny: {}},
+      maximumMessageSizeBytes: 16 * 1024 * 1024,
+    }

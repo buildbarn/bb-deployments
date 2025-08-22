@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Values.baseName }}-common
+  namespace: {{ $.Values.namespace }}
+data:
+  common.libsonnet: |
+    {
+      blobstore: {
+        contentAddressableStorage: {
+          sharding: {
+            hashInitialization: 1,
+            shards: [
+            {{- $replicas := until (int .Values.storage.replicas) -}}
+            {{- $bbName := .Values.baseName -}}
+            {{- $port := .Values.storage.port -}}
+            {{- $ns := .Values.namespace -}}
+            {{- $dnsName := .Values.serviceDnsName -}}
+              {{- range $_, $replicaNumber := $replicas }}
+              {
+                backend: {
+                  grpc: { address: '{{ $bbName }}-storage-{{ $replicaNumber }}.{{ $bbName }}-storage-headless.{{ $ns }}.{{ $dnsName }}:{{ $port }}' },
+                },
+                weight: 1,
+              },
+              {{- end}}
+            ],
+          },
+        },
+        actionCache: {
+          completenessChecking: {
+            sharding: {
+              hashInitialization: 1,
+              shards: [
+              {{- $replicas := until  (int .Values.storage.replicas) -}}
+              {{- $bbName := .Values.baseName -}}
+              {{- $port := .Values.storage.port -}}
+              {{- $ns := .Values.namespace -}}
+                {{- range $_, $replicaNumber := $replicas }}
+                {
+                  backend: {
+                    grpc: { address: '{{ $bbName }}-storage-{{ $replicaNumber }}.{{ $bbName }}-storage-headless.{{ $ns }}.{{ $dnsName }}:{{ $port }}' },
+                  },
+                  weight: 1,
+                },
+                {{- end}}
+              ],
+            },
+          },
+        },
+      },
+      maximumMessageSizeBytes: 16 * 1024 * 1024,
+      openTelemetryBackend: {
+        batchSpanProcessor: {},
+        otlpSpanExporter: {
+          address: '{{ $.Values.baseName }}-opentelemetry-collector-headless.{{ $.Release.Namespace }}.{{ $.Values.serviceDnsName }}:{{ $.Values.otelcol.port }}'
+        },
+      },
+      traceSampler: {
+            always: {},
+          },
+    }

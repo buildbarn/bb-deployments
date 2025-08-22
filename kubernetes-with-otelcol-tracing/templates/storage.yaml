@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $.Values.baseName }}-storage
+  namespace: {{ $.Values.namespace }}
+  labels:
+    app.kubernetes.io/component: storage
+spec:
+  replicas: {{ $.Values.storage.replicas }}
+  serviceName: {{ $.Values.baseName }}-storage
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ $.Values.baseName }}
+      app.kubernetes.io/component: storage
+  template:
+    metadata:
+      annotations:
+        checksum/common.config: {{ include (print $.Template.BasePath "/config/common.yaml") . | sha256sum }}
+        checksum/storage.config: {{ include (print $.Template.BasePath "/config/storage.yaml") . | sha256sum }}
+        ad.datadoghq.com/storage.check_names: |
+          ["openmetrics"]
+        ad.datadoghq.com/storage.init_configs: |
+          [{}]
+        ad.datadoghq.com/storage.instances: |
+          [
+            {
+              "prometheus_url": "http://%%host%%:8888/metrics",
+              "namespace": "bazel.buildcache",
+              "metrics": ["*"]
+            }
+          ]
+      labels:
+        app.kubernetes.io/component: storage
+    spec:
+      initContainers:
+      - name: volume-init
+        image: "{{ $.Values.global.docker.registry }}/busybox:1.29.3"
+        command:
+        - sh
+        - -c
+        - mkdir -pm 0777 /persist/ac && mkdir -pm 0777 /persist/cas
+        volumeMounts:
+        - mountPath: /persist
+          name: persist
+      containers:
+      - name: storage
+        args:
+        - /config/storage.jsonnet
+        image: '{{ .Values.storage.image.repository }}:{{ .Values.storage.image.tag }}'
+        resources:
+{{ toYaml .Values.storage.resources | indent 10 }}
+        ports:
+        - containerPort: {{ .Values.storage.port }}
+          protocol: TCP
+        - containerPort: {{ .Values.storage.prometheusPort }}
+          protocol: TCP
+        volumeMounts:
+        - name: config
+          mountPath: /config/storage.jsonnet
+          subPath: storage.jsonnet
+          readOnly: true
+        - name: common
+          mountPath: /config/common.libsonnet
+          subPath: common.libsonnet
+          readOnly: true
+        - mountPath: /cas-0
+          name: cas-0
+        - mountPath: /ac-0
+          name: ac-0
+        - mountPath: /persist
+          name: persist
+      volumes:                
+      - name: config
+        configMap:
+          name: {{ $.Values.baseName }}-storage
+      - name: common
+        configMap:
+          name: {{ $.Values.baseName }}-common
+      
+  volumeClaimTemplates:
+  - metadata:
+      name: cas-0
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 250Gi
+  - metadata:
+      name: ac-0
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 250Gi
+  - metadata:
+      name: persist
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.baseName }}-storage
+  namespace: {{ $.Release.Namespace }}
+spec:
+  ports:
+  - port: {{ $.Values.storage.port }}
+    protocol: TCP
+  selector:
+    app.kubernetes.io/component: storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $.Values.baseName }}-storage-headless
+  namespace: {{ $.Values.namespace }}
+  annotations:
+    datadoghq.com/fabric-platform-dns: enable
+  labels:
+    app.kubernetes.io/component: storage
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: {{ .Values.storage.port }}
+    protocol: TCP
+  - name: http
+    port: {{ .Values.storage.prometheusPort }}
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ $.Values.baseName }}
+    app.kubernetes.io/component: storage
