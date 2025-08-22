@@ -21,9 +21,9 @@ replace cloud.google.com/go/storage v1.45.0 => cloud.google.com/go/storage v1.43
 require (
 	github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb
 	github.com/bazelbuild/rules_go v0.56.1
-	github.com/buildbarn/bb-browser v0.0.0-20250814052351-5d2ed98e0756
+	github.com/buildbarn/bb-browser v0.0.0-20250820143915-823deb2f4b07
 	github.com/buildbarn/bb-remote-execution v0.0.0-20250820081613-efef252cdf4f
-	github.com/buildbarn/bb-storage v0.0.0-20250819193852-fd11d3e1b0b4
+	github.com/buildbarn/bb-storage v0.0.0-20250821140521-b7799c3c72ae
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067
 	mvdan.cc/gofumpt v0.8.0
 )
