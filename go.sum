@@ -88,6 +88,8 @@ github.com/aws/aws-sdk-go-v2/service/sts v1.37.0 h1:MG9VFW43M4A8BYeAfaJJZWrroinx
 github.com/aws/aws-sdk-go-v2/service/sts v1.37.0/go.mod h1:JdeBDPgpJfuS6rU/hNglmOigKhyEZtBmbraLE4GK1J8=
 github.com/aws/smithy-go v1.22.5 h1:P9ATCXPMb2mPjYBgueqJNCA5S9UfktsW0tTxi+a7eqw=
 github.com/aws/smithy-go v1.22.5/go.mod h1:t1ufH5HMublsJYulve2RKmHDC15xu1f26kHCp/HgceI=
+github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb h1:KCEfAAZ5hZH+CEMzShOZ4nCro20Ohf6whugQc2PLZiM=
+github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb/go.mod h1:PLNUetjLa77TCCziPsz0EI8a6CUxgC+1jgmWv0H25tg=
 github.com/bazelbuild/remote-apis v0.0.0-20250728120203-e94a7ece2a1e h1:P0oJ1MpCJTu4lDRbb00aVaPTcDvaQ1uQFsVVBeqttIc=
 github.com/bazelbuild/remote-apis v0.0.0-20250728120203-e94a7ece2a1e/go.mod h1:/xo1pn3QkEL2JXrLeK30jvjVR/zXM9H8EqcWb/l5/A0=
 github.com/bazelbuild/rules_go v0.56.1 h1:YOyW1J8kdvJl1AzlWrR+qikC6EPiFVbT4l1gjTBfXT0=

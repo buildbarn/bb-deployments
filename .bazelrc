@@ -2,6 +2,8 @@
 build --cxxopt=-std=c++17
 build --host_cxxopt=-std=c++17
 
+common --enable_platform_specific_config
+
 # Don't inherit the user environment as that trashes the cache.
 build --incompatible_strict_action_env
 # Use the new way of defining toolchains.
@@ -35,7 +37,13 @@ build:remote-exec --extra_toolchains=//tools/remote-toolchains:all
 build:remote-ubuntu-22-04 --config=remote-exec
 build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/remote-toolchains:ubuntu-act-22-04-platform
 
+# Workaround https://github.com/bazelbuild/bazel/issues/19733
+common:remote-exec-windows --features=-parse_showincludes --host_features=-parse_showincludes
+
 # When running bare executors on your own host machine.
 build:remote-local --config=remote-exec
 
 common --incompatible_enable_proto_toolchain_resolution
+
+# Required to make protobuf compile on Windows
+common:windows --define=protobuf_allow_msvc=true

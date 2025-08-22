@@ -1,10 +1,5 @@
-load("@rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library", "jsonnet_to_json")
-
-jsonnet_library(
-    name = "workflows_template",
-    srcs = ["workflows_template.libsonnet"],
-    visibility = ["//visibility:public"],
-)
+load("@rules_go//go:def.bzl", "go_test")
+load("@rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_to_json")
 
 jsonnet_to_json(
     name = "github_workflows",
@@ -13,5 +8,11 @@ jsonnet_to_json(
         "master.yaml",
         "pull-requests.yaml",
     ],
-    deps = [":workflows_template"],
+    deps = ["@com_github_buildbarn_bb_storage//tools/github_workflows:workflows_template"],
+)
+
+# This is a no-op test that's only part of the repository to keep
+# 'bazel test' happy. This is necessary, as no other tests are provided.
+go_test(
+    name = "noop_test",
 )

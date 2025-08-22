@@ -19,6 +19,7 @@ replace github.com/hanwen/go-fuse/v2 => github.com/hanwen/go-fuse/v2 v2.5.1
 replace cloud.google.com/go/storage v1.45.0 => cloud.google.com/go/storage v1.43.0
 
 require (
+	github.com/bazelbuild/buildtools v0.0.0-20250715102656-62b9413b08bb
 	github.com/bazelbuild/rules_go v0.56.1
 	github.com/buildbarn/bb-browser v0.0.0-20250814052351-5d2ed98e0756
 	github.com/buildbarn/bb-remote-execution v0.0.0-20250820081613-efef252cdf4f
