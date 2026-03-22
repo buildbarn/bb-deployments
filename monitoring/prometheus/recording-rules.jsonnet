@@ -171,10 +171,6 @@
           record: 'kubernetes_service_le:buildbarn_builder_build_executor_posix_maximum_resident_set_size_bucket:irate1m',
         },
         {
-          expr: 'sum(irate(buildbarn_builder_build_executor_posix_maximum_resident_set_size_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le)',
-          record: 'kubernetes_service_le:buildbarn_builder_build_executor_posix_maximum_resident_set_size_bucket:irate1m',
-        },
-        {
           expr: 'sum(irate(buildbarn_builder_build_executor_posix_page_reclaims_bucket{job="kubernetes-service-endpoints"}[1m])) by (kubernetes_service, le)',
           record: 'kubernetes_service_le:buildbarn_builder_build_executor_posix_page_reclaims_bucket:irate1m',
         },
