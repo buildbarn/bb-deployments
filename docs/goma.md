@@ -128,13 +128,13 @@ Run the `goma` server (to proxy to RBE):
         -port 5050 \
         -remoteexec-addr localhost:8980 \
         -remote-instance-name "hardlinking" \
-        -platform-container-image 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448' \
+        -platform-container-image 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b' \
         -insecure-remoteexec
 
 The container image platform property is set on the command line.
 This should say that it is running, accepts you and can talk RBE:
 
-    2023-08-17T11:33:40.842+0200    INFO    exec/inventory.go:190   configure platform config: target:{addr:"grpc://127.0.0.1:8980"}  build_info:{}  remoteexec_platform:{properties:{name:"container-image"  value:"docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448"}  properties:{name:"OSFamily"  value:"linux"}  rbe_instance_basename:"hardlinking"}  dimensions:"os:linux"
+    2023-08-17T11:33:40.842+0200    INFO    exec/inventory.go:190   configure platform config: target:{addr:"grpc://127.0.0.1:8980"}  build_info:{}  remoteexec_platform:{properties:{name:"container-image"  value:"docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b"}  properties:{name:"OSFamily"  value:"linux"}  rbe_instance_basename:"hardlinking"}  dimensions:"os:linux"
 
 ### Patch the goma server
 

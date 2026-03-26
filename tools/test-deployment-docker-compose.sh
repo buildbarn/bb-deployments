@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Verifies that the docker-compose deployment works.
-set -eux -o pipefail -E
+set -eux -o pipefail
 
 script_dir=$(dirname "${BASH_SOURCE[0]}")
 cd "${script_dir}/../docker-compose"
+grpcurl=${GRPCURL:-grpcurl}
 
 cleanup() {
     EXIT_STATUS=$?
@@ -22,7 +23,7 @@ rm -rf volumes/storage-*
 # Wait for queues for all worker instance types to be available.
 docker compose up --wait frontend scheduler
 while : ; do
-    instance_name_prefixes=$(grpcurl --plaintext localhost:8984 buildbarn.buildqueuestate.BuildQueueState.ListPlatformQueues |
+    instance_name_prefixes=$($grpcurl --plaintext localhost:8984 buildbarn.buildqueuestate.BuildQueueState.ListPlatformQueues |
         jq -r '(.platformQueues // []) | map(.name.instanceNamePrefix) | sort | join(",")')
     test "$instance_name_prefixes" != "fuse,hardlinking" || break
     sleep 1
