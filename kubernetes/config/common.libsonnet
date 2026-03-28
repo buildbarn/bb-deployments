@@ -4,11 +4,11 @@
       sharding: {
         shards: {
           "0": {
-            backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
+            backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
             weight: 1,
           },
           "1": {
-            backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
+            backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
             weight: 1,
           },
         },
@@ -20,11 +20,11 @@
           sharding: {
             shards: {
               "0": {
-                backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
+                backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
                 weight: 1,
               },
               "1": {
-                backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
+                backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
                 weight: 1,
               },
             },

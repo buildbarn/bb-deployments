@@ -22,7 +22,7 @@ local common = import 'common.libsonnet';
       platform: {
         properties: [
           { name: 'OSFamily', value: 'linux' },
-          { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448' },
+          { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:9425bc2b961fa9e5da21474efbd997495d505242ebb4dbb7cdea1c798e3cf13b' },
         ],
       },
       workerId: {
