@@ -20,7 +20,8 @@ workflows_template.getWorkflows(
     },
     {
       name: 'Install WinFSP',
-      run: 'choco install winfsp',
+      shell: 'powershell',
+      run: 'winget install --id=WinFsp.WinFsp --source=winget',
       'if': "matrix.host.platform_name == 'windows_amd64'",
     },
     {
