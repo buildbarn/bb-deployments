@@ -24,6 +24,11 @@
                "run": "choco install winfsp"
             },
             {
+               "if": "matrix.host.platform_name == 'windows_amd64'",
+               "name": "Override .bazelrc",
+               "run": "echo \"common --curses=no\" >> .bazelrc"
+            },
+            {
                "name": "Installing Bazel",
                "run": "v=$(cat .bazelversion) && curl -L https://github.com/bazelbuild/bazel/releases/download/${v}/bazel-${v}-${{matrix.host.bazel_os}}-x86_64 > ~/bazel && chmod +x ~/bazel && echo ~ >> ${GITHUB_PATH}",
                "shell": "bash"
