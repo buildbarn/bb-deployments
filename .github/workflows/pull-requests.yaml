@@ -39,6 +39,11 @@
                "run": "echo \"startup --output_base=D:/bazel_output\" >> .bazelrc"
             },
             {
+               "if": "matrix.host.platform_name == 'windows_amd64'",
+               "name": "Test bare deployment (Windows)",
+               "run": "tools/run-with-console.ps1 -Command 'bash.exe -c ./tools/test-deployment-bare.sh'"
+            },
+            {
                "if": "matrix.host.cross_compile || matrix.host.platform_name == 'linux_amd64'",
                "name": "linux_amd64: build${{ matrix.host.platform_name == 'linux_amd64' && ' and test' || '' }}",
                "run": "bazel ${{ matrix.host.platform_name == 'linux_amd64' && 'test --test_output=errors' || 'build --platforms=@com_github_buildbarn_bb_storage//tools/platforms:linux_amd64' }} //..."
@@ -108,11 +113,6 @@
                "name": "Test bare deployment (Unix)",
                "run": "tools/test-deployment-bare.sh",
                "shell": "bash"
-            },
-            {
-               "if": "matrix.host.platform_name == 'windows_amd64'",
-               "name": "Test bare deployment (Windows)",
-               "run": "tools/run-with-console.ps1 -Command 'bash.exe -c ./tools/test-deployment-bare.sh'"
             },
             {
                "if": "matrix.host.platform_name == 'linux_amd64'",
