@@ -129,13 +129,6 @@
             "matrix": {
                "host": [
                   {
-                     "bazel_os": "linux",
-                     "cross_compile": true,
-                     "os": "ubuntu-latest",
-                     "platform_name": "linux_amd64",
-                     "upload": true
-                  },
-                  {
                      "bazel_os": "windows",
                      "cross_compile": false,
                      "os": "windows-latest",
