@@ -23,6 +23,12 @@ workflows_template.getWorkflows(
       run: 'choco install winfsp',
       'if': "matrix.host.platform_name == 'windows_amd64'",
     },
+    {
+      name: 'Override .bazelrc',
+      // Reduce output when using run-with-console.ps1 on Windows.
+      run: 'echo "common --curses=no" >> .bazelrc',
+      'if': "matrix.host.platform_name == 'windows_amd64'",
+    },
   ],
   [
     {
