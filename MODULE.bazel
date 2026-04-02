@@ -93,10 +93,7 @@ git_override(
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
     commit = "d0c6f2633bb9e199fc7285687cdd677660dc688c",
-    patches = [
-        "//:patches/com_github_buildbarn_bb_storage/github-workflow-windows-2022.patch",
-        "//:patches/com_github_buildbarn_bb_storage/workflows-template-bazel-8.diff",
-    ],
+    patches = ["//:patches/com_github_buildbarn_bb_storage/workflows-template-bazel-8.diff"],
     remote = "https://github.com/buildbarn/bb-storage.git",
 )
 

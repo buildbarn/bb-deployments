@@ -21,7 +21,8 @@
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
                "name": "Install WinFSP",
-               "run": "choco install winfsp"
+               "run": "winget install --id=WinFsp.WinFsp --source=winget",
+               "shell": "powershell"
             },
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
@@ -151,7 +152,7 @@
                   {
                      "bazel_os": "windows",
                      "cross_compile": false,
-                     "os": "windows-2022",
+                     "os": "windows-latest",
                      "platform_name": "windows_amd64",
                      "upload": false
                   }

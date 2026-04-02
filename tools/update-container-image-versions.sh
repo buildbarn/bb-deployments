@@ -74,8 +74,7 @@ check_module_overrides() {
     commit_hash=$(get_full_git_commit_hash "$repo")
     remote=https://github.com/buildbarn/"$repo".git
 
-    # As long as we use patches, -B3 is not enough.
-    override_stanza="$(grep -B5 -A1 "$remote" MODULE.bazel)"
+    override_stanza="$(grep -B3 -A1 "$remote" MODULE.bazel)"
     echo "$override_stanza" | grep -q "$commit_hash" || {
         echo >&2 "Error: Did not find the expected module version override for $repo."
         echo "Found: $override_stanza"

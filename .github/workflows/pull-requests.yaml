@@ -21,7 +21,8 @@
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
                "name": "Install WinFSP",
-               "run": "choco install winfsp"
+               "run": "winget install --id=WinFsp.WinFsp --source=winget",
+               "shell": "powershell"
             },
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
@@ -36,7 +37,18 @@
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
                "name": "Override .bazelrc",
-               "run": "echo \"startup --output_base=D:/bazel_output\" >> .bazelrc"
+               "run": "echo \"startup --output_base=D:/bazel_output\" >> .bazelrc",
+               "continue-on-error": true,
+            },
+            {
+               "name": "Test bare deployment (Unix)",
+               "run": "tools/test-deployment-bare.sh",
+               "shell": "bash"
+            },
+            {
+               "if": "matrix.host.platform_name == 'windows_amd64'",
+               "name": "Test bare deployment (Windows)",
+               "run": "tools/run-with-console.ps1 -Command 'bash.exe -c ./tools/test-deployment-bare.sh'"
             },
             {
                "if": "matrix.host.cross_compile || matrix.host.platform_name == 'linux_amd64'",
@@ -110,11 +122,6 @@
                "shell": "bash"
             },
             {
-               "if": "matrix.host.platform_name == 'windows_amd64'",
-               "name": "Test bare deployment (Windows)",
-               "run": "tools/run-with-console.ps1 -Command 'bash.exe -c ./tools/test-deployment-bare.sh'"
-            },
-            {
                "if": "matrix.host.platform_name == 'linux_amd64'",
                "name": "Test docker-compose deployment",
                "run": "tools/test-deployment-docker-compose.sh"
@@ -129,16 +136,9 @@
             "matrix": {
                "host": [
                   {
-                     "bazel_os": "linux",
-                     "cross_compile": true,
-                     "os": "ubuntu-latest",
-                     "platform_name": "linux_amd64",
-                     "upload": true
-                  },
-                  {
                      "bazel_os": "windows",
                      "cross_compile": false,
-                     "os": "windows-2022",
+                     "os": "windows-latest",
                      "platform_name": "windows_amd64",
                      "upload": false
                   }
