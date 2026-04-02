@@ -37,7 +37,13 @@
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
                "name": "Override .bazelrc",
-               "run": "echo \"startup --output_base=D:/bazel_output\" >> .bazelrc"
+               "run": "echo \"startup --output_base=D:/bazel_output\" >> .bazelrc",
+               "continue-on-error": true,
+            },
+            {
+               "name": "Test bare deployment (Unix)",
+               "run": "tools/test-deployment-bare.sh",
+               "shell": "bash"
             },
             {
                "if": "matrix.host.platform_name == 'windows_amd64'",
