@@ -138,7 +138,7 @@
                   {
                      "bazel_os": "windows",
                      "cross_compile": false,
-                     "os": "windows-2022",
+                     "os": "windows-latest",
                      "platform_name": "windows_amd64",
                      "upload": false
                   }
