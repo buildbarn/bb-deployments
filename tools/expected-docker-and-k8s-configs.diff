@@ -1,18 +1,18 @@
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index ed51f7a..ff8081f 100644
+index d9e93a1..72d9250 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
 @@ -4,11 +4,11 @@
        sharding: {
          shards: {
            "0": {
--            backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
-+            backend: { grpc: { address: 'storage-0:8981' } },
+-            backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
++            backend: { grpc: { client: { address: 'storage-0:8981' } } },
              weight: 1,
            },
            "1": {
--            backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
-+            backend: { grpc: { address: 'storage-1:8981' } },
+-            backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
++            backend: { grpc: { client: { address: 'storage-1:8981' } } },
              weight: 1,
            },
          },
@@ -20,13 +20,13 @@ index ed51f7a..ff8081f 100644
            sharding: {
              shards: {
                "0": {
--                backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
-+                backend: { grpc: { address: 'storage-0:8981' } },
+-                backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
++                backend: { grpc: { client: { address: 'storage-0:8981' } } },
                  weight: 1,
                },
                "1": {
--                backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
-+                backend: { grpc: { address: 'storage-1:8981' } },
+-                backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
++                backend: { grpc: { client: { address: 'storage-1:8981' } } },
                  weight: 1,
                },
              },
@@ -59,7 +59,7 @@ index 7e0103f..7f08b6d 100644
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
 diff --git a/kubernetes/config/worker-ubuntu22-04.jsonnet b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
-index 50cabe5..ab10376 100644
+index 6607d4f..1c13dea 100644
 --- a/kubernetes/config/worker-ubuntu22-04.jsonnet
 +++ b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
 @@ -1,13 +1,14 @@

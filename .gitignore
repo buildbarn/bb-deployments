@@ -2,3 +2,5 @@
 
 # Ignore all the volume mounts in the Docker Compose deployment.
 /docker-compose/volumes/
+
+.vscode/settings.json

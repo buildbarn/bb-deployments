@@ -16,7 +16,7 @@ param(
     [string]$Command,
 
     [Parameter(Mandatory=$false)]
-    [int]$TimeoutMinutes = 10
+    [int]$TimeoutMinutes = 20
 )
 
 $TempBatFile = Join-Path ([System.IO.Path]::GetTempPath()) "run_bash_$(Get-Random).bat"

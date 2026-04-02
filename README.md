@@ -34,9 +34,9 @@ at the top right in the GitHub Actions page.
 
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
-| [bb-browser](https://github.com/buildbarn/bb-browser) [`823deb2f4b`](https://github.com/buildbarn/bb-browser/commits/823deb2f4b072d5e0d86b6260819b5f3755e6aba)<br/>2025-08-20 14:39:15 UTC | [ghcr.io/buildbarn/bb-browser:20250820T143915Z-823deb2](https://ghcr.io/buildbarn/bb-browser:20250820T143915Z-823deb2)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/17101706301) |
-| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`efef252cdf`](https://github.com/buildbarn/bb-remote-execution/commits/efef252cdf4f97cc0154ea02976ed1322587e599)<br/>2025-08-20 08:16:13 UTC | [ghcr.io/buildbarn/bb-runner-installer:20250820T081613Z-efef252](https://ghcr.io/buildbarn/bb-runner-installer:20250820T081613Z-efef252)<br/>[ghcr.io/buildbarn/bb-scheduler:20250820T081613Z-efef252](https://ghcr.io/buildbarn/bb-scheduler:20250820T081613Z-efef252)<br/>[ghcr.io/buildbarn/bb-worker:20250820T081613Z-efef252](https://ghcr.io/buildbarn/bb-worker:20250820T081613Z-efef252)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/17092658990) |
-| [bb-storage](https://github.com/buildbarn/bb-storage) [`fbb7c11d35`](https://github.com/buildbarn/bb-storage/commits/fbb7c11d3502dbd1ee72a5d6a5a92ef532ee3c6e)<br/>2025-08-27 12:17:15 UTC | [ghcr.io/buildbarn/bb-storage:20250827T121715Z-fbb7c11](https://ghcr.io/buildbarn/bb-storage:20250827T121715Z-fbb7c11)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/17266443110) |
+| [bb-browser](https://github.com/buildbarn/bb-browser) [`1731858db1`](https://github.com/buildbarn/bb-browser/commits/1731858db193643641ad80e8485eec29c88113fb)<br/>2026-03-19 10:17:27 UTC | [ghcr.io/buildbarn/bb-browser:20260319T101727Z-1731858](https://ghcr.io/buildbarn/bb-browser:20260319T101727Z-1731858)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/23290196424) |
+| [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`e6ab874a1b`](https://github.com/buildbarn/bb-remote-execution/commits/e6ab874a1bc0cf690ae43f6f98bace2fb1f92cf2)<br/>2026-03-26 16:32:48 UTC | [ghcr.io/buildbarn/bb-runner-installer:20260326T163248Z-e6ab874](https://ghcr.io/buildbarn/bb-runner-installer:20260326T163248Z-e6ab874)<br/>[ghcr.io/buildbarn/bb-scheduler:20260326T163248Z-e6ab874](https://ghcr.io/buildbarn/bb-scheduler:20260326T163248Z-e6ab874)<br/>[ghcr.io/buildbarn/bb-worker:20260326T163248Z-e6ab874](https://ghcr.io/buildbarn/bb-worker:20260326T163248Z-e6ab874)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/23605980796) |
+| [bb-storage](https://github.com/buildbarn/bb-storage) [`d0c6f2633b`](https://github.com/buildbarn/bb-storage/commits/d0c6f2633bb9e199fc7285687cdd677660dc688c)<br/>2026-03-26 15:15:18 UTC | [ghcr.io/buildbarn/bb-storage:20260326T151518Z-d0c6f26](https://ghcr.io/buildbarn/bb-storage:20260326T151518Z-d0c6f26)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/23602146789) |
 
 ## Changelog
 
@@ -150,7 +150,7 @@ remote_execution = true
 remote_instance_name = "fuse"
 remote_execution_extra_platform_properties = [
   "OSFamily=linux",
-  "container-image=docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448",
+  "container-image=docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b",
 ]
 ```
 
@@ -170,7 +170,7 @@ bazel build \
     --remote_executor=grpc://localhost:8980 \
     --remote_instance_name=fuse \
     --remote_default_exec_properties OSFamily=linux \
-    --remote_default_exec_properties container-image="docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:5f9c35c25db1d51a8ddaae5c0ba8d3c163c5e9a4a6cc97acd409ac7eae239448" \
+    --remote_default_exec_properties container-image="docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b" \
     @abseil-hello//:hello_main
 ```
 
