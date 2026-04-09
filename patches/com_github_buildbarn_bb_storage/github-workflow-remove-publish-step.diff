@@ -1,0 +1,65 @@
+diff --git tools/github_workflows/workflows_template.libsonnet tools/github_workflows/workflows_template.libsonnet
+index 53231de..b66bede 100644
+--- tools/github_workflows/workflows_template.libsonnet
++++ tools/github_workflows/workflows_template.libsonnet
+@@ -148,60 +148,6 @@
+         else []
+       ),
+     },
+-    [if doUpload then 'publish']: {
+-      'runs-on': 'ubuntu-latest',
+-      name: 'publish',
+-      needs: ['build_and_test'],
+-      steps: [
+-        {
+-          name: 'Checkout the repository',
+-          uses: 'actions/checkout@v4 ',
+-        },
+-        {
+-          name: 'Download release artifacts',
+-          uses: 'actions/download-artifact@v4',
+-          with: {
+-            'merge-multiple': true,
+-            path: 'assets',
+-          },
+-        },
+-        {
+-          name: 'Calculate shasum',
+-          run: 'shasum -a 256 assets/* > sha256',
+-        },
+-        {
+-          name: 'Set release Git user',
+-          run: |||
+-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+-            git config --global user.name "github-actions[bot]"
+-          |||,
+-        },
+-        {
+-          name: 'Generate tag',
+-          id: 'create_tag',
+-          run: |||
+-            BUILD_SCM_REVISION=$(git rev-parse --short HEAD)
+-            BUILD_SCM_TIMESTAMP=$(TZ=UTC date --date "@$(git show -s --format=%ct HEAD)" +%Y%m%dT%H%M%SZ)
+-            RELEASE_TAG="${BUILD_SCM_TIMESTAMP}-${BUILD_SCM_REVISION}"
+-            git tag $RELEASE_TAG
+-            git push --follow-tags
+-            echo "release_tag=$RELEASE_TAG" >> $GITHUB_OUTPUT
+-          |||,
+-        },
+-        {
+-          name: 'Create GitHub release and upload artifacts',
+-          uses: 'softprops/action-gh-release@v2',
+-          with: {
+-            make_latest: true,
+-            tag_name: '${{ steps.create_tag.outputs.release_tag }}',
+-            files: |||
+-              assets/*
+-              sha256
+-            |||,
+-          },
+-        },
+-      ],
+-    },
+     lint: {
+       'runs-on': 'ubuntu-latest',
+       name: 'lint',
