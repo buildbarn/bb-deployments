@@ -33,7 +33,7 @@ local common = import 'common.libsonnet';
     putAuthorizer: { allow: {} },
   },
   fileSystemAccessCache: {
-    backend: common.blobstore.fileSystemAccessCache,
+    backend: common.fileSystemAccessCache,
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
   },
