@@ -114,6 +114,8 @@ func main() {
 	mustMkdir(path.Join(workingDir, "storage-ac/persistent_state"), 0o755)
 	mustMkdir(path.Join(workingDir, "storage-cas"), 0o755)
 	mustMkdir(path.Join(workingDir, "storage-cas/persistent_state"), 0o755)
+	mustMkdir(path.Join(workingDir, "storage-fsac"), 0o755)
+	mustMkdir(path.Join(workingDir, "storage-fsac/persistent_state"), 0o755)
 	mustMkdir(path.Join(workingDir, "worker"), 0o755)
 	mustMkdir(path.Join(workingDir, "worker/build"), 0o755)
 	mustMkdir(path.Join(workingDir, "worker/cache"), 0o755)

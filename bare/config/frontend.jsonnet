@@ -32,5 +32,10 @@ local common = import 'common.libsonnet';
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
   },
+  fileSystemAccessCache: {
+    backend: common.fileSystemAccessCache,
+    getAuthorizer: { allow: {} },
+    putAuthorizer: { allow: {} },
+  },
   executeAuthorizer: { allow: {} },
 }

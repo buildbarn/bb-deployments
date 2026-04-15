@@ -17,8 +17,8 @@ setup () {
     mkdir -m 0777 "volumes/${worker_fuse}" "volumes/${worker_fuse}"/{build,cas,cas/persistent_state}
     mkdir -m 0777 "volumes/${worker_hardlinking}" "volumes/${worker_hardlinking}"/{build,cas,cas/persistent_state}
     mkdir -m 0700 "volumes/${worker_fuse}/cache" "volumes/${worker_hardlinking}/cache"
-    mkdir -p volumes/storage-{ac,cas}-{0,1}/persistent_state
-    chmod 0700 volumes/storage-{ac,cas}-{0,1}/{,persistent_state}
+    mkdir -p volumes/storage-{ac,cas,fsac}-{0,1}/persistent_state
+    chmod 0700 volumes/storage-{ac,cas,fsac}-{0,1}/{,persistent_state}
 }
 
 cleanup() {

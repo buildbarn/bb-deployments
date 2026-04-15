@@ -8,6 +8,7 @@ local common = import 'common.libsonnet';
     authenticationPolicy: { allow: {} },
   }],
   global: common.globalWithDiagnosticsHttpServer(':9984'),
+  fileSystemAccessCache: common.fileSystemAccessCache,
   authorizer: { allow: {} },
   requestMetadataLinksJmespathExpression: { expression: '`{}`' },
 }

@@ -1,5 +1,17 @@
+diff --git a/kubernetes/config/browser.jsonnet b/docker-compose/config/browser.jsonnet
+index c567229..8f1a3db 100644
+--- a/kubernetes/config/browser.jsonnet
++++ b/docker-compose/config/browser.jsonnet
+@@ -8,6 +8,7 @@ local common = import 'common.libsonnet';
+     authenticationPolicy: { allow: {} },
+   }],
+   global: common.global,
++  fileSystemAccessCache: common.fileSystemAccessCache,
+   authorizer: { allow: {} },
+   requestMetadataLinksJmespathExpression: { expression: '`{}`' },
+ }
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index d9e93a1..72d9250 100644
+index 345687b..1faad55 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
 @@ -4,11 +4,11 @@
@@ -30,7 +42,19 @@ index d9e93a1..72d9250 100644
                  weight: 1,
                },
              },
-@@ -34,12 +34,12 @@
+@@ -38,22 +38,22 @@
+     sharding: {
+       shards: {
+         "0": {
+-          backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
++          backend: { grpc: { client: { address: 'storage-0:8981' } } },
+           weight: 1,
+         },
+         "1": {
+-          backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
++          backend: { grpc: { client: { address: 'storage-1:8981' } } },
+           weight: 1,
+         },
        },
      },
    },

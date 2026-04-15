@@ -22,6 +22,7 @@ services:
     - ./config:/config
     - ./volumes/storage-ac-0:/storage-ac
     - ./volumes/storage-cas-0:/storage-cas
+    - ./volumes/storage-fsac-0:/storage-fsac
 
   storage-1:
     image: ghcr.io/buildbarn/bb-storage:20260326T151518Z-d0c6f26
@@ -34,6 +35,7 @@ services:
     - ./config:/config
     - ./volumes/storage-ac-1:/storage-ac
     - ./volumes/storage-cas-1:/storage-cas
+    - ./volumes/storage-fsac-1:/storage-fsac
 
   scheduler:
     image: ghcr.io/buildbarn/bb-scheduler:20260326T163248Z-e6ab874

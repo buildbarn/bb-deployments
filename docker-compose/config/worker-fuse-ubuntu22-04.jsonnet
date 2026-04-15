@@ -100,4 +100,9 @@ local common = import 'common.libsonnet';
     maximumSizeBytes: 1000 * 1024,
     cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
   },
+  prefetching: {
+    fileSystemAccessCache: common.fileSystemAccessCache,
+    bloomFilterBitsPerPath: 14,
+    bloomFilterMaximumSizeBytes: 65536,
+  },
 }

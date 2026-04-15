@@ -28,6 +28,11 @@
       },
     },
   },
+  fileSystemAccessCache: {
+    grpc: {
+      client: { address: 'localhost:8981' },
+    },
+  },
   browserUrl: 'http://localhost:7984',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
 }

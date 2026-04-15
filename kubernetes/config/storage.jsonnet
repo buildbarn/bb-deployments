@@ -72,4 +72,36 @@ local common = import 'common.libsonnet';
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
   },
+  fileSystemAccessCache:  {
+    backend: {
+      'local': {
+        keyLocationMapOnBlockDevice: {
+          file: {
+            path: '/storage-fsac/key_location_map',
+            sizeBytes: 1024 * 1024,
+          },
+        },
+        keyLocationMapMaximumGetAttempts: 16,
+        keyLocationMapMaximumPutAttempts: 64,
+        oldBlocks: 8,
+        currentBlocks: 24,
+        newBlocks: 1,
+        blocksOnBlockDevice: {
+          source: {
+            file: {
+              path: '/storage-fsac/blocks',
+              sizeBytes: 20 * 1024 * 1024,
+            },
+          },
+          spareBlocks: 3,
+        },
+        persistent: {
+          stateDirectoryPath: '/storage-fsac/persistent_state',
+          minimumEpochInterval: '300s',
+        },
+      },
+    },
+    getAuthorizer: { allow: {} },
+    putAuthorizer: { allow: {} },
+  },
 }
