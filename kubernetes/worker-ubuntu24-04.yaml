@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: worker-ubuntu22-04
+  name: worker-ubuntu24-04
   namespace: buildbarn
   annotations:
     prometheus.io/port: "80"
@@ -11,16 +11,16 @@ spec:
   selector:
     matchLabels:
       app: worker
-      instance: ubuntu22-04
+      instance: ubuntu24-04
   template:
     metadata:
       labels:
         app: worker
-        instance: ubuntu22-04
+        instance: ubuntu24-04
     spec:
       containers:
       - args:
-        - /config/worker-ubuntu22-04.jsonnet
+        - /config/worker-ubuntu24-04.jsonnet
         image: ghcr.io/buildbarn/bb-worker:20260326T163248Z-e6ab874
         name: worker
         volumeMounts:
@@ -38,8 +38,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-      - command: [/bb/bb_runner, /config/runner-ubuntu22-04.jsonnet]
-        image: ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b
+      - command: [/bb/bb_runner, /config/runner-ubuntu24-04.jsonnet]
+        image: ghcr.io/catthehacker/ubuntu:act-24.04@sha256:eb153df03ca81e75f73d40a2b14b5dbd2605e7813556efab47b23dfbfceeaa9d
         name: runner
         ports:
         - containerPort: 50051
@@ -85,9 +85,9 @@ spec:
           items:
           - key: common.libsonnet
             path: common.libsonnet
-          - key: runner-ubuntu22-04.jsonnet
-            path: runner-ubuntu22-04.jsonnet
-          - key: worker-ubuntu22-04.jsonnet
-            path: worker-ubuntu22-04.jsonnet
+          - key: runner-ubuntu24-04.jsonnet
+            path: runner-ubuntu24-04.jsonnet
+          - key: worker-ubuntu24-04.jsonnet
+            path: worker-ubuntu24-04.jsonnet
       - emptyDir: {}
         name: worker
