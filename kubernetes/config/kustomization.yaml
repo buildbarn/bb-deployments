@@ -8,7 +8,7 @@ configMapGenerator:
     - browser.jsonnet
     - common.libsonnet
     - frontend.jsonnet
-    - runner-ubuntu22-04.jsonnet
+    - runner-ubuntu24-04.jsonnet
     - scheduler.jsonnet
     - storage.jsonnet
-    - worker-ubuntu22-04.jsonnet
+    - worker-ubuntu24-04.jsonnet
