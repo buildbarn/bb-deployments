@@ -177,12 +177,10 @@ update_version_table() {
     sed -i "s#| \[$repo\].*#$entry#" README.md
 }
 
-update_image_version bb-browser bb-browser
 update_image_version bb-remote-execution bb-runner-installer
 update_image_version bb-remote-execution bb-scheduler
 update_image_version bb-remote-execution bb-worker
 update_image_version bb-storage bb-storage
 
-update_version_table bb-browser bb-browser
 update_version_table bb-remote-execution bb-runner-installer bb-scheduler bb-worker
 update_version_table bb-storage bb-storage

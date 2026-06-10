@@ -16,7 +16,6 @@ following setup:
   [Act](https://github.com/nektos/act/blob/master/IMAGES.md), distributed by
   [catthehacker](https://github.com/catthehacker/docker_images), used for
   running GitHub Actions locally under Ubuntu 22.04.
-- An installation of [the Buildbarn Browser](https://github.com/buildbarn/bb-browser).
 
 Below is a diagram of what this setup Buildbarn looks like. In this
 diagram, the arrows represent the direction in which network connections
@@ -34,7 +33,6 @@ at the top right in the GitHub Actions page.
 
 | Repository | Container images and binaries |
 | ---------- | ----------------------------- |
-| [bb-browser](https://github.com/buildbarn/bb-browser) [`ee35c54d5c`](https://github.com/buildbarn/bb-browser/commits/ee35c54d5cecfc7a763870fe2187c93fa47aaf85)<br/>2026-04-15 06:55:33 UTC | [ghcr.io/buildbarn/bb-browser:20260415T065533Z-ee35c54](https://ghcr.io/buildbarn/bb-browser:20260415T065533Z-ee35c54)<br/>[CI artifacts](https://github.com/buildbarn/bb-browser/actions/runs/24440812022) |
 | [bb-remote-execution](https://github.com/buildbarn/bb-remote-execution) [`c48dcda5e7`](https://github.com/buildbarn/bb-remote-execution/commits/c48dcda5e792227f50ec5bae0fcec1ab2e40fb48)<br/>2026-05-27 16:22:23 UTC | [ghcr.io/buildbarn/bb-runner-installer:20260527T162223Z-c48dcda](https://ghcr.io/buildbarn/bb-runner-installer:20260527T162223Z-c48dcda)<br/>[ghcr.io/buildbarn/bb-scheduler:20260527T162223Z-c48dcda](https://ghcr.io/buildbarn/bb-scheduler:20260527T162223Z-c48dcda)<br/>[ghcr.io/buildbarn/bb-worker:20260527T162223Z-c48dcda](https://ghcr.io/buildbarn/bb-worker:20260527T162223Z-c48dcda)<br/>[CI artifacts](https://github.com/buildbarn/bb-remote-execution/actions/runs/26524013847) |
 | [bb-storage](https://github.com/buildbarn/bb-storage) [`10acc76a82`](https://github.com/buildbarn/bb-storage/commits/10acc76a8295d86f64baa8485c8e616bce0d53ca)<br/>2026-06-09 09:44:25 UTC | [ghcr.io/buildbarn/bb-storage:20260609T094425Z-10acc76](https://ghcr.io/buildbarn/bb-storage:20260609T094425Z-10acc76)<br/>[CI artifacts](https://github.com/buildbarn/bb-storage/actions/runs/27197762662) |
 

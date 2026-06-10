@@ -4,7 +4,6 @@ bazel_dep(name = "abseil-cpp", version = "20250814.1")
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
 bazel_dep(name = "aspect_rules_js", version = "3.2.2")
 bazel_dep(name = "bazel_remote_apis", version = "0")
-bazel_dep(name = "com_github_buildbarn_bb_browser")
 bazel_dep(name = "com_github_buildbarn_bb_remote_execution")
 bazel_dep(name = "com_github_buildbarn_bb_storage")
 bazel_dep(name = "com_github_buildbarn_go_xdr")
@@ -81,12 +80,6 @@ git_override(
 )
 
 git_override(
-    module_name = "com_github_buildbarn_bb_browser",
-    commit = "ee35c54d5cecfc7a763870fe2187c93fa47aaf85",
-    remote = "https://github.com/buildbarn/bb-browser.git",
-)
-
-git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
     # The latest commits (526ba77..1ae1eed as of 2026-06-17)
     # cause `tools/test-deployment-bare.sh` to fail on Windows.
@@ -150,10 +143,6 @@ go_deps_dev = use_extension("@gazelle//:extensions.bzl", "go_deps", dev_dependen
 go_deps_dev.gazelle_override(
     build_file_generation = "on",
     path = "github.com/cncf/xds/go",
-)
-go_deps_dev.module_override(
-    patches = ["@com_github_buildbarn_bb_browser//:patches/com_github_buildkite_terminal_to_html/assets.diff"],
-    path = "github.com/buildkite/terminal-to-html",
 )
 go_deps_dev.gazelle_override(
     build_file_generation = "on",
