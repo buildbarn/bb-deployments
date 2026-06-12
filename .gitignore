@@ -3,4 +3,12 @@
 # Ignore all the volume mounts in the Docker Compose deployment.
 /docker-compose/volumes/
 
+# Ignore temporary files generated during test tools/test-deployment-bare.sh.
+# Is removed as part of the test's cleanup step.
+/tmp-test-bare/
+
+# Ignore temporary file generated during test tools/test-deployment-kubernetes.
+# Is removed as part of the test's cleanup step.
+/kubernetes/kubeconfig.yaml
+
 .vscode/settings.json

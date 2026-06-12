@@ -1,6 +1,6 @@
 module github.com/buildbarn/bb-deployments
 
-go 1.26.1
+go 1.26.4
 
 // rules_go doesn't support gomock's package mode.
 // Use the same version as bb-storage and bb-remote-execution.
@@ -15,13 +15,11 @@ replace go.opentelemetry.io/otel/trace v1.25.0 => go.opentelemetry.io/otel/trace
 // Use the same version as bb-remote-execution.
 replace github.com/hanwen/go-fuse/v2 => github.com/hanwen/go-fuse/v2 v2.5.1
 
-// Use the same version as bb-storage.
-// Or we add a dep to cncf/xds, with build file errors: https://github.com/cncf/xds/issues/104
-replace cloud.google.com/go/storage v1.45.0 => cloud.google.com/go/storage v1.43.0
-
 require (
-	github.com/bazelbuild/rules_go v0.60.0
+	github.com/bazelbuild/rules_go v0.61.1
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067
 )
+
+require github.com/google/go-cmp v0.7.0 // indirect
 
 require golang.org/x/tools v0.34.0 // indirect
