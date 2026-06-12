@@ -192,7 +192,7 @@ First make sure the different Buildbarn components are in sync. Then perform:
 
 ```bash
 # Update go.mod.
-go mod tidy -e
+bazel run @rules_go//go -- mod tidy
 
 bazelisk run //:buildifier.check
 
