@@ -17,12 +17,12 @@ local common = import 'common.libsonnet';
       cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
     },
     runners: [{
-      endpoint: { address: 'unix:///worker/runner' },
+      endpoint: { address: '127.0.0.1:50051' },
       concurrency: 8,
       platform: {
         properties: [
           { name: 'OSFamily', value: 'linux' },
-          { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b' },
+          { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-24.04@sha256:eb153df03ca81e75f73d40a2b14b5dbd2605e7813556efab47b23dfbfceeaa9d' },
         ],
       },
       workerId: {

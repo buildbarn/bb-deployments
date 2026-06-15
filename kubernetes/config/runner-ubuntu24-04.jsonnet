@@ -4,7 +4,7 @@ local common = import 'common.libsonnet';
   buildDirectoryPath: '/worker/build',
   // TODO: global: common.global,
   grpcServers: [{
-    listenPaths: ['/worker/runner'],
+    listenAddresses: [':50051'],
     authenticationPolicy: { allow: {} },
   }],
 }
