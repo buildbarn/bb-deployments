@@ -4,36 +4,59 @@ set -eu -o pipefail
 
 # # Updates the image version in the Docker Compose and Kubernetes deployments.
 #
-# Run this script after updating go.mod
+# Run this script after updating MODULE.bazel.
 #
-# The image versions are extracted from `go.mod`, with the date field
-# and a hash truncated to seven characters.
-# The date separates the day and the time segment with a "T"
-# and appends "Z".
+# The image versions are constructed using `MODULE.bazel` and Github.
+# The first seven characters from the commit hash in `MODULE.bazel`
+# and the commit timestamp (any non-alphanumeric characters excluded)
+# from Github are combined to get the image version tag.
 #
 # Example:
 #
-#   'go.mod' and 'docker-compose.yml'
-#   github.com/buildbarn/bb-browser v0.0.0-20230906070406-881fd822f75e
-#   github.com/buildbarn/bb-browser         v0.0.0-20230906 070406 -881fd822f75e
-#     browser.image:  ghcr.io/buildbarn/bb-browser:20230906T070406Z-881fd82
-#             differences: T, Z and truncated hash.        ^      ^        ^^^^^
+#   Commit hash (MODULE.bazel): d0c6f2633bb9e199fc7285687cdd677660dc688c
+#   Timestamp (Github API):     2026-03-26T15:15:18Z - parsed from https://api.github.com/repos/buildbarn/bb-storage/commits/d0c6f2633bb9e199fc7285687cdd677660dc688c
+#   Constructed image version:  20260326T151518Z-d0c6f26
+
+parse_github_commit_response() {
+    input="$1"; shift
+    match=$(grep -Em 1 -A4 '^    \"committer\": {' <<< "$input" \
+    | grep -E "^      \"date\":")
+    echo "${match:(-22)}" | tr -cd '[:alnum:]'
+}
 
 get_image_version() {
     repo="$1"; shift
-    grep -E "github\.com/buildbarn/$repo" go.mod \
-        | sed 's#.* v0.0.0-\([0-9]\{8\}\)\([0-9]\{6\}\)-\([0-9a-f]\{7\}\)[0-9a-f]\+#\1T\2Z-\3#'
+    hash_full=$(get_full_git_commit_hash "$repo")
+    if [[ -z "$hash_full" ]]; then
+        echo >&2 "Failed to retrieve commit hash in MODULE.bazel for repo $repo"
+        exit 1
+    fi
+    hash_short="${hash_full::7}"
+
+    # https://docs.github.com/en/rest/commits/commits?apiVersion=2026-03-10#get-a-commit
+    commit_response=$(curl --silent --fail -L \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2026-03-10" \
+        "https://api.github.com/repos/buildbarn/$repo/commits/$hash_full")
+    exit_code=$?
+    if [[ "$exit_code" != 0 ]]; then
+        echo >&2 "Failed to fetch https://api.github.com/repos/buildbarn/$repo/commits/$hash_full"
+        exit 1
+    fi
+    timestamp=$(parse_github_commit_response "$commit_response")
+    echo "$timestamp-$hash_short"
 }
 
 get_full_git_commit_hash() {
     repo="$1"; shift
-    # Reuse the same sed expression as in get_image_version.
-    short_commit_hash=$(grep -E "github\.com/buildbarn/$repo" go.mod \
-        | sed 's#.* v0.0.0-\([0-9]\{8\}\)\([0-9]\{6\}\)-\([0-9a-f]\+\)#\3#')
-    # Let GitHub resolve the full commit hash.
-    curl -s "https://github.com/buildbarn/$repo/commit/$short_commit_hash" \
-        | grep '<meta property="og:url" content="' \
-        | sed 's#.*<meta property="og:url" content="/buildbarn/'"$repo"'/commit/\([0-9a-f]*\)" />.*#\1#'
+    remote="https://github.com/buildbarn/$repo.git"
+
+    # -B6 allows for max three patches.
+    # TODO: Rewrite to allow for an arbitrary number
+    # of patches.
+    grep -B6 -A1 "$remote" "MODULE.bazel" \
+    | grep -E "^[[:space:]]*commit = \"" \
+    | grep -Eo "[0-9a-f]{40}"
 }
 
 actions_summary_page() {
@@ -57,31 +80,6 @@ actions_summary_page() {
         }
     ')"
     echo "$res"
-}
-
-check_module_overrides() {
-    # # Check that the git overrides in MODULE.bazel use the expected versions.
-    # We expect the following stanza:
-    #
-    #   git_override(
-    #        module_name = "com_github_buildbarn_bb_storage",
-    #        commit = "3f5e30c53d7b52036eb758a63bc98e706f5d4d5c",
-    #        remote = "https://github.com/buildbarn/bb-storage.git",
-    #   )
-
-    repo="$1"; shift
-
-    commit_hash=$(get_full_git_commit_hash "$repo")
-    remote=https://github.com/buildbarn/"$repo".git
-
-    # As long as we use patches, -B3 is not enough.
-    override_stanza="$(grep -B5 -A1 "$remote" MODULE.bazel)"
-    echo "$override_stanza" | grep -q "$commit_hash" || {
-        echo >&2 "Error: Did not find the expected module version override for $repo."
-        echo "Found: $override_stanza"
-        echo "Expected: commit = \"$commit_hash\","
-        exit 1
-    }
 }
 
 update_image_version() {
@@ -143,7 +141,3 @@ update_image_version bb-storage bb-storage
 update_version_table bb-browser bb-browser
 update_version_table bb-remote-execution bb-runner-installer bb-scheduler bb-worker
 update_version_table bb-storage bb-storage
-
-check_module_overrides bb-browser
-check_module_overrides bb-storage
-check_module_overrides bb-remote-execution
