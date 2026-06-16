@@ -17,7 +17,37 @@ set -eu -o pipefail
 #   Timestamp (Github API):     2026-03-26T15:15:18Z - parsed from https://api.github.com/repos/buildbarn/bb-storage/commits/d0c6f2633bb9e199fc7285687cdd677660dc688c
 #   Constructed image version:  20260326T151518Z-d0c6f26
 
-parse_github_commit_response() {
+get_override_stanza () {
+    local target_remote="$1"; shift
+
+    awk -v target="remote = \"$target_remote\"" '
+    /^git_override\(/ {
+        is_in_block = 1
+        block = $0
+        is_target_found = 0
+        next
+    }
+    is_in_block {
+        # Add current line to block
+        block = block "\n" $0
+
+        # Check if the current line contains our target variable
+        if ($0 ~ target) {
+            is_target_found = 1
+        }
+
+        # Check for the closing parenthesis of the stanza
+        if ($0 ~ /^\)[ \t]*$/) {
+            is_in_block = 0
+            if (is_target_found) {
+                print block
+            }
+        }
+    }
+    ' "MODULE.bazel"
+}
+
+get_timestamp_from_github_response() {
     input="$1"; shift
     match=$(grep -Em 1 -A4 '^    \"committer\": {' <<< "$input" \
     | grep -E "^      \"date\":")
@@ -43,7 +73,7 @@ get_image_version() {
         echo >&2 "Failed to fetch https://api.github.com/repos/buildbarn/$repo/commits/$hash_full"
         exit 1
     fi
-    timestamp=$(parse_github_commit_response "$commit_response")
+    timestamp=$(get_timestamp_from_github_response "$commit_response")
     echo "$timestamp-$hash_short"
 }
 
@@ -51,12 +81,9 @@ get_full_git_commit_hash() {
     repo="$1"; shift
     remote="https://github.com/buildbarn/$repo.git"
 
-    # -B6 allows for max three patches.
-    # TODO: Rewrite to allow for an arbitrary number
-    # of patches.
-    grep -B6 -A1 "$remote" "MODULE.bazel" \
+    get_override_stanza "$remote" \
     | grep -E "^[[:space:]]*commit = \"" \
-    | grep -Eo "[0-9a-f]{40}"
+    | grep -E --only-matching "[0-9a-f]{40}"
 }
 
 actions_summary_page() {
