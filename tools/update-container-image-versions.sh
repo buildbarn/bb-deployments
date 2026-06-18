@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s inherit_errexit
+
+# NB: We have subshells that want to exit the whole script.
+# As we want to capture their output but also verify exit conditions inside.
+set -E
+EXIT_FROM_SUBSHELL=77 # Arbitrary but uncommon, there is a risk of conflicts with other valid exit codes.
+trap '[ "$?" -ne $EXIT_FROM_SUBSHELL ] || exit $EXIT_FROM_SUBSHELL' ERR
 
 # # Updates the image version in the Docker Compose and Kubernetes deployments.
 #
@@ -54,6 +61,26 @@ get_timestamp_from_github_response() {
     echo "${match:(-22)}" | tr -cd '[:alnum:]'
 }
 
+curl_version() {
+    url=$1; shift
+    # Manual error handling for curl to write a shorter error message.
+    local -
+    set +e
+
+    # https://docs.github.com/en/rest/commits/commits?apiVersion=2026-03-10#get-a-commit
+    commit_response=$(curl --silent --fail -L \
+        -H "Accept: application/vnd.github+json" \
+        -H "X-GitHub-Api-Version: 2026-03-10" \
+        "$url")
+    exit_code=$?
+    if [[ "$exit_code" != 0 ]]; then
+        echo >&2 "Failed to fetch $url"
+        exit $EXIT_FROM_SUBSHELL
+    fi
+
+    echo "$commit_response"
+}
+
 get_image_version() {
     repo="$1"; shift
     hash_full=$(get_full_git_commit_hash "$repo")
@@ -62,17 +89,8 @@ get_image_version() {
         exit 1
     fi
     hash_short="${hash_full::7}"
+    commit_response="$(curl_version "https://api.github.com/repos/buildbarn/$repo/commits/$hash_full")"
 
-    # https://docs.github.com/en/rest/commits/commits?apiVersion=2026-03-10#get-a-commit
-    commit_response=$(curl --silent --fail -L \
-        -H "Accept: application/vnd.github+json" \
-        -H "X-GitHub-Api-Version: 2026-03-10" \
-        "https://api.github.com/repos/buildbarn/$repo/commits/$hash_full")
-    exit_code=$?
-    if [[ "$exit_code" != 0 ]]; then
-        echo >&2 "Failed to fetch https://api.github.com/repos/buildbarn/$repo/commits/$hash_full"
-        exit 1
-    fi
     timestamp=$(get_timestamp_from_github_response "$commit_response")
     echo "$timestamp-$hash_short"
 }
