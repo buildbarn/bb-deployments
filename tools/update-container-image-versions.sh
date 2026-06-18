@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu -o pipefail
+shopt -s inherit_errexit
 
 # NB: We have subshells that want to exit the whole script.
 # As we want to capture their output but also verify exit conditions inside.
