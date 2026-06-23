@@ -1,3 +1,25 @@
+# 2026-06-12
+
+* Add configurable upper limit on the FUSE asynchronous request queue
+* Add support for RSA-PSS JWT signatures
+* Drop support for NFSv4 on macOS 14 and older
+
+# 2026-03-30
+
+* Upgrade to Bazel 9 and Go 1.26
+* Add support for NFSv4 named attributes
+* Make bb_worker execution timeout clock controllable via HTTP
+* Allow scheduler to delegate action routing decisions to a remote gRPC service
+* Add support for OAuth client credentials for HTTP clients
+* Add support for PKCE in the OIDC authenticator
+* Add support for gRPC server ALTS authentication
+* Implement digest algorithms blake3 and GITSHA1
+* Add gRPC stream forwarding
+* Relaunch Buildbarn binaries in subprocess if PID is 1
+* Add support for bytes and unsigned integers in gRPC
+* Implement gRPC-ZSTD blob access
+* Add bounded ZSTD encoders/decoders
+
 # 2025-08-20
 
 * Add a winfsp-based vfs implementation
