@@ -104,6 +104,23 @@ get_full_git_commit_hash() {
     | grep -E --only-matching "[0-9a-f]{40}"
 }
 
+format_artifact_urls() {
+    local artifact_urls="$1"; shift
+    readarray -t artifact_urls_array <<< "$artifact_urls"
+    count=${#artifact_urls_array[@]}
+
+    if [[ $count -gt 1 ]]; then
+        output=""
+        for i in $(seq 1 "$count"); do
+            output="${output}, [CI artifact \#$i](${artifact_urls_array[$i-1]})"
+        done
+        # Skip leading ", "
+        echo "${output:2}"
+    elif [[ $count -eq 1 && -n "${artifact_urls_array[0]}" ]]; then
+        echo "[CI artifacts](${artifact_urls_array[0]})"
+    fi
+}
+
 actions_summary_page() {
     checks_url=$1; shift
 
@@ -172,15 +189,18 @@ update_version_table() {
     done
 
     local left="[$repo]($github_project_url) [\`$short_commit_hash\`]($commit_url)<br/>$timestamp"
-    local right="${images}[CI artifacts]($artifact_url)"
+    local right
+    right="${images}$(format_artifact_urls "$artifact_url")"
     local entry="| $left | $right |"
     sed -i "s#| \[$repo\].*#$entry#" README.md
 }
 
+update_image_version bb-portal bb-portal
 update_image_version bb-remote-execution bb-runner-installer
 update_image_version bb-remote-execution bb-scheduler
 update_image_version bb-remote-execution bb-worker
 update_image_version bb-storage bb-storage
 
+update_version_table bb-portal bb-portal
 update_version_table bb-remote-execution bb-runner-installer bb-scheduler bb-worker
 update_version_table bb-storage bb-storage
