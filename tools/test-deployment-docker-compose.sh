@@ -30,8 +30,9 @@ while : ; do
 done
 
 bazel_command_log="$(bazel info output_base)/command.log"
+bb_portal_bes_address="grpc://localhost:8082"
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend=grpc://localhost:8082 --disk_cache= @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
 # INFO: 39 processes: 9 internal, 30 remote.
 grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
@@ -43,7 +44,7 @@ docker compose down
 docker compose up -d --force-recreate
 
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend=grpc://localhost:8082 --disk_cache= @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote cache hits but no remote executions.
 # INFO: 39 processes: 30 remote cache hit, 9 internal.
 grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote cache hit[.,]' \
@@ -52,7 +53,7 @@ grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote cache hit[.,]' \
 
 # --- Check that the hardlinking workers are available ---
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend=grpc://localhost:8082 --remote_instance_name=hardlinking --disk_cache= @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --remote_instance_name=hardlinking --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
 # INFO: 39 processes: 9 internal, 30 remote.
 grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
