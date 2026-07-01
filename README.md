@@ -23,6 +23,7 @@ diagram, the arrows represent the direction in which network connections
 are established.
 
 <p align="center">
+  <!-- This image can be edited by importing bb-overview.xml on https://app.diagrams.net/ -->
   <img src="bb-overview.png" alt="Overview of the Buildbarn setup"/>
 </p>
 
