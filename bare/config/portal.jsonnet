@@ -44,5 +44,4 @@ local common = import 'common.libsonnet';
       ],
     },
   },
-
 }
