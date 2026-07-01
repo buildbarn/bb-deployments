@@ -38,8 +38,9 @@ kubectl wait -n kube-system --for=jsonpath='{.status.loadBalancer.ingress}' serv
 
 # Find the frontend.
 bb_frontend_ip=$(kubectl get service --namespace=buildbarn frontend -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
-bb_portal_bes_ip=$(kubectl get service --namespace=buildbarn portal-bes -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
 bb_frontend_address="grpc://$bb_frontend_ip:8980"
+bb_portal_bes_ip=$(kubectl get service --namespace=buildbarn portal-bes -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
+bb_portal_bes_address="grpc://$bb_portal_bes_ip:8082"
 ingress_ip=$(kubectl get service --namespace=kube-system traefik -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
 
 # --- Test that the bb-portal and bb-scheduler UIs are responsive. ---
@@ -49,7 +50,7 @@ curl --fail --header 'Host: bb-scheduler.example.com' "http://$ingress_ip/" | gr
 # --- Run remote execution ---
 bazel_command_log="$(bazel info output_base)/command.log"
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="grpc://$bb_portal_bes_ip:8082" --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
 # INFO: 39 processes: 9 internal, 30 remote.
 grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
@@ -58,7 +59,7 @@ grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
 
 # --- Check that the hardlinking workers are available ---
 bazel clean
-bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="grpc://$bb_portal_bes_ip:8082" --remote_instance_name=hardlinking --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
+bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --remote_instance_name=hardlinking --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
 # INFO: 39 processes: 9 internal, 30 remote.
 grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
