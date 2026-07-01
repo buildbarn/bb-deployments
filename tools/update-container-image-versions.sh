@@ -109,10 +109,11 @@ format_artifact_urls() {
     readarray -t artifact_urls_array <<< "$artifact_urls"
     count=${#artifact_urls_array[@]}
 
+    # TODO: Generate links only to workflows which has actual artifacts
     if [[ $count -gt 1 ]]; then
         output=""
         for i in $(seq 1 "$count"); do
-            output="${output}, [CI artifact \#$i](${artifact_urls_array[$i-1]})"
+            output="${output}, [CI artifacts \#$i](${artifact_urls_array[$i-1]})"
         done
         # Skip leading ", "
         echo "${output:2}"
