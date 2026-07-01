@@ -4,6 +4,7 @@ bazel_dep(name = "abseil-cpp", version = "20250814.1")
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
 bazel_dep(name = "aspect_rules_js", version = "3.2.2")
 bazel_dep(name = "bazel_remote_apis", version = "0")
+bazel_dep(name = "com_github_buildbarn_bb_portal")
 bazel_dep(name = "com_github_buildbarn_bb_remote_execution")
 bazel_dep(name = "com_github_buildbarn_bb_storage")
 bazel_dep(name = "com_github_buildbarn_go_xdr")
@@ -72,6 +73,12 @@ local_path_override(
 )
 
 git_override(
+    module_name = "com_github_buildbarn_bb_portal",
+    commit = "dd0997ccfd8d2383390977ea1262a9b52c2c0a30",
+    remote = "https://github.com/buildbarn/bb-portal.git",
+)
+
+git_override(
     module_name = "bazel_remote_apis",
     commit = "becdd8f9ff811df88a22d3eadd6341753d51d167",
     # https://github.com/bazelbuild/remote-apis/pull/378
@@ -112,6 +119,12 @@ git_override(
         "//:patches/rules_antlr/bzlmod.diff",
     ],
     remote = "https://github.com/marcohu/rules_antlr.git",
+)
+
+single_version_override(
+    module_name = "aspect_rules_js",
+    # https://github.com/aspect-build/rules_js/pull/2864
+    patches = ["//:patches/aspect_rules_js/external-module-symlinks.diff"],
 )
 
 single_version_override(

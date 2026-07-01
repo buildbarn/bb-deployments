@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  namespace: buildbarn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal
+  template:
+    metadata:
+      labels:
+        app: portal
+    spec:
+      containers:
+        - args:
+            - /config/portal.jsonnet
+          image: ghcr.io/buildbarn/bb-portal:20260630T071618Z-dd0997c
+          name: portal
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+            - containerPort: 8082
+              protocol: TCP
+            - name: diagnostics
+              containerPort: 9980
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config/
+              name: configs
+              readOnly: true
+      volumes:
+        - name: configs
+          configMap:
+            name: buildbarn-config
+            items:
+              - key: common.libsonnet
+                path: common.libsonnet
+              - key: portal.jsonnet
+                path: portal.jsonnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal-bes
+  namespace: buildbarn
+spec:
+  ports:
+    - port: 8082
+      protocol: TCP
+      name: grpcs-bes
+  selector:
+    app: portal
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal
+  namespace: buildbarn
+  annotations:
+    prometheus.io/port: "80"
+    prometheus.io/scrape: "true"
+spec:
+  ports:
+    - port: 8081
+      protocol: TCP
+      name: http
+  selector:
+    app: portal
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portal
+  namespace: buildbarn
+spec:
+  rules:
+    - host: bb-portal.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portal
+                port:
+                  name: http

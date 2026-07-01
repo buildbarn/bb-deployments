@@ -12,6 +12,7 @@ diff_config() {
 
 diff_config {kubernetes,docker-compose}/config/common.libsonnet
 diff_config {kubernetes,docker-compose}/config/frontend.jsonnet
+diff_config {kubernetes,docker-compose}/config/portal.jsonnet
 diff_config {kubernetes,docker-compose}/config/runner-ubuntu22-04.jsonnet
 diff_config {kubernetes,docker-compose}/config/scheduler.jsonnet
 diff_config {kubernetes,docker-compose}/config/storage.jsonnet

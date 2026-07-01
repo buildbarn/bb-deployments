@@ -129,6 +129,7 @@ func main() {
 		{config: "_main/bare/config/scheduler.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_scheduler/bb_scheduler_/bb_scheduler"},
 		{config: "_main/bare/config/worker.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_worker/bb_worker_/bb_worker"},
 		{config: "_main/bare/config/runner.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_runner/bb_runner_/bb_runner"},
+		{config: "_main/bare/config/portal.jsonnet", binary: "com_github_buildbarn_bb_portal+/cmd/bb_portal/bb_portal_/bb_portal"},
 	}
 
 	sigtermContext, cancelWithSigterm := context.WithCancel(context.Background())

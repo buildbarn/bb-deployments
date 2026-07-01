@@ -1,3 +1,8 @@
+# 2026-07-01
+
+* Remove bb-browser from bb-deployments
+* Add [bb-portal](https://github.com/buildbarn/bb-portal) to bb-deployments
+
 # 2026-06-12
 
 * Add configurable upper limit on the FUSE asynchronous request queue

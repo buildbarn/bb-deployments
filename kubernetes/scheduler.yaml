@@ -57,6 +57,9 @@ spec:
   - port: 8983
     protocol: TCP
     name: worker-grpc
+  - port: 8984
+    protocol: TCP
+    name: build-queue-state
   - port: 7982
     protocol: TCP
     name: http

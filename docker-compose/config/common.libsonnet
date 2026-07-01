@@ -48,7 +48,7 @@
       },
     },
   },
-  browserUrl: 'http://localhost:7984',
+  browserUrl: 'http://localhost:8081/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {
