@@ -2,18 +2,14 @@ local common = import 'common.libsonnet';
 
 {
   global: common.global,
-
   httpServers: [{
     listenAddresses: [':8081'],
     authenticationPolicy: { allow: {} },
   }],
-
   instanceNameAuthorizer: {
     allow: {},
   },
-
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-
   besServiceConfiguration: {
     grpcServers: [{
       listenAddresses: [':8082'],
@@ -42,12 +38,10 @@ local common = import 'common.libsonnet';
     minEventBatchDuration: '0.1s',
     buildKey: 'build_id',
   },
-
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   actionCache: common.blobstore.contentAddressableStorage,
   initialSizeClassCache: common.blobstore.contentAddressableStorage,
   fileSystemAccessCache: common.blobstore.contentAddressableStorage,
-
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'scheduler:8984',
@@ -57,7 +51,6 @@ local common = import 'common.libsonnet';
     },
     listOperationsPageSize: 500,
   },
-
   frontendServiceConfiguration: {
     frontendSource: {
       embedded: {},

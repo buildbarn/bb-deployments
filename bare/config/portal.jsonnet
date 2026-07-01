@@ -1,25 +1,20 @@
 local common = import 'common.libsonnet';
 
 {
+  // besServiceConfiguration is disabled as it requires a Postgres instance.
   global: common.globalWithDiagnosticsHttpServer(':9983'),
-
   httpServers: [{
     listenAddresses: [':8081'],
     authenticationPolicy: { allow: {} },
   }],
-
   instanceNameAuthorizer: {
     allow: {},
   },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-
-  // besServiceConfiguration is disabled as it requires a Postgres instance.
-
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   actionCache: common.blobstore.contentAddressableStorage,
   initialSizeClassCache: common.blobstore.contentAddressableStorage,
   fileSystemAccessCache: common.blobstore.contentAddressableStorage,
-
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'localhost:8984',
@@ -29,7 +24,6 @@ local common = import 'common.libsonnet';
     },
     listOperationsPageSize: 500,
   },
-
   frontendServiceConfiguration: {
     frontendSource: {
       embedded: {},
