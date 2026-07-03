@@ -104,27 +104,76 @@ get_full_git_commit_hash() {
     | grep -E --only-matching "[0-9a-f]{40}"
 }
 
+# This fetches the workflow runs triggered by a specified commit,
+# and then prints the Github URL to the runs with at least 1 artifact.
 actions_summary_page() {
-    checks_url=$1; shift
+    repo="$1"; shift
+    commit_hash="$1"; shift
 
-    ### The result is a nested span within a `href` tag.
-    # So we capture each href tag as we pass them,
-    # and when we see the needle "on: push"
-    # we can print the last href tag we encountered.
-    res="$(curl -s "$checks_url" | awk '
-    {
-        if ($0 ~/<a href/)
-            { link=$0 }
-            if ($0 ~/on: push/) {
-                split(link, parts, " ");
-                href=parts[2]
-                split(href, parts, "\"");
-                suffix=parts[2]
-                print("https://github.com" suffix)
-            }
-        }
-    ')"
+    res="$(python3 -c """
+import requests
+
+headers = {
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2026-03-10',
+}
+
+workflow_runs = requests.get(
+    # https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2026-03-10#list-workflow-runs-for-a-repository
+    url='https://api.github.com/repos/buildbarn/$repo/actions/runs',
+    params={
+        'head_sha': '$commit_hash',  # Only get the workflow runs for the specified commit
+        'event': 'push'
+    },
+    headers=headers,
+)
+
+workflow_runs.raise_for_status()
+workflow_runs_json = workflow_runs.json()
+
+if workflow_runs_json['total_count'] > 0:
+    for run in workflow_runs_json['workflow_runs']:
+        run_id = run['id']
+        artifacts = requests.get(
+            # https://docs.github.com/en/rest/actions/artifacts?apiVersion=2026-03-10#list-workflow-run-artifacts
+            url=f'https://api.github.com/repos/buildbarn/$repo/actions/runs/{run_id}/artifacts',
+            headers=headers,
+        )
+        artifacts.raise_for_status()
+        artifacts_json = artifacts.json()
+        if artifacts_json['total_count'] > 0:  # Only include the run URL if it has any artifacts
+            print(f'https://github.com/buildbarn/$repo/actions/runs/{run_id}')
+        """)"
     echo "$res"
+}
+
+# Formats a string of Github workflow run URLs to
+# a Markdown string with one of the following
+# formats (multiline and single-line inputs, respectively):
+#
+#   [CI artifacts #1](<workflow-run-url-1>), [CI artifacts #2](<workflow-run-url-2>), ...
+#
+# or
+#
+#   [CI artifacts](<workflow-run-url>)
+#
+format_artifact_urls() {
+    urls="$1"; shift
+
+    output="$(python3 -c """
+urls = '$urls'.splitlines()
+urls_count = len(urls)
+output = ''
+if urls_count > 1:
+    for i in range(0, urls_count):
+        output += f'[CI artifacts #{i+1}({urls[i]})], '
+elif urls_count == 1:
+    output = f'[CI artifacts]({urls[0]})'
+
+print(output.strip(', '))
+    """)"
+
+    echo "$output"
 }
 
 update_image_version() {
@@ -155,9 +204,8 @@ update_version_table() {
     commit_hash=$(get_full_git_commit_hash "$repo")
     local short_commit_hash="${commit_hash:0:10}"
     local github_project_url="https://github.com/buildbarn/$repo"
-    local checks_url="$github_project_url/commit/$commit_hash/checks"
     local artifact_url
-    artifact_url=$(actions_summary_page "$checks_url")
+    artifact_url=$(actions_summary_page "$repo" "$commit_hash")
 
     local git_log_stem="https://github.com/buildbarn/$repo/commits"
     local commit_url="$git_log_stem/$commit_hash"
@@ -172,7 +220,8 @@ update_version_table() {
     done
 
     local left="[$repo]($github_project_url) [\`$short_commit_hash\`]($commit_url)<br/>$timestamp"
-    local right="${images}[CI artifacts]($artifact_url)"
+    local right
+    right="${images}$(format_artifact_urls "$artifact_url")"
     local entry="| $left | $right |"
     sed -i "s#| \[$repo\].*#$entry#" README.md
 }
