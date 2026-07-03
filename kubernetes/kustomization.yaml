@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - bb-namespace.yaml
   - config/
-  - browser.yaml
   - frontend.yaml
   - scheduler.yaml
   - storage.yaml

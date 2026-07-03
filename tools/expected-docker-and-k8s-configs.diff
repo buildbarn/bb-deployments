@@ -1,15 +1,3 @@
-diff --git a/kubernetes/config/browser.jsonnet b/docker-compose/config/browser.jsonnet
-index c567229..8f1a3db 100644
---- a/kubernetes/config/browser.jsonnet
-+++ b/docker-compose/config/browser.jsonnet
-@@ -8,6 +8,7 @@ local common = import 'common.libsonnet';
-     authenticationPolicy: { allow: {} },
-   }],
-   global: common.global,
-+  fileSystemAccessCache: common.fileSystemAccessCache,
-   authorizer: { allow: {} },
-   requestMetadataLinksJmespathExpression: { expression: '`{}`' },
- }
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
 index 345687b..1faad55 100644
 --- a/kubernetes/config/common.libsonnet

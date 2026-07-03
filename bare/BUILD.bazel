@@ -17,7 +17,6 @@ go_binary(
     name = "bare",
     data = [
         ":config",
-        "@com_github_buildbarn_bb_browser//cmd/bb_browser",
         "@com_github_buildbarn_bb_remote_execution//cmd/bb_runner",
         "@com_github_buildbarn_bb_remote_execution//cmd/bb_scheduler",
         "@com_github_buildbarn_bb_remote_execution//cmd/bb_worker",

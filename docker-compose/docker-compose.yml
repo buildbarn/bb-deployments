@@ -53,17 +53,6 @@ services:
     volumes:
     - ./config:/config
 
-  browser:
-    image: ghcr.io/buildbarn/bb-browser:20260415T065533Z-ee35c54
-    command:
-    - /config/browser.jsonnet
-    expose:
-    - 9980
-    ports:
-    - 7984:7984
-    volumes:
-    - ./config:/config
-
   runner-installer:
     image: ghcr.io/buildbarn/bb-runner-installer:20260527T162223Z-c48dcda
     volumes:

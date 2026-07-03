@@ -41,8 +41,7 @@ bb_frontend_ip=$(kubectl get service --namespace=buildbarn frontend -o json | jq
 bb_frontend_address="grpc://$bb_frontend_ip:8980"
 ingress_ip=$(kubectl get service --namespace=kube-system traefik -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
 
-# --- Test that the bb-browser and bb-scheduler UIs are responsive. ---
-curl --fail --header 'Host: bb-browser.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Browser</title>'
+# --- Test that the bb-scheduler UI is responsive. ---
 curl --fail --header 'Host: bb-scheduler.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Scheduler</title>'
 
 # --- Run remote execution ---
