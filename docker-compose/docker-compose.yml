@@ -53,6 +53,37 @@ services:
     volumes:
     - ./config:/config
 
+  portal:
+    image: ghcr.io/buildbarn/bb-portal:20260630T071618Z-dd0997c
+    command:
+    - /config/portal.jsonnet
+    expose:
+      - 9980
+    ports:
+    - 8081:8081
+    - 8082:8082
+    volumes:
+    - ./config:/config
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+
+  postgres:
+    image: docker.io/postgres:18-alpine
+    expose:
+    - 5432
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
   runner-installer:
     image: ghcr.io/buildbarn/bb-runner-installer:20260527T162223Z-c48dcda
     volumes:
