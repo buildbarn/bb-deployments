@@ -9,5 +9,6 @@
 package dummyforgomod
 
 import (
-	_ "golang.org/x/lint" // GitHub Workflow
+	_ "github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb" // Jsonnet Bundler
+	_ "golang.org/x/lint"                                 // GitHub Workflow
 )

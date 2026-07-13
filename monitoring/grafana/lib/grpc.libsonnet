@@ -28,7 +28,7 @@ local simpledash = import 'simpledash.libsonnet';
     ),
   ],
 
-  local getSimpleRow(title, unit, metric) =
+  local getSimpleRow(title, unit, metric, clusterLabel) =
     simpledash.row(
       title=title,
       panels=[
@@ -39,7 +39,7 @@ local simpledash = import 'simpledash.libsonnet';
           unit=unit,
           targets=[
             simpledash.graphTarget(
-              expr='sum(%s{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (grpc_service, grpc_method)' % metric,
+              expr='sum(%s{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (grpc_service, grpc_method)' % [metric, clusterLabel],
               legendFormat='{{grpc_service}}.{{grpc_method}}',
             ),
           ],
@@ -51,7 +51,7 @@ local simpledash = import 'simpledash.libsonnet';
           unit=unit,
           targets=[
             simpledash.graphTarget(
-              expr='sum(%s{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (kubernetes_service)' % metric,
+              expr='sum(%s{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (kubernetes_service)' % [metric, clusterLabel],
               legendFormat='{{kubernetes_service}}',
             ),
           ],
@@ -59,11 +59,12 @@ local simpledash = import 'simpledash.libsonnet';
       ],
     ),
 
-  getCommonRows(side): [
+  getCommonRows(side, config): [
     getSimpleRow(
       title='Number of in-flight operations',
       unit=simpledash.unitNone,
-      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_in_flight:sum' % side
+      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_in_flight:sum' % side,
+      clusterLabel=config.clusterLabel,
     ),
 
     simpledash.row(
@@ -76,7 +77,7 @@ local simpledash = import 'simpledash.libsonnet';
           unit=simpledash.unitOperationsPerSecond,
           targets=[
             simpledash.graphTarget(
-              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (grpc_service, grpc_method)' % side,
+              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (grpc_service, grpc_method)' % [side, config.clusterLabel],
               legendFormat='{{grpc_service}}.{{grpc_method}}',
             ),
           ],
@@ -88,7 +89,7 @@ local simpledash = import 'simpledash.libsonnet';
           unit=simpledash.unitOperationsPerSecond,
           targets=[
             simpledash.graphTarget(
-              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (grpc_code)' % side,
+              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (grpc_code)' % [side, config.clusterLabel],
               legendFormat='{{grpc_code}}',
             ),
           ],
@@ -100,7 +101,7 @@ local simpledash = import 'simpledash.libsonnet';
           unit=simpledash.unitOperationsPerSecond,
           targets=[
             simpledash.graphTarget(
-              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (kubernetes_service)' % side,
+              expr='sum(grpc_code_grpc_method_grpc_service_kubernetes_service:grpc_%s_handled:irate1m{grpc_code=~"$grpc_code",grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (kubernetes_service)' % [side, config.clusterLabel],
               legendFormat='{{kubernetes_service}}',
             ),
           ],
@@ -111,12 +112,14 @@ local simpledash = import 'simpledash.libsonnet';
     getSimpleRow(
       title='Messages sent',
       unit=simpledash.unitWritesPerSecond,
-      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_msg_sent:irate1m' % side
+      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_msg_sent:irate1m' % side,
+      clusterLabel=config.clusterLabel,
     ),
     getSimpleRow(
       title='Messages received',
       unit=simpledash.unitReadsPerSecond,
-      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_msg_received:irate1m' % side
+      metric='grpc_method_grpc_service_kubernetes_service:grpc_%s_msg_received:irate1m' % side,
+      clusterLabel=config.clusterLabel,
     ),
 
     simpledash.row(
@@ -125,10 +128,10 @@ local simpledash = import 'simpledash.libsonnet';
         simpledash.heatmap(
           title='RPC duration',
           width=1,
-          unit=simpledash.unitDurationSeconds,
+          unit=simpledash.unitSeconds,
           targets=[
             simpledash.heatmapTarget(
-              expr='sum(grpc_method_grpc_service_kubernetes_service_le:grpc_%s_handling_seconds_bucket:irate1m{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service"}) by (le)' % side,
+              expr='sum(grpc_method_grpc_service_kubernetes_service_le:grpc_%s_handling_seconds_bucket:irate1m{grpc_method=~"$grpc_method",grpc_service=~"$grpc_service",kubernetes_service=~"$kubernetes_service",%s="$cluster"}) by (le)' % [side, config.clusterLabel],
             ),
           ],
         ),

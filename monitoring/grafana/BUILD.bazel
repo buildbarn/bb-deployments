@@ -1,45 +1,22 @@
-load("@rules_jsonnet//jsonnet:jsonnet.bzl", "jsonnet_library", "jsonnet_to_json")
+load("simpledash.bzl", "jb_library", "simpledash_jsonnet_to_json")
 
-jsonnet_library(
-    name = "grpc",
-    srcs = ["grpc.libsonnet"],
+jb_library(
+    name = "grafonnet",
+    jsonnetfile = "jsonnetfile.json",
+    jsonnetfile_lock = "jsonnetfile.lock.json",
 )
 
-jsonnet_library(
-    name = "simpledash",
-    srcs = ["simpledash.libsonnet"],
-    deps = ["@grafonnet_lib//:grafonnet"],
+simpledash_jsonnet_to_json(
+    name = "dashboards",
+    srcs = [
+        "dashboards/bb-scheduler.jsonnet",
+        "dashboards/blobaccess.jsonnet",
+        "dashboards/buildexecutor.jsonnet",
+        "dashboards/centralized-storage.jsonnet",
+        "dashboards/eviction-sets.jsonnet",
+        "dashboards/fuse.jsonnet",
+        "dashboards/grpc-clients.jsonnet",
+        "dashboards/grpc-servers.jsonnet",
+    ],
+    imports = [":grafonnet"],
 )
-
-[
-    jsonnet_to_json(
-        name = dashboard,
-        src = dashboard + ".jsonnet",
-        outs = [dashboard + ".json"],
-        deps = [":simpledash"],
-    )
-    for dashboard in [
-        "bb-scheduler",
-        "blobaccess",
-        "buildexecutor",
-        "centralized-storage",
-        "eviction-sets",
-        "fuse",
-    ]
-]
-
-[
-    jsonnet_to_json(
-        name = dashboard,
-        src = dashboard + ".jsonnet",
-        outs = [dashboard + ".json"],
-        deps = [
-            ":grpc",
-            ":simpledash",
-        ],
-    )
-    for dashboard in [
-        "grpc-clients",
-        "grpc-servers",
-    ]
-]
