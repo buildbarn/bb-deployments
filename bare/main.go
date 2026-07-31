@@ -18,6 +18,8 @@ import (
 	"github.com/bazelbuild/rules_go/go/runfiles"
 )
 
+const goosIsWindows = runtime.GOOS == "windows"
+
 type buildbarnProcess struct {
 	config string
 	binary string
@@ -25,7 +27,7 @@ type buildbarnProcess struct {
 
 func bbStart(bbProcess *buildbarnProcess, workingDir string) *exec.Cmd {
 	binary := bbProcess.binary
-	if runtime.GOOS == "windows" {
+	if goosIsWindows {
 		binary += ".exe"
 	}
 	binaryPath, err := runfiles.Rlocation(binary)
@@ -43,7 +45,7 @@ func bbStart(bbProcess *buildbarnProcess, workingDir string) *exec.Cmd {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Dir = workingDir
-	if runtime.GOOS == "windows" {
+	if goosIsWindows {
 		// PWD is used by the jsonnet configs, but is not set on Windows.
 		cmd.Env = append(os.Environ(), "PWD="+workingDir)
 	}
@@ -55,7 +57,7 @@ func bbStart(bbProcess *buildbarnProcess, workingDir string) *exec.Cmd {
 }
 
 func gracefulShutdown(process *os.Process) {
-	if runtime.GOOS == "windows" {
+	if goosIsWindows {
 		// On Windows, go does not support sending syscall.SIGINT. We instead
 		// rely on the fact that the CTRL_C_EVENT that is sent to signal
 		// graceful termination is normally delivered to the whole process
@@ -129,8 +131,8 @@ func main() {
 		{config: "_main/bare/config/scheduler.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_scheduler/bb_scheduler_/bb_scheduler"},
 		{config: "_main/bare/config/worker.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_worker/bb_worker_/bb_worker"},
 		{config: "_main/bare/config/runner.jsonnet", binary: "com_github_buildbarn_bb_remote_execution+/cmd/bb_runner/bb_runner_/bb_runner"},
-		{config: "_main/bare/config/portal.jsonnet", binary: "com_github_buildbarn_bb_portal+/cmd/bb_portal/bb_portal_/bb_portal"},
 	}
+	bbs = addBbPortal(bbs)
 
 	sigtermContext, cancelWithSigterm := context.WithCancel(context.Background())
 	killContext, cancelWithKill := context.WithCancel(context.Background())
