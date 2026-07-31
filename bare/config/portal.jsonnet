@@ -12,9 +12,9 @@ local common = import 'common.libsonnet';
   },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
-  actionCache: common.blobstore.contentAddressableStorage,
-  initialSizeClassCache: common.blobstore.contentAddressableStorage,
-  fileSystemAccessCache: common.blobstore.contentAddressableStorage,
+  actionCache: common.blobstore.actionCache,
+  initialSizeClassCache: common.blobstore.initialSizeClassCache,
+  fileSystemAccessCache: common.blobstore.fileSystemAccessCache,
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'localhost:8984',

@@ -48,6 +48,20 @@
       },
     },
   },
+  initialSizeClassCache: {
+    sharding: {
+      shards: {
+        "0": {
+          backend: { grpc: { client: { address: 'storage-0:8981' } } },
+          weight: 1,
+        },
+        "1": {
+          backend: { grpc: { client: { address: 'storage-1:8981' } } },
+          weight: 1,
+        },
+      },
+    },
+  },
   browserUrl: 'http://localhost:8081/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
   global: {

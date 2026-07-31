@@ -33,6 +33,11 @@
       client: { address: 'localhost:8981' },
     },
   },
+  initialSizeClassCache: {
+    grpc: {
+      client: { address: 'localhost:8981' },
+    },
+  },
   browserUrl: 'http://localhost:8081/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
 }
