@@ -40,8 +40,8 @@ local common = import 'common.libsonnet';
   },
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   actionCache: common.blobstore.actionCache,
-  initialSizeClassCache: common.blobstore.initialSizeClassCache,
-  fileSystemAccessCache: common.blobstore.fileSystemAccessCache,
+  initialSizeClassCache: common.initialSizeClassCache,
+  fileSystemAccessCache: common.fileSystemAccessCache,
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'scheduler:8984',
