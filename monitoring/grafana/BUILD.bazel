@@ -1,4 +1,19 @@
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("simpledash.bzl", "jb_library", "simpledash_jsonnet_to_json")
+
+sh_binary(
+    name = "run_jb",
+    srcs = ["run_jb.sh"],
+    # This tool is only used during build-time for rule jb_library.
+    tags = ["manual"],
+)
+
+sh_binary(
+    name = "run_jsonnet",
+    srcs = ["run_jsonnet.sh"],
+    # This tool is only used during build-time for rule simpledash_jsonnet_to_json.
+    tags = ["manual"],
+)
 
 jb_library(
     name = "grafonnet",

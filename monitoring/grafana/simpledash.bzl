@@ -10,7 +10,8 @@ def _jb_library_impl(ctx, **kwargs):
         out_dir.path,
     ])
 
-    ctx.actions.run_shell(
+    ctx.actions.run(
+        executable = ctx.executable._jb_script,
         inputs = [
             ctx.executable._jb,
             jsonnetfile,
@@ -18,26 +19,18 @@ def _jb_library_impl(ctx, **kwargs):
         ],
         outputs = [out_dir],
         arguments = [args],
-        command = """
-        jb=$1
-        jsonnetfile=$2
-        jsonnetfile_lock=$3
-        out_dir=$4
-
-        cp $jsonnetfile .
-        cp $jsonnetfile_lock .
-
-        $jb install
-        cp -r --dereference vendor/* $out_dir
-    """,
+        mnemonic = "JsonnetBundler",
+        progress_message = "Jsonnet bundling into %{output}",
     )
 
     return DefaultInfo(files = depset([out_dir]))
 
 jb_library = rule(
+    doc = "Fetches and exports Jsonnet dependencies from Jsonnet Bundler project files.",
     implementation = _jb_library_impl,
     attrs = {
         "_jb": attr.label(default = "@com_github_jsonnet_bundler_jsonnet_bundler//cmd/jb", executable = True, allow_single_file = True, cfg = "exec"),
+        "_jb_script": attr.label(default = ":run_jb", executable = True, cfg = "exec"),
         "jsonnetfile": attr.label(mandatory = True, allow_single_file = True),
         "jsonnetfile_lock": attr.label(mandatory = True, allow_single_file = True),
     },
@@ -80,7 +73,8 @@ def _simpledash_jsonnet_to_json_rule_impl(ctx, **kwargs):
         dashboards_file.path,
     ])
 
-    ctx.actions.run_shell(
+    ctx.actions.run(
+        executable = ctx.executable._jsonnet_script,
         inputs = [
             ctx.executable._jsonnet,
             config_file,
@@ -88,26 +82,21 @@ def _simpledash_jsonnet_to_json_rule_impl(ctx, **kwargs):
         ] + dashboard_srcs + ctx.files._lib_srcs + ctx.files.imports,
         outputs = [out_dir],
         arguments = [args],
-        command = """
-            jsonnet=$1
-            jsonnet_imports=$2
-            out_dir=$3
-            dashboards_file=$4
-
-            cp --dereference $dashboards_file dashboards.libsonnet
-            $jsonnet $jsonnet_imports -m $out_dir dashboards.libsonnet
-        """,
+        mnemonic = "Jsonnet",
+        progress_message = "Jsonnet generating dashboards into %{output}",
     )
 
     return DefaultInfo(files = depset([out_dir]))
 
 simpledash_jsonnet_to_json = rule(
+    doc = "Generates JSON dashboards from Simpledash dashboard files.",
     implementation = _simpledash_jsonnet_to_json_rule_impl,
     attrs = {
         "_jsonnet": attr.label(default = "@jsonnet_go//cmd/jsonnet", executable = True, allow_single_file = True, cfg = "exec"),
         "_jb": attr.label(default = "@com_github_jsonnet_bundler_jsonnet_bundler//cmd/jb", executable = True, allow_single_file = True, cfg = "exec"),
         "_jsonnetfile": attr.label(default = "jsonnetfile.json", allow_single_file = True, cfg = "exec"),
         "_jsonnetfile_lock": attr.label(default = "jsonnetfile.lock.json", allow_single_file = True, cfg = "exec"),
+        "_jsonnet_script": attr.label(default = ":run_jsonnet", executable = True, cfg = "exec"),
         "_config_src": attr.label(default = "config.libsonnet", allow_single_file = True),
         "_lib_srcs": attr.label_list(default = ["lib/grpc.libsonnet", "lib/simpledash.libsonnet"], allow_files = True),
         "srcs": attr.label_list(mandatory = True, allow_files = True),
