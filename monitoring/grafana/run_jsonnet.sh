@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
 jsonnet=$1
 jsonnet_imports=$2
 out_dir=$3
