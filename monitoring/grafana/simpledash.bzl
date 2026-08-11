@@ -38,7 +38,6 @@ jb_library = rule(
 
 def _simpledash_jsonnet_to_json_rule_impl(ctx, **kwargs):
     out_dir = ctx.actions.declare_directory(ctx.label.name)
-    jsonnet_imports = " ".join(["-J {}".format(dirs.path) for dirs in ctx.files.imports])
 
     config_file = ctx.file._config_src
     dashboard_srcs = ctx.files.srcs
@@ -68,10 +67,14 @@ def _simpledash_jsonnet_to_json_rule_impl(ctx, **kwargs):
     args = ctx.actions.args()
     args.add_all([
         ctx.executable._jsonnet.path,
-        jsonnet_imports,
         out_dir.path,
         dashboards_file.path,
     ])
+    args.add_all(
+        ctx.files.imports,
+        before_each = "-J",
+        expand_directories = False,
+    )
 
     ctx.actions.run(
         executable = ctx.executable._jsonnet_script,
