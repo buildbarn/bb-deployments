@@ -1,3 +1,9 @@
+# 2026-08-18
+
+* Upgrade bb-deployments to use Bazel 9 (see [changelog](https://github.com/bazelbuild/bazel/releases/tag/9.0.0))
+* Use `llvm` toolchains instead of constructing them manually
+* Upgrade `abseil-hello` version
+
 # 2026-07-03
 
 * Remove bb-browser from bb-deployments

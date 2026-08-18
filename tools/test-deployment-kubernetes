@@ -48,7 +48,7 @@ curl --fail --header 'Host: bb-portal.example.com' "http://$ingress_ip/" | grep 
 curl --fail --header 'Host: bb-scheduler.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Scheduler</title>'
 
 # --- Run remote execution ---
-bazel_command_log="$(bazel info output_base)/command.log"
+bazel_command_log="$(bazel info command_log)"
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= --remote_executor="$bb_frontend_address" @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.

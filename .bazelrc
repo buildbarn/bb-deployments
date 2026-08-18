@@ -29,22 +29,22 @@ build:remote-exec --remote_instance_name=fuse
 # Make sure to load Buildbarn with more requests than the number of CPUs on
 # your host machine.
 build:remote-exec --jobs=64
-# Make sure that the remote execution platform and the matching toolchains
-# take precedence over the other definitions in the WORKSPACE file.
-build:remote-exec --extra_toolchains=//tools/remote-toolchains:all
 
 # When running Ubuntu 22.04 executors.
 build:remote-ubuntu-22-04 --config=remote-exec
-build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/remote-toolchains:ubuntu-act-22-04-platform
+build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/platforms:ubuntu-act-22-04-platform
 
 # Workaround https://github.com/bazelbuild/bazel/issues/19733
 common:remote-exec-windows --features=-parse_showincludes --host_features=-parse_showincludes
 
 # When running bare executors on your own host machine.
-build:remote-local --config=remote-exec
+build:remote-local --config=remote-exec --extra_execution_platforms=//tools/platforms:host
 
 common --@protobuf//bazel/toolchains:prefer_prebuilt_protoc
 common --protocopt=--fatal_warnings
 
 # Required to make protobuf compile on Windows
 common:windows --host_cxxopt=/std:c++17 --define=protobuf_allow_msvc=true
+
+# Required for the tests to read the log output
+common --write_command_log

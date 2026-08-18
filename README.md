@@ -75,10 +75,7 @@ message should stop.
 ## Remote execution
 
 Bazel can perform remote builds against these deployments by using toolchains
-adapted to the remote environment. The script
-`tools/remote-toolchains/extract-bazel-auto-toolchains.sh` has been used to
-construct such a C++ toolchain which is activated using
-`--config=remote-ubuntu-22-04`, see `.bazelrc` and `WORKSPACE` for the exact
+activated by `--config=remote-ubuntu-22-04`, see `.bazelrc` and `WORKSPACE` for the exact
 setup.
 
 Note that the name and SHA of the container image is configured in multiple
@@ -86,6 +83,7 @@ places: `BUILD.bazel`, `.jsonnet` configuration for Buildbarn and for the actual
 runner container (docker compose, kubernetes yaml, etc...)
 
 Now try a build (using `bazel` or [`bazelisk`](https://github.com/bazelbuild/bazelisk)):
+
 ```
 bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main
 ```
