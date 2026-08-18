@@ -38,10 +38,11 @@ build:remote-ubuntu-22-04 --extra_execution_platforms=//tools/platforms:ubuntu-a
 common:remote-exec-windows --features=-parse_showincludes --host_features=-parse_showincludes
 
 # When running bare executors on your own host machine.
-build:remote-local --config=remote-exec --extra_execution_platforms=//tools/platforms:host
+build:remote-local --config=remote-exec --extra_execution_platforms=//tools/platforms:remote-local
 
 common --@protobuf//bazel/toolchains:prefer_prebuilt_protoc
 common --protocopt=--fatal_warnings
+common --host_platform=//tools/platforms:host
 
 # Required to make protobuf compile on Windows
 common:windows --host_cxxopt=/std:c++17 --define=protobuf_allow_msvc=true

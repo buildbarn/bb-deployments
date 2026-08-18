@@ -12,5 +12,16 @@ platform(
 
 platform(
     name = "host",
+    constraint_values = [
+        "@rules_go//go/toolchain:cgo_off",
+    ],
+    exec_properties = {
+        "no-remote-exec": "true",
+    },
+    parents = ["@platforms//host"],
+)
+
+platform(
+    name = "remote-local",
     parents = ["@platforms//host"],
 )
