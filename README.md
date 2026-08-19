@@ -75,7 +75,7 @@ message should stop.
 ## Remote execution
 
 Bazel can perform remote builds against these deployments by using toolchains
-activated by `--config=remote-ubuntu-22-04`, see `.bazelrc` and `WORKSPACE` for the exact
+activated by `--config=remote-ubuntu-22-04`, see `.bazelrc` for the exact
 setup.
 
 Note that the name and SHA of the container image is configured in multiple
