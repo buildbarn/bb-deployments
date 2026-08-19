@@ -124,6 +124,8 @@ func main() {
 	mustMkdir(path.Join(workingDir, "worker"), 0o755)
 	mustMkdir(path.Join(workingDir, "worker/build"), 0o755)
 	mustMkdir(path.Join(workingDir, "worker/cache"), 0o755)
+	mustMkdir(path.Join(workingDir, "worker/cas"), 0o755)
+	mustMkdir(path.Join(workingDir, "worker/cas/persistent_state"), 0o755)
 
 	log.Println("Don't worry if you see some \"Failed to synchronize with scheduler\" warnings on startup")
 	log.Println("\t- they should stop once bb_scheduler is ready")
