@@ -29,7 +29,7 @@ while : ; do
     sleep 1
 done
 
-bazel_command_log="$(bazel info output_base)/command.log"
+bazel_command_log="$(bazel info command_log)"
 bb_portal_bes_address="grpc://localhost:8082"
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= @abseil-hello//:hello_test

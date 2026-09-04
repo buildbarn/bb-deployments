@@ -11,12 +11,3 @@ index 53231de..d159c75 100644
                platform_name: 'windows_amd64',
                upload: false,
              },
-@@ -77,7 +77,7 @@
-         {
-           name: 'Override .bazelrc',
-           // Use the D drive to improve performance.
--          run: 'echo "startup --output_base=D:/bazel_output" >> .bazelrc',
-+          run: 'echo "startup --output_base=D:/bazel_output --windows_enable_symlinks" >> .bazelrc',
-           'if': "matrix.host.platform_name == 'windows_amd64'",
-         },
-       ] + std.flattenArrays([

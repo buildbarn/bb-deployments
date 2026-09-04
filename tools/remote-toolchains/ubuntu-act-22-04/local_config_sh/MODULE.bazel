@@ -1,3 +1,0 @@
-module(name = "remote_config_sh")
-
-bazel_dep(name = "rules_shell", version = "0.3.0")
