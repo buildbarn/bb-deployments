@@ -18,7 +18,10 @@ import (
 	"github.com/bazelbuild/rules_go/go/runfiles"
 )
 
-const goosIsWindows = runtime.GOOS == "windows"
+const (
+	goosIsWindows        = runtime.GOOS == "windows"
+	interruptQuietPeriod = 2 * time.Second
+)
 
 type buildbarnProcess struct {
 	config string
@@ -158,13 +161,31 @@ func main() {
 
 	// Terminate started processes if interrupted.
 	go func() {
-		interruptChan := make(chan os.Signal)
+		interruptChan := make(chan os.Signal, 1)
 		signal.Notify(interruptChan, os.Interrupt, syscall.SIGTERM)
 		<-interruptChan
 		log.Print("Received first SIGTERM, gracefully terminating Buildbarn processes")
 		cancelWithSigterm()
-		// Kill on a second interrupt signal.
-		<-interruptChan
+		// Kill on a second interrupt signal except on Windows where we
+		// require the second signal to arrive after a quiet period.
+		// This is because MSYS2 implements `kill -INT` by sending an
+		// unbounded stream of CTRL_C_EVENTs: without this we'll end
+		// up force killing bb-storage whilst it's still flushing to
+		// disk.
+		for {
+			<-interruptChan
+			if !goosIsWindows {
+				break
+			}
+			quiet := time.NewTimer(interruptQuietPeriod)
+			select {
+			case <-interruptChan:
+				quiet.Stop()
+				continue
+			case <-quiet.C:
+			}
+			break
+		}
 		signal.Stop(interruptChan)
 		log.Print("Received second SIGTERM, killing Buildbarn processes")
 		cancelWithKill()
