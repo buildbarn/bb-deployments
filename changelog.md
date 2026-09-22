@@ -6,7 +6,7 @@
 * Option to use environment variables for setting proxy URL
 * Make the VFS API more complete
 * Support FUSE on FreeBSD
-* Restructure bb-portal configuration to decrease decoupling between services
+* Restructure bb-portal configuration to decrease coupling between services
 * Add ability to compare two actions in bb-portal
 * Add ZSTD compression middleware to bb-portal router
 * Show critical path in bb-portal invocations and builds
