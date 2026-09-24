@@ -13,7 +13,7 @@ replace go.uber.org/mock => go.uber.org/mock v0.4.0
 replace go.opentelemetry.io/otel/trace v1.25.0 => go.opentelemetry.io/otel/trace v1.24.0
 
 // Use the same version as bb-remote-execution.
-replace github.com/hanwen/go-fuse/v2 => github.com/hanwen/go-fuse/v2 v2.10.1
+replace github.com/hanwen/go-fuse/v2 => github.com/hanwen/go-fuse/v2 v2.5.1
 
 require (
 	github.com/bazelbuild/rules_go v0.63.0
