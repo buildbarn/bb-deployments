@@ -7,14 +7,24 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8081'],
     authenticationPolicy: { allow: {} },
   }],
-  instanceNameAuthorizer: {
-    allow: {},
-  },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-  contentAddressableStorage: common.blobstore.contentAddressableStorage,
-  actionCache: common.blobstore.actionCache,
-  initialSizeClassCache: common.initialSizeClassCache,
-  fileSystemAccessCache: common.fileSystemAccessCache,
+  contentAddressableStorage: {
+    backend: common.blobstore.contentAddressableStorage,
+    readAuthorizer: { allow: {} },
+  },
+  actionCache: {
+    backend: common.blobstore.actionCache,
+    readAuthorizer: { allow: {} },
+  },
+  initialSizeClassCache: {
+    backend: common.initialSizeClassCache,
+    readAuthorizer: { allow: {} },
+  },
+  fileSystemAccessCache: {
+    backend: common.fileSystemAccessCache,
+    readAuthorizer: { allow: {} },
+  },
+  blobstoreServiceConfiguration: {},
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'localhost:8984',
@@ -23,6 +33,7 @@ local common = import 'common.libsonnet';
       allow: {},
     },
     listOperationsPageSize: 500,
+    readAuthorizer: { allow: {} },
   },
   frontendServiceConfiguration: {
     frontendSource: {

@@ -1,3 +1,18 @@
+# 2026-09-22
+
+* Upgrade to Go 1.27.1
+* Add tool for partitioning ephemeral disks
+* Add ZSTD ReadOffset support
+* Option to use environment variables for setting proxy URL
+* Make the VFS API more complete
+* Support FUSE on FreeBSD
+* Restructure bb-portal configuration to decrease coupling between services
+* Add ability to compare two actions in bb-portal
+* Add ZSTD compression middleware to bb-portal router
+* Show critical path in bb-portal invocations and builds
+* Add inline search bar to bb-portal log viewer
+* Various bb-portal bug fixes and improvements
+
 # 2026-09-04
 
 * Upgrade bb-deployments to use Bazel 9 (see [changelog](https://github.com/bazelbuild/bazel/releases/tag/9.0.0))

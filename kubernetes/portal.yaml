@@ -16,7 +16,7 @@ spec:
       containers:
         - args:
             - /config/portal.jsonnet
-          image: ghcr.io/buildbarn/bb-portal:20260630T071618Z-dd0997c
+          image: ghcr.io/buildbarn/bb-portal:20260921T081153Z-54e9f65
           name: portal
           ports:
             - containerPort: 8081

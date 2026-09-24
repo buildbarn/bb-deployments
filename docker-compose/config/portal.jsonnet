@@ -6,42 +6,53 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8081'],
     authenticationPolicy: { allow: {} },
   }],
-  instanceNameAuthorizer: {
-    allow: {},
-  },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+  database: {
+    postgres: {
+      connectionString: 'postgresql://app:password@postgres:5432/app',
+    },
+    connectionPoolConfiguration: {
+      maxOpenConnections: 10,
+      maxIdleConnections: 10,
+      connectionMaxLifetime: '120s',
+      connectionMaxIdleTime: '30s',
+    },
+    cleanupConfiguration: {
+      cleanupInterval: '60s',
+      invocationMessageTimeout: '3600s',
+      invocationRetention: '604800s',
+      completedActionRetention: '604800s',
+    },
+  },
   besServiceConfiguration: {
     grpcServers: [{
       listenAddresses: [':8082'],
       authenticationPolicy: { allow: {} },
       maximumReceivedMessageSizeBytes: 10 * 1024 * 1024,
     }],
-    database: {
-      postgres: {
-        connectionString: 'postgresql://app:password@postgres:5432/app',
-      },
-      connectionPoolConfiguration: {
-        maxOpenConnections: 10,
-        maxIdleConnections: 10,
-        connectionMaxLifetime: '120s',
-        connectionMaxIdleTime: '30s',
-      },
-    },
+    publishAuthorizer: { allow: {} },
     enableBepFileUpload: true,
-    enableGraphqlPlayground: true,
     saveDataLevel: { basicAndTarget: {} },
-    databaseCleanupConfiguration: {
-      cleanupInterval: '60s',
-      invocationMessageTimeout: '3600s',
-      invocationRetention: '604800s',
-    },
     minEventBatchDuration: '0.1s',
     buildKey: 'build_id',
   },
-  contentAddressableStorage: common.blobstore.contentAddressableStorage,
-  actionCache: common.blobstore.actionCache,
-  initialSizeClassCache: common.initialSizeClassCache,
-  fileSystemAccessCache: common.fileSystemAccessCache,
+  contentAddressableStorage: {
+    backend: common.blobstore.contentAddressableStorage,
+    readAuthorizer: { allow: {} },
+  },
+  actionCache: {
+    backend: common.blobstore.actionCache,
+    readAuthorizer: { allow: {} },
+  },
+  initialSizeClassCache: {
+    backend: common.initialSizeClassCache,
+    readAuthorizer: { allow: {} },
+  },
+  fileSystemAccessCache: {
+    backend: common.fileSystemAccessCache,
+    readAuthorizer: { allow: {} },
+  },
+  blobstoreServiceConfiguration: {},
   schedulerServiceConfiguration: {
     buildQueueStateClient: {
       address: 'scheduler:8984',
@@ -50,6 +61,10 @@ local common = import 'common.libsonnet';
       allow: {},
     },
     listOperationsPageSize: 500,
+    readAuthorizer: { allow: {} },
+  },
+  graphqlApiServiceConfiguration: {
+    readAuthorizer: { allow: {} },
   },
   frontendServiceConfiguration: {
     frontendSource: {
