@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: ghcr.io/buildbarn/bb-storage:20260609T094425Z-10acc76
+    image: ghcr.io/buildbarn/bb-storage:20260906T092937Z-ae61334
     command:
     - /config/frontend.jsonnet
     expose:
@@ -12,7 +12,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: ghcr.io/buildbarn/bb-storage:20260609T094425Z-10acc76
+    image: ghcr.io/buildbarn/bb-storage:20260906T092937Z-ae61334
     command:
     - /config/storage.jsonnet
     expose:
@@ -25,7 +25,7 @@ services:
     - ./volumes/storage-fsac-0:/storage-fsac
 
   storage-1:
-    image: ghcr.io/buildbarn/bb-storage:20260609T094425Z-10acc76
+    image: ghcr.io/buildbarn/bb-storage:20260906T092937Z-ae61334
     command:
     - /config/storage.jsonnet
     expose:
@@ -38,7 +38,7 @@ services:
     - ./volumes/storage-fsac-1:/storage-fsac
 
   scheduler:
-    image: ghcr.io/buildbarn/bb-scheduler:20260527T162223Z-c48dcda
+    image: ghcr.io/buildbarn/bb-scheduler:20260908T142432Z-77f7642
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -54,7 +54,7 @@ services:
     - ./config:/config
 
   portal:
-    image: ghcr.io/buildbarn/bb-portal:20260630T071618Z-dd0997c
+    image: ghcr.io/buildbarn/bb-portal:20260921T081153Z-54e9f65
     command:
     - /config/portal.jsonnet
     expose:
@@ -85,13 +85,13 @@ services:
       timeout: 10s
 
   runner-installer:
-    image: ghcr.io/buildbarn/bb-runner-installer:20260527T162223Z-c48dcda
+    image: ghcr.io/buildbarn/bb-runner-installer:20260908T142432Z-77f7642
     volumes:
     - ./volumes/bb:/bb
 
   # The FUSE worker is the most efficient configuration.
   worker-fuse-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20260527T162223Z-c48dcda
+    image: ghcr.io/buildbarn/bb-worker:20260908T142432Z-77f7642
     command:
     - /config/worker-fuse-ubuntu22-04.jsonnet
     # Need to be privileged for the FUSE mounting to work.
@@ -127,7 +127,7 @@ services:
   # For situations where the more efficient FUSE worker is not supported,
   # the classic hardlinking example is shown here.
   worker-hardlinking-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20260527T162223Z-c48dcda
+    image: ghcr.io/buildbarn/bb-worker:20260908T142432Z-77f7642
     command:
     - /config/worker-hardlinking-ubuntu22-04.jsonnet
     privileged: false
