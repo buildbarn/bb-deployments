@@ -1,11 +1,10 @@
-# 2026-09-22
+# 2026-09-28
 
 * Upgrade to Go 1.27.1
 * Add tool for partitioning ephemeral disks
 * Add ZSTD ReadOffset support
 * Option to use environment variables for setting proxy URL
 * Make the VFS API more complete
-* Support FUSE on FreeBSD
 * Restructure bb-portal configuration to decrease coupling between services
 * Add ability to compare two actions in bb-portal
 * Add ZSTD compression middleware to bb-portal router
