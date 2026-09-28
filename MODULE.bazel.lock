@@ -250,7 +250,6 @@
     "https://bcr.bazel.build/modules/libpfm/4.11.0.bcr.1/MODULE.bazel": "e5362dadc90aab6724c83a2cc1e67cbed9c89a05d97fb1f90053c8deb1e445c8",
     "https://bcr.bazel.build/modules/libpfm/4.11.0.bcr.1/source.json": "0646414d9037f8aad148781dd760bec90b0b25ac12fda5e03f8aadbd6b9c61e6",
     "https://bcr.bazel.build/modules/libpfm/4.11.0/MODULE.bazel": "45061ff025b301940f1e30d2c16bea596c25b176c8b6b3087e92615adbd52902",
-    "https://bcr.bazel.build/modules/llvm/0.8.17/MODULE.bazel": "1d90735de43b21720434f025fb7a609085490ad695692eec1315def8e1145869",
     "https://bcr.bazel.build/modules/llvm/0.8.18/MODULE.bazel": "56d507d49c02498731fa5a95fa48a778368f2d23c0f6184a578d057e58830458",
     "https://bcr.bazel.build/modules/llvm/0.8.18/source.json": "ca45abf06bdd842e88acdda4a077038bbecddd3e90050951c2aff5f89b1b522e",
     "https://bcr.bazel.build/modules/mbedtls/3.6.0/MODULE.bazel": "8e380e4698107c5f8766264d4df92e36766248447858db28187151d884995a09",
