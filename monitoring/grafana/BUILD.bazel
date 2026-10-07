@@ -24,6 +24,8 @@ jb_library(
 simpledash_jsonnet_to_json(
     name = "dashboards",
     srcs = [
+        "dashboards/bb-portal-cleanup-service.jsonnet",
+        "dashboards/bb-portal-overview.jsonnet",
         "dashboards/bb-scheduler.jsonnet",
         "dashboards/blobaccess.jsonnet",
         "dashboards/buildexecutor.jsonnet",

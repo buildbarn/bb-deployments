@@ -84,6 +84,20 @@ local util = grafonnet.util;
     stack+: { mode: 'percent' },
   },
 
+  stat(title, width, targets, unit, interval=null)::
+    stat.new(title=title)
+    + stat.queryOptions.withTargets(targets)
+    + stat.standardOptions.withUnit(unit.format)
+    + stat.standardOptions.withDecimals(unit.decimals)
+    + stat.queryOptions.withInterval(interval),
+
+  statTarget(expr, instant=false)::
+    prometheus.new(
+      expr=expr,
+      datasource='${DS_PROMETHEUS}',
+    )
+    + prometheus.withInstant(instant),
+
   graph(title, width, stacking, targets, unit, interval=null)::
     timeSeries.new(
       title=title
