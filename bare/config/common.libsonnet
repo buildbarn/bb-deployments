@@ -38,6 +38,6 @@
       client: { address: 'localhost:8981' },
     },
   },
-  browserUrl: 'http://localhost:8081/browser',
+  portalUrl: 'http://localhost:8081/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
 }

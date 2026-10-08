@@ -45,7 +45,7 @@ local common = import 'common.libsonnet';
       },
     },
   },
-  browserUrl: common.browserUrl,
+  portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },
   global: common.global,

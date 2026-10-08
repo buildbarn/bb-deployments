@@ -43,9 +43,8 @@ bb_portal_bes_ip=$(kubectl get service --namespace=buildbarn portal-bes -o json 
 bb_portal_bes_address="grpc://$bb_portal_bes_ip:8082"
 ingress_ip=$(kubectl get service --namespace=kube-system traefik -o json | jq --raw-output '.status.loadBalancer.ingress[0].ip')
 
-# --- Test that the bb-portal and bb-scheduler UIs are responsive. ---
+# --- Test that the bb-portal UI is responsive. ---
 curl --fail --header 'Host: bb-portal.example.com' "http://$ingress_ip/" | grep '<h1 id="preloader-title" class="preloader-h1">Welcome to the Buildbarn Portal</h1>'
-curl --fail --header 'Host: bb-scheduler.example.com' "http://$ingress_ip/" | grep '<title>Buildbarn Scheduler</title>'
 
 # --- Run remote execution ---
 bazel_command_log="$(bazel info command_log)"

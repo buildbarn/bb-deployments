@@ -1,10 +1,6 @@
 local common = import 'common.libsonnet';
 
 {
-  adminHttpServers: [{
-    listenAddresses: [':7982'],
-    authenticationPolicy: { allow: {} },
-  }],
   clientGrpcServers: [{
     listenAddresses: [':8982'],
     authenticationPolicy: { allow: {} },
@@ -17,7 +13,6 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8984'],
     authenticationPolicy: { allow: {} },
   }],
-  browserUrl: common.browserUrl,
   contentAddressableStorage: common.blobstore.contentAddressableStorage,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   global: common.globalWithDiagnosticsHttpServer(':9982'),

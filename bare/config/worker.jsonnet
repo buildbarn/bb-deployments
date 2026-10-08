@@ -44,7 +44,7 @@ local os = std.extVar('OS');
       },
     },
   },
-  browserUrl: common.browserUrl,
+  portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'localhost:8983' },
   global: common.globalWithDiagnosticsHttpServer(':9986'),

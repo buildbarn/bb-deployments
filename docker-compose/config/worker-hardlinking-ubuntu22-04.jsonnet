@@ -5,7 +5,7 @@ local common = import 'common.libsonnet';
 // where the more efficient FUSE worker is not supported.
 {
   blobstore: common.blobstore,
-  browserUrl: common.browserUrl,
+  portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },
   global: common.global,
