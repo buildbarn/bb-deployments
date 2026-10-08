@@ -2,7 +2,7 @@
 
 * Add file system access profile to execute response and server logs
 * Deprecate bb-scheduler's web UI
-* Replace all references to bb-browser with bb-portal
+* Replace all references to bb-browser with bb-portal in configurations
 * Support FUSE on FreeBSD
 
 # 2026-09-28
