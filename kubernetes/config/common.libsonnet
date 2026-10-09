@@ -62,7 +62,7 @@
       },
     },
   },
-  browserUrl: 'http://bb-portal.example.com:80/browser',
+  portalUrl: 'http://bb-portal.example.com:80/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {

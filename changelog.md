@@ -1,3 +1,10 @@
+# 2026-10-08
+
+* Add file system access profile to execute response and server logs
+* Deprecate bb-scheduler's web UI
+* Replace all references to bb-browser with bb-portal in configurations
+* Support FUSE on FreeBSD
+
 # 2026-09-28
 
 * Upgrade to Go 1.27.1

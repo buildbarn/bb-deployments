@@ -1,5 +1,5 @@
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index fc9e900..04b8e43 100644
+index 8eb82da..bf0845d 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
 @@ -4,11 +4,11 @@
@@ -60,8 +60,8 @@ index fc9e900..04b8e43 100644
        },
      },
    },
--  browserUrl: 'http://bb-portal.example.com:80/browser',
-+  browserUrl: 'http://localhost:8081/browser',
+-  portalUrl: 'http://bb-portal.example.com:80/browser',
++  portalUrl: 'http://localhost:8081/browser',
    maximumMessageSizeBytes: 2 * 1024 * 1024,
    global: {
      diagnosticsHttpServer: {
@@ -85,7 +85,7 @@ index 7e0103f..7f08b6d 100644
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
 diff --git a/kubernetes/config/worker-ubuntu22-04.jsonnet b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
-index 6607d4f..1c13dea 100644
+index e6da086..b5459e0 100644
 --- a/kubernetes/config/worker-ubuntu22-04.jsonnet
 +++ b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
 @@ -1,13 +1,14 @@
@@ -96,7 +96,7 @@ index 6607d4f..1c13dea 100644
 +// where the more efficient FUSE worker is not supported.
  {
    blobstore: common.blobstore,
-   browserUrl: common.browserUrl,
+   portalUrl: common.portalUrl,
    maximumMessageSizeBytes: common.maximumMessageSizeBytes,
    scheduler: { address: 'scheduler:8983' },
 -  global: common.global {

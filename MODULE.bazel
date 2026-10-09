@@ -58,9 +58,7 @@ git_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    # Later versions of bb-remote-execution uses a version of go-winfsp
-    # causing Buildbarn workers to sometimes panic on Windows machines.
-    commit = "f2aafec9f416edb1a52383bbd83c0ba7b411d72d",
+    commit = "582d07ff2acc2faa91b3e875e62bf610b13d37b5",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
@@ -155,12 +153,3 @@ go_deps_dev.module_override(
 )
 
 register_toolchains("@llvm//toolchain:all")
-
-go_deps_dev.module_override(
-    patches = [
-        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/direntrylist-offsets-and-testability.diff",
-        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/writeback-cache.diff",
-        "@com_github_buildbarn_bb_remote_execution//:patches/com_github_hanwen_go_fuse_v2/notify-testability.diff",
-    ],
-    path = "github.com/hanwen/go-fuse/v2",
-)
