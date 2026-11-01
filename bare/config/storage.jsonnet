@@ -10,14 +10,16 @@ local common = import 'common.libsonnet';
   contentAddressableStorage: {
     backend: {
       'local': {
-        keyLocationMapOnBlockDevice: {
-          file: {
-            path: 'storage-cas/key_location_map',
-            sizeBytes: 400 * 1024 * 1024,
+        keyLocationMap: {
+          onBlockDevice: {
+            file: {
+              path: 'storage-cas/key_location_map',
+              sizeBytes: 400 * 1024 * 1024,
+            },
           },
+          maximumGetAttempts: 16,
+          maximumPutAttempts: 64,
         },
-        keyLocationMapMaximumGetAttempts: 16,
-        keyLocationMapMaximumPutAttempts: 64,
         oldBlocks: 8,
         currentBlocks: 24,
         newBlocks: 3,
@@ -43,14 +45,16 @@ local common = import 'common.libsonnet';
   actionCache: {
     backend: {
       'local': {
-        keyLocationMapOnBlockDevice: {
-          file: {
-            path: 'storage-ac/key_location_map',
-            sizeBytes: 1024 * 1024,
+        keyLocationMap: {
+          onBlockDevice: {
+            file: {
+              path: 'storage-ac/key_location_map',
+              sizeBytes: 1024 * 1024,
+            },
           },
+          maximumGetAttempts: 16,
+          maximumPutAttempts: 64,
         },
-        keyLocationMapMaximumGetAttempts: 16,
-        keyLocationMapMaximumPutAttempts: 64,
         oldBlocks: 8,
         currentBlocks: 24,
         newBlocks: 1,
@@ -75,14 +79,16 @@ local common = import 'common.libsonnet';
   fileSystemAccessCache: {
     backend: {
       'local': {
-        keyLocationMapOnBlockDevice: {
-          file: {
-            path: 'storage-fsac/key_location_map',
-            sizeBytes: 1024 * 1024,
+        keyLocationMap: {
+          onBlockDevice: {
+            file: {
+              path: 'storage-fsac/key_location_map',
+              sizeBytes: 1024 * 1024,
+            },
           },
+          maximumGetAttempts: 16,
+          maximumPutAttempts: 64,
         },
-        keyLocationMapMaximumGetAttempts: 16,
-        keyLocationMapMaximumPutAttempts: 64,
         oldBlocks: 8,
         currentBlocks: 24,
         newBlocks: 1,

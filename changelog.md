@@ -1,3 +1,12 @@
+# 2026-11-01
+
+* Restructure `LocalBlobAccess` configuration: the key-location map options
+  are now grouped into a nested `keyLocationMap` message
+* Add `disable_find_missing_replication` to `readFallback` blob access
+* Add a Content-Security-Policy to bb-portal servefiles
+* Propagate HTTP request headers to bb-portal GraphQL handlers
+* Various bug fixes and improvements
+
 # 2026-10-08
 
 * Add file system access profile to execute response and server logs

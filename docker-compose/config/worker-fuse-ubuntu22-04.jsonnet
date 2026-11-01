@@ -10,14 +10,16 @@ local common = import 'common.libsonnet';
         slow: common.blobstore.contentAddressableStorage,
         fast: {
           'local': {
-            keyLocationMapOnBlockDevice: {
-              file: {
-                path: '/worker/cas/key_location_map',
-                sizeBytes: 400 * 1024 * 1024,
+            keyLocationMap: {
+              onBlockDevice: {
+                file: {
+                  path: '/worker/cas/key_location_map',
+                  sizeBytes: 400 * 1024 * 1024,
+                },
               },
+              maximumGetAttempts: 16,
+              maximumPutAttempts: 64,
             },
-            keyLocationMapMaximumGetAttempts: 16,
-            keyLocationMapMaximumPutAttempts: 64,
             oldBlocks: 8,
             currentBlocks: 24,
             newBlocks: 3,
