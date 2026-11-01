@@ -11,4 +11,5 @@ configMapGenerator:
     - runner-ubuntu22-04.jsonnet
     - scheduler.jsonnet
     - storage.jsonnet
+    - topology.libsonnet
     - worker-ubuntu22-04.jsonnet

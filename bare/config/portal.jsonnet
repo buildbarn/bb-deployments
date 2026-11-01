@@ -1,4 +1,5 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
 
 {
   // besServiceConfiguration is disabled as it requires a Postgres instance.
@@ -8,20 +9,24 @@ local common = import 'common.libsonnet';
     authenticationPolicy: { allow: {} },
   }],
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-  contentAddressableStorage: {
-    backend: common.blobstore.contentAddressableStorage,
+  contentAddressableStorageServer: {
+    contentAddressableStorage: {
+      chunkStorage: topology.chunkStorage,
+      chunkMappingStorage: topology.chunkMappingStorage,
+      cdcParameterCache: topology.cdcParameterCache,
+    },
     readAuthorizer: { allow: {} },
   },
   actionCache: {
-    backend: common.blobstore.actionCache,
+    backend: topology.actionCache,
     readAuthorizer: { allow: {} },
   },
   initialSizeClassCache: {
-    backend: common.initialSizeClassCache,
+    backend: topology.initialSizeClassCache,
     readAuthorizer: { allow: {} },
   },
   fileSystemAccessCache: {
-    backend: common.fileSystemAccessCache,
+    backend: topology.fileSystemAccessCache,
     readAuthorizer: { allow: {} },
   },
   blobstoreServiceConfiguration: {},

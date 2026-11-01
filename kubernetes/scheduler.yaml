@@ -18,7 +18,7 @@ spec:
       containers:
       - args:
         - /config/scheduler.jsonnet
-        image: ghcr.io/buildbarn/bb-scheduler:20261022T081640Z-1fbffdc
+        image: ghcr.io/buildbarn/bb-scheduler:20261102T094740Z-c9ba98c
         name: scheduler
         ports:
         - containerPort: 8982
@@ -36,6 +36,8 @@ spec:
             items:
             - key: common.libsonnet
               path: common.libsonnet
+            - key: topology.libsonnet
+              path: topology.libsonnet
             - key: scheduler.jsonnet
               path: scheduler.jsonnet
 ---

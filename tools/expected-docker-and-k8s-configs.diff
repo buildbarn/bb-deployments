@@ -1,65 +1,9 @@
 diff --git a/kubernetes/config/common.libsonnet b/docker-compose/config/common.libsonnet
-index 8eb82da..bf0845d 100644
+index 796fb44..64dc7b2 100644
 --- a/kubernetes/config/common.libsonnet
 +++ b/docker-compose/config/common.libsonnet
-@@ -4,11 +4,11 @@
-       sharding: {
-         shards: {
-           "0": {
--            backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
-+            backend: { grpc: { client: { address: 'storage-0:8981' } } },
-             weight: 1,
-           },
-           "1": {
--            backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
-+            backend: { grpc: { client: { address: 'storage-1:8981' } } },
-             weight: 1,
-           },
-         },
-@@ -20,11 +20,11 @@
-           sharding: {
-             shards: {
-               "0": {
--                backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
-+                backend: { grpc: { client: { address: 'storage-0:8981' } } },
-                 weight: 1,
-               },
-               "1": {
--                backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
-+                backend: { grpc: { client: { address: 'storage-1:8981' } } },
-                 weight: 1,
-               },
-             },
-@@ -38,11 +38,11 @@
-     sharding: {
-       shards: {
-         "0": {
--          backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
-+          backend: { grpc: { client: { address: 'storage-0:8981' } } },
-           weight: 1,
-         },
-         "1": {
--          backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
-+          backend: { grpc: { client: { address: 'storage-1:8981' } } },
-           weight: 1,
-         },
-       },
-@@ -52,22 +52,22 @@
-     sharding: {
-       shards: {
-         "0": {
--          backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
-+          backend: { grpc: { client: { address: 'storage-0:8981' } } },
-           weight: 1,
-         },
-         "1": {
--          backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
-+          backend: { grpc: { client: { address: 'storage-1:8981' } } },
-           weight: 1,
-         },
-       },
-     },
-   },
+@@ -1,10 +1,10 @@
+ {
 -  portalUrl: 'http://bb-portal.example.com:80/browser',
 +  portalUrl: 'http://localhost:8081/browser',
    maximumMessageSizeBytes: 2 * 1024 * 1024,
@@ -84,18 +28,35 @@ index 7e0103f..7f08b6d 100644
    grpcServers: [{
      listenPaths: ['/worker/runner'],
      authenticationPolicy: { allow: {} },
+diff --git a/kubernetes/config/topology.libsonnet b/docker-compose/config/topology.libsonnet
+index ecf1a1f..027f7b6 100644
+--- a/kubernetes/config/topology.libsonnet
++++ b/docker-compose/config/topology.libsonnet
+@@ -1,7 +1,7 @@
+ // Storage servers.
+ local storageAddresses = [
+-  'storage-0.storage.buildbarn:8981',
+-  'storage-1.storage.buildbarn:8981',
++  'storage-0:8981',
++  'storage-1:8981',
+ ];
+ 
+ local grpc(address) = {
 diff --git a/kubernetes/config/worker-ubuntu22-04.jsonnet b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
-index e6da086..b5459e0 100644
+index 776cd1c..d496afb 100644
 --- a/kubernetes/config/worker-ubuntu22-04.jsonnet
 +++ b/docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet
-@@ -1,13 +1,14 @@
- local common = import 'common.libsonnet';
+@@ -2,6 +2,9 @@ local common = import 'common.libsonnet';
+ local topology = import 'topology.libsonnet';
+ 
  
 +// DO NOT USE the hardlinking configuration below unless really needed.
 +// This example only exists for reference in situations
 +// where the more efficient FUSE worker is not supported.
  {
-   blobstore: common.blobstore,
+   blobstore: {
+     actionCache: topology.actionCache,
+@@ -14,9 +17,7 @@ local topology = import 'topology.libsonnet';
    portalUrl: common.portalUrl,
    maximumMessageSizeBytes: common.maximumMessageSizeBytes,
    scheduler: { address: 'scheduler:8983' },
@@ -106,7 +67,7 @@ index e6da086..b5459e0 100644
    buildDirectories: [{
      native: {
        buildDirectoryPath: '/worker/build',
-@@ -19,6 +20,7 @@ local common = import 'common.libsonnet';
+@@ -28,6 +29,7 @@ local topology = import 'topology.libsonnet';
      runners: [{
        endpoint: { address: 'unix:///worker/runner' },
        concurrency: 8,
@@ -114,7 +75,7 @@ index e6da086..b5459e0 100644
        platform: {
          properties: [
            { name: 'OSFamily', value: 'linux' },
-@@ -26,8 +28,10 @@ local common = import 'common.libsonnet';
+@@ -35,8 +37,10 @@ local topology = import 'topology.libsonnet';
          ],
        },
        workerId: {

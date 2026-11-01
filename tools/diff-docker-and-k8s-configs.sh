@@ -16,5 +16,6 @@ diff_config {kubernetes,docker-compose}/config/portal.jsonnet
 diff_config {kubernetes,docker-compose}/config/runner-ubuntu22-04.jsonnet
 diff_config {kubernetes,docker-compose}/config/scheduler.jsonnet
 diff_config {kubernetes,docker-compose}/config/storage.jsonnet
+diff_config {kubernetes,docker-compose}/config/topology.libsonnet
 
 diff_config kubernetes/config/worker-ubuntu22-04.jsonnet docker-compose/config/worker-hardlinking-ubuntu22-04.jsonnet

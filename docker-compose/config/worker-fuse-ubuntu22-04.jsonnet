@@ -1,50 +1,63 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
+
+local chunkMappingCache = {
+  cacheSize: 10000,
+  cacheDuration: '60s',
+  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+};
+local chunkCache = {
+  cacheSize: 10000,
+  cacheDuration: '60s',
+  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+};
 
 // The FUSE worker is the most efficient configuration.
 // This is preferred to the hardlinking configuration.
 {
   blobstore: {
-    actionCache: common.blobstore.actionCache,
+    actionCache: topology.actionCache,
     contentAddressableStorage: {
-      readCaching: {
-        slow: common.blobstore.contentAddressableStorage,
-        fast: {
-          'local': {
-            keyLocationMap: {
-              onBlockDevice: {
-                file: {
-                  path: '/worker/cas/key_location_map',
-                  sizeBytes: 400 * 1024 * 1024,
+      chunkStorage: {
+        readCaching: {
+          slow: topology.chunkStorage,
+          fast: {
+            'local': {
+              keyLocationMap: {
+                onBlockDevice: {
+                  file: {
+                    path: '/worker/cs/key_location_map',
+                    sizeBytes: 400 * 1024 * 1024,
+                  },
                 },
+                maximumGetAttempts: 16,
+                maximumPutAttempts: 64,
               },
-              maximumGetAttempts: 16,
-              maximumPutAttempts: 64,
-            },
-            oldBlocks: 8,
-            currentBlocks: 24,
-            newBlocks: 3,
-            blocksOnBlockDevice: {
-              source: {
-                file: {
-                  path: '/worker/cas/blocks',
-                  sizeBytes: 32 * 1024 * 1024 * 1024,
+              oldBlocks: 8,
+              currentBlocks: 24,
+              newBlocks: 3,
+              blocksOnBlockDevice: {
+                source: {
+                  file: {
+                    path: '/worker/cs/blocks',
+                    sizeBytes: 32 * 1024 * 1024 * 1024,
+                  },
                 },
+                spareBlocks: 3,
               },
-              spareBlocks: 3,
-              dataIntegrityValidationCache: {
-                cacheSize: 50000,
-                cacheDuration: '14400s',
-                cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+              persistent: {
+                stateDirectoryPath: '/worker/cs/persistent_state',
+                minimumEpochInterval: '300s',
               },
-            },
-            persistent: {
-              stateDirectoryPath: '/worker/cas/persistent_state',
-              minimumEpochInterval: '300s',
             },
           },
+          replicator: { deduplicating: { 'local': {} } },
         },
-        replicator: { deduplicating: { 'local': {} } },
       },
+      chunkMappingStorage: topology.chunkMappingStorage,
+      chunkMappingCache: chunkMappingCache,
+      cdcParameterCache: topology.cdcParameterCache,
+      chunkCache: chunkCache,
     },
   },
   portalUrl: common.portalUrl,
@@ -103,7 +116,7 @@ local common = import 'common.libsonnet';
     cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
   },
   prefetching: {
-    fileSystemAccessCache: common.fileSystemAccessCache,
+    fileSystemAccessCache: topology.fileSystemAccessCache,
     bloomFilterBitsPerPath: 14,
     bloomFilterMaximumSizeBytes: 65536,
   },

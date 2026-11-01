@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: ghcr.io/buildbarn/bb-storage:20261023T030055Z-a00415f
+    image: ghcr.io/buildbarn/bb-storage:20261102T091443Z-ca3d8b4
     command:
     - /config/frontend.jsonnet
     expose:
@@ -12,7 +12,7 @@ services:
     - ./config:/config
 
   storage-0:
-    image: ghcr.io/buildbarn/bb-storage:20261023T030055Z-a00415f
+    image: ghcr.io/buildbarn/bb-storage:20261102T091443Z-ca3d8b4
     command:
     - /config/storage.jsonnet
     expose:
@@ -21,11 +21,12 @@ services:
     volumes:
     - ./config:/config
     - ./volumes/storage-ac-0:/storage-ac
-    - ./volumes/storage-cas-0:/storage-cas
+    - ./volumes/storage-cs-0:/storage-cs
+    - ./volumes/storage-cms-0:/storage-cms
     - ./volumes/storage-fsac-0:/storage-fsac
 
   storage-1:
-    image: ghcr.io/buildbarn/bb-storage:20261023T030055Z-a00415f
+    image: ghcr.io/buildbarn/bb-storage:20261102T091443Z-ca3d8b4
     command:
     - /config/storage.jsonnet
     expose:
@@ -34,11 +35,12 @@ services:
     volumes:
     - ./config:/config
     - ./volumes/storage-ac-1:/storage-ac
-    - ./volumes/storage-cas-1:/storage-cas
+    - ./volumes/storage-cs-1:/storage-cs
+    - ./volumes/storage-cms-1:/storage-cms
     - ./volumes/storage-fsac-1:/storage-fsac
 
   scheduler:
-    image: ghcr.io/buildbarn/bb-scheduler:20261022T081640Z-1fbffdc
+    image: ghcr.io/buildbarn/bb-scheduler:20261102T094740Z-c9ba98c
     command:
     - /config/scheduler.jsonnet
     expose:
@@ -53,7 +55,7 @@ services:
     - ./config:/config
 
   portal:
-    image: ghcr.io/buildbarn/bb-portal:20261028T123128Z-b5fab1f
+    image: ghcr.io/buildbarn/bb-portal:20261102T100250Z-a4bd618
     command:
     - /config/portal.jsonnet
     expose:
@@ -84,13 +86,13 @@ services:
       timeout: 10s
 
   runner-installer:
-    image: ghcr.io/buildbarn/bb-runner-installer:20261022T081640Z-1fbffdc
+    image: ghcr.io/buildbarn/bb-runner-installer:20261102T094740Z-c9ba98c
     volumes:
     - ./volumes/bb:/bb
 
   # The FUSE worker is the most efficient configuration.
   worker-fuse-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20261022T081640Z-1fbffdc
+    image: ghcr.io/buildbarn/bb-worker:20261102T094740Z-c9ba98c
     command:
     - /config/worker-fuse-ubuntu22-04.jsonnet
     # Need to be privileged for the FUSE mounting to work.
@@ -126,7 +128,7 @@ services:
   # For situations where the more efficient FUSE worker is not supported,
   # the classic hardlinking example is shown here.
   worker-hardlinking-ubuntu22-04:
-    image: ghcr.io/buildbarn/bb-worker:20261022T081640Z-1fbffdc
+    image: ghcr.io/buildbarn/bb-worker:20261102T094740Z-c9ba98c
     command:
     - /config/worker-hardlinking-ubuntu22-04.jsonnet
     privileged: false

@@ -1,3 +1,7 @@
+# 2026-11-02
+
+* Add support for Content Defined Chunking (CDC)
+
 # 2026-11-01
 
 * Restructure `LocalBlobAccess` configuration: the key-location map options

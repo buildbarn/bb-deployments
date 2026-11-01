@@ -16,7 +16,7 @@ spec:
       containers:
         - args:
             - /config/portal.jsonnet
-          image: ghcr.io/buildbarn/bb-portal:20261028T123128Z-b5fab1f
+          image: ghcr.io/buildbarn/bb-portal:20261102T100250Z-a4bd618
           name: portal
           ports:
             - containerPort: 8081
@@ -37,6 +37,8 @@ spec:
             items:
               - key: common.libsonnet
                 path: common.libsonnet
+              - key: topology.libsonnet
+                path: topology.libsonnet
               - key: portal.jsonnet
                 path: portal.jsonnet
 ---
