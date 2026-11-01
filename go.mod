@@ -1,6 +1,6 @@
 module github.com/buildbarn/bb-deployments
 
-go 1.27.1
+go 1.27.3
 
 // rules_go doesn't support gomock's package mode.
 // Use the same version as bb-storage and bb-remote-execution.
@@ -16,7 +16,7 @@ replace go.opentelemetry.io/otel/trace v1.25.0 => go.opentelemetry.io/otel/trace
 replace github.com/hanwen/go-fuse/v2 => github.com/hanwen/go-fuse/v2 v2.10.1
 
 require (
-	github.com/bazelbuild/rules_go v0.63.0
+	github.com/bazelbuild/rules_go v0.64.2
 	github.com/jsonnet-bundler/jsonnet-bundler v0.6.0
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067
 )
@@ -30,7 +30,7 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/sys v0.33.0 // indirect
-	golang.org/x/tools v0.34.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/tools v0.48.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6 // indirect
 )

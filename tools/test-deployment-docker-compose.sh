@@ -6,6 +6,21 @@ set -eux -o pipefail
 script_dir=$(dirname "${BASH_SOURCE[0]}")
 cd "${script_dir}/../docker-compose"
 grpcurl=${GRPCURL:-grpcurl}
+bb_portal_bes_address="grpc://localhost:8082"
+
+# Wait until bb-portal's Build Event Service accepts connections, as Bazel
+# uploads build events to it.
+wait_for_bes() {
+    for _ in $(seq 1 10); do
+        if $grpcurl --plaintext -d '{}' localhost:8082 grpc.health.v1.Health/Check 2>/dev/null |
+            jq -e '.status == "SERVING"' >/dev/null 2>&1; then
+            return
+        fi
+        sleep 1
+    done
+    echo >&2 "ERROR: bb-portal Build Event Service did not become ready"
+    exit 1
+}
 
 cleanup() {
     EXIT_STATUS=$?
@@ -30,7 +45,7 @@ while : ; do
 done
 
 bazel_command_log="$(bazel info command_log)"
-bb_portal_bes_address="grpc://localhost:8082"
+wait_for_bes
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote executions but no cache hits.
@@ -43,6 +58,7 @@ grep -E '^INFO: [0-9]+ processes: .*[0-9]+ remote[.,]' \
 docker compose down
 docker compose up -d --force-recreate
 
+wait_for_bes
 bazel clean
 bazel test --color=no --curses=no --config=remote-ubuntu-22-04 --bes_backend="$bb_portal_bes_address" --disk_cache= @abseil-hello//:hello_test
 # Make sure there are remote cache hits but no remote executions.

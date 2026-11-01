@@ -1,3 +1,4 @@
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_file")
 load("@buildifier_prebuilt//:rules.bzl", "buildifier")
 load("@gazelle//:def.bzl", "gazelle")
 
@@ -5,6 +6,12 @@ load("@gazelle//:def.bzl", "gazelle")
 # gazelle:exclude dummy_for_dependencies.go
 gazelle(
     name = "gazelle",
+)
+
+write_source_file(
+    name = "generate_workflows",
+    in_file = "//tools/github_workflows",
+    out_file = ".github/workflows",
 )
 
 buildifier(
