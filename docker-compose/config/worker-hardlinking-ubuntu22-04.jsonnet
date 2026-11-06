@@ -1,10 +1,19 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
+
 
 // DO NOT USE the hardlinking configuration below unless really needed.
 // This example only exists for reference in situations
 // where the more efficient FUSE worker is not supported.
 {
-  blobstore: common.blobstore,
+  blobstore: {
+    actionCache: topology.actionCache,
+    contentAddressableStorage: {
+      chunkStorage: topology.chunkStorage,
+      chunkMappingStorage: topology.chunkMappingStorage,
+      cdcParameterCache: topology.cdcParameterCache,
+    },
+  },
   portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },

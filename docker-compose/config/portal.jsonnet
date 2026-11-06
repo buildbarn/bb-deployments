@@ -1,4 +1,5 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
 
 {
   global: common.global,
@@ -36,20 +37,24 @@ local common = import 'common.libsonnet';
     minEventBatchDuration: '0.1s',
     buildKey: 'build_id',
   },
-  contentAddressableStorage: {
-    backend: common.blobstore.contentAddressableStorage,
+  contentAddressableStorageServer: {
+    contentAddressableStorage: {
+      chunkStorage: topology.chunkStorage,
+      chunkMappingStorage: topology.chunkMappingStorage,
+      cdcParameterCache: topology.cdcParameterCache,
+    },
     readAuthorizer: { allow: {} },
   },
   actionCache: {
-    backend: common.blobstore.actionCache,
+    backend: topology.actionCache,
     readAuthorizer: { allow: {} },
   },
   initialSizeClassCache: {
-    backend: common.initialSizeClassCache,
+    backend: topology.initialSizeClassCache,
     readAuthorizer: { allow: {} },
   },
   fileSystemAccessCache: {
-    backend: common.fileSystemAccessCache,
+    backend: topology.fileSystemAccessCache,
     readAuthorizer: { allow: {} },
   },
   blobstoreServiceConfiguration: {},

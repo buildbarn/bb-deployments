@@ -17,7 +17,7 @@ spec:
       containers:
       - args:
         - /config/storage.jsonnet
-        image: ghcr.io/buildbarn/bb-storage:20261023T030055Z-a00415f
+        image: ghcr.io/buildbarn/bb-storage:20261102T091443Z-ca3d8b4
         name: storage
         ports:
         - containerPort: 8981
@@ -26,8 +26,10 @@ spec:
         - mountPath: /config/
           name: configs
           readOnly: true
-        - mountPath: /storage-cas
-          name: cas
+        - mountPath: /storage-cs
+          name: cs
+        - mountPath: /storage-cms
+          name: cms
         - mountPath: /storage-ac
           name: ac
         - mountPath: /storage-fsac
@@ -38,10 +40,12 @@ spec:
         command:
         - sh
         - -c
-        - mkdir -m 0700 -p /storage-cas/persistent_state /storage-ac/persistent_state /storage-fsac/persistent_state
+        - mkdir -m 0700 -p /storage-cs/persistent_state /storage-cms/persistent_state /storage-ac/persistent_state /storage-fsac/persistent_state
         volumeMounts:
-        - mountPath: /storage-cas
-          name: cas
+        - mountPath: /storage-cs
+          name: cs
+        - mountPath: /storage-cms
+          name: cms
         - mountPath: /storage-ac
           name: ac
         - mountPath: /storage-fsac
@@ -53,17 +57,27 @@ spec:
           items:
           - key: common.libsonnet
             path: common.libsonnet
+          - key: topology.libsonnet
+            path: topology.libsonnet
           - key: storage.jsonnet
             path: storage.jsonnet
   volumeClaimTemplates:
   - metadata:
-      name: cas
+      name: cs
     spec:
       accessModes:
       - ReadWriteOnce
       resources:
         requests:
           storage: 33Gi
+  - metadata:
+      name: cms
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
   - metadata:
       name: ac
     spec:

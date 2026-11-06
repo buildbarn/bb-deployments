@@ -10,34 +10,6 @@
       enableActiveSpans: true,
     },
   },
-
-  blobstore: {
-    contentAddressableStorage: {
-      grpc: {
-        client: { address: 'localhost:8981' },
-      },
-    },
-    actionCache: {
-      completenessChecking: {
-        backend: {
-          grpc: {
-            client: { address: 'localhost:8981' },
-          },
-        },
-        maximumTotalTreeSizeBytes: 64 * 1024 * 1024,
-      },
-    },
-  },
-  fileSystemAccessCache: {
-    grpc: {
-      client: { address: 'localhost:8981' },
-    },
-  },
-  initialSizeClassCache: {
-    grpc: {
-      client: { address: 'localhost:8981' },
-    },
-  },
   portalUrl: 'http://localhost:8081/browser',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
 }

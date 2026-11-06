@@ -1,7 +1,16 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
+
 
 {
-  blobstore: common.blobstore,
+  blobstore: {
+    actionCache: topology.actionCache,
+    contentAddressableStorage: {
+      chunkStorage: topology.chunkStorage,
+      chunkMappingStorage: topology.chunkMappingStorage,
+      cdcParameterCache: topology.cdcParameterCache,
+    },
+  },
   portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   scheduler: { address: 'scheduler:8983' },

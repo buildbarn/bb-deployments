@@ -1,4 +1,11 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
+
+local existenceCache = {
+  cacheSize: 1000000,
+  cacheDuration: '60s',
+  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+};
 
 {
   grpcServers: [{
@@ -21,19 +28,35 @@ local common = import 'common.libsonnet';
   },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   global: common.globalWithDiagnosticsHttpServer(':9980'),
-  contentAddressableStorage: {
-    backend: common.blobstore.contentAddressableStorage,
+  supportedCompressors: ['ZSTD'],
+  contentAddressableStorageServer: {
+    contentAddressableStorage: {
+      chunkStorage: {
+        existenceCaching: {
+          backend: topology.chunkStorage,
+          existenceCache: existenceCache,
+        },
+      },
+      chunkMappingStorage: {
+        existenceCaching: {
+          backend: topology.chunkMappingStorage,
+          existenceCache: existenceCache,
+        },
+      },
+      cdcParameterCache: topology.cdcParameterCache,
+    },
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
     findMissingAuthorizer: { allow: {} },
+    maximumChunkCount: 100000,
   },
   actionCache: {
-    backend: common.blobstore.actionCache,
+    backend: topology.actionCache,
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
   },
   fileSystemAccessCache: {
-    backend: common.fileSystemAccessCache,
+    backend: topology.fileSystemAccessCache,
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
   },

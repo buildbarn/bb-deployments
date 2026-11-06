@@ -44,13 +44,13 @@ http_archive(
 
 git_override(
     module_name = "com_github_buildbarn_bb_portal",
-    commit = "b5fab1f4efb6a37f8bb2a5b539f929766c774c31",
+    commit = "a4bd618f90fbf705642d3eae8e718371b8698bae",
     remote = "https://github.com/buildbarn/bb-portal.git",
 )
 
 git_override(
     module_name = "bazel_remote_apis",
-    commit = "becdd8f9ff811df88a22d3eadd6341753d51d167",
+    commit = "76ddd98e1f92c0e2e71d0d3aa6906eca31754c03",
     # https://github.com/bazelbuild/remote-apis/pull/378
     patches = ["//:patches/bazel_remote_apis/upstream-pr-378.diff"],
     remote = "https://github.com/bazelbuild/remote-apis.git",
@@ -58,13 +58,13 @@ git_override(
 
 git_override(
     module_name = "com_github_buildbarn_bb_remote_execution",
-    commit = "1fbffdc417797f6afdb7f67b1f0d5cc27352db43",
+    commit = "c9ba98cf52456c400278f45a9679635daa40dcd2",
     remote = "https://github.com/buildbarn/bb-remote-execution.git",
 )
 
 git_override(
     module_name = "com_github_buildbarn_bb_storage",
-    commit = "a00415f5b9ce54e98217174d254a3afd56b8e271",
+    commit = "ca3d8b49a5af52eb02ed473dd689d19b949c9e41",
     patches = [
         "//:patches/com_github_buildbarn_bb_storage/github-workflow-windows-2022.diff",
         "//:patches/com_github_buildbarn_bb_storage/github-workflow-remove-publish-step.diff",

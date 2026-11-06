@@ -1,50 +1,69 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
 local os = std.extVar('OS');
+
+local chunkMappingCache = {
+  cacheSize: 10000,
+  cacheDuration: '60s',
+  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+};
+local chunkCache = {
+  cacheSize: 10000,
+  cacheDuration: '60s',
+  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+};
 
 {
   blobstore: {
-    actionCache: common.blobstore.actionCache,
+    actionCache: topology.actionCache,
     contentAddressableStorage: {
-      readCaching: {
-        slow: common.blobstore.contentAddressableStorage,
-        fast: {
-          'local': {
-            keyLocationMap: {
-              onBlockDevice: {
-                file: {
-                  path: 'worker/cas/key_location_map',
-                  sizeBytes: 400 * 1024 * 1024,
+      chunkStorage: {
+        readCaching: {
+          slow: topology.chunkStorage,
+          fast: {
+            'local': {
+              keyLocationMap: {
+                onBlockDevice: {
+                  file: {
+                    path: 'worker/cs/key_location_map',
+                    sizeBytes: 400 * 1024 * 1024,
+                  },
                 },
+                maximumGetAttempts: 16,
+                maximumPutAttempts: 64,
               },
-              maximumGetAttempts: 16,
-              maximumPutAttempts: 64,
-            },
-            oldBlocks: 8,
-            currentBlocks: 24,
-            newBlocks: 3,
-            blocksOnBlockDevice: {
-              source: {
-                file: {
-                  path: 'worker/cas/blocks',
-                  sizeBytes: 32 * 1024 * 1024 * 1024,
+              oldBlocks: 8,
+              currentBlocks: 24,
+              newBlocks: 3,
+              blocksOnBlockDevice: {
+                source: {
+                  file: {
+                    path: 'worker/cs/blocks',
+                    sizeBytes: 32 * 1024 * 1024 * 1024,
+                  },
                 },
+                spareBlocks: 3,
               },
-              spareBlocks: 3,
-              dataIntegrityValidationCache: {
-                cacheSize: 50000,
-                cacheDuration: '14400s',
-                cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+              persistent: {
+                stateDirectoryPath: 'worker/cs/persistent_state',
+                minimumEpochInterval: '300s',
               },
-            },
-            persistent: {
-              stateDirectoryPath: 'worker/cas/persistent_state',
-              minimumEpochInterval: '300s',
             },
           },
+          replicator: { deduplicating: { 'local': {} } },
         },
-        replicator: { deduplicating: { 'local': {} } },
       },
-    },
+      chunkMappingStorage: topology.chunkMappingStorage,
+      cdcParameterCache: topology.cdcParameterCache,
+    } + (if os == 'Windows' then {
+      // Only the virtual (FUSE/WinFSP) build directory performs
+      // repeated random access reads of the same blobs. The native
+      // build directory fetches each blob once into its hardlinking
+      // cache, so caching parsed chunk mappings and decompressed chunks
+      // would only waste memory.
+      chunkMappingCache: chunkMappingCache,
+      chunkCache: chunkCache,
+    } else {}),
   },
   portalUrl: common.portalUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,

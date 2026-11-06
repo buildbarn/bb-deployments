@@ -1,4 +1,5 @@
 local common = import 'common.libsonnet';
+local topology = import 'topology.libsonnet';
 
 {
   clientGrpcServers: [{
@@ -13,7 +14,11 @@ local common = import 'common.libsonnet';
     listenAddresses: [':8984'],
     authenticationPolicy: { allow: {} },
   }],
-  contentAddressableStorage: common.blobstore.contentAddressableStorage,
+  contentAddressableStorage: {
+    chunkStorage: topology.chunkStorage,
+    chunkMappingStorage: topology.chunkMappingStorage,
+    cdcParameterCache: topology.cdcParameterCache,
+  },
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   global: common.global,
   executeAuthorizer: { allow: {} },

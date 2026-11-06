@@ -7,40 +7,78 @@ local common = import 'common.libsonnet';
   }],
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
   global: common.global,
-  contentAddressableStorage: {
-    backend: {
-      'local': {
-        keyLocationMap: {
-          onBlockDevice: {
-            file: {
-              path: '/storage-cas/key_location_map',
-              sizeBytes: 400 * 1024 * 1024,
+  supportedCompressors: ['ZSTD'],
+  contentAddressableStorageServer: {
+    contentAddressableStorage: {
+      chunkStorage: {
+        'local': {
+          keyLocationMap: {
+            onBlockDevice: {
+              file: {
+                path: '/storage-cs/key_location_map',
+                sizeBytes: 400 * 1024 * 1024,
+              },
             },
+            maximumGetAttempts: 16,
+            maximumPutAttempts: 64,
           },
-          maximumGetAttempts: 16,
-          maximumPutAttempts: 64,
-        },
-        oldBlocks: 8,
-        currentBlocks: 24,
-        newBlocks: 3,
-        blocksOnBlockDevice: {
-          source: {
-            file: {
-              path: '/storage-cas/blocks',
-              sizeBytes: 32 * 1024 * 1024 * 1024,
+          oldBlocks: 8,
+          currentBlocks: 24,
+          newBlocks: 3,
+          blocksOnBlockDevice: {
+            source: {
+              file: {
+                path: '/storage-cs/blocks',
+                sizeBytes: 32 * 1024 * 1024 * 1024,
+              },
             },
+            spareBlocks: 3,
           },
-          spareBlocks: 3,
+          persistent: {
+            stateDirectoryPath: '/storage-cs/persistent_state',
+            minimumEpochInterval: '300s',
+          },
+          chunkingParameters: {
+            minChunkSizeBytes: 256 * 1024,
+            horizonSizeBytes: 8 * 256 * 1024,
+          },
         },
-        persistent: {
-          stateDirectoryPath: '/storage-cas/persistent_state',
-          minimumEpochInterval: '300s',
+      },
+      chunkMappingStorage: {
+        'local': {
+          keyLocationMap: {
+            onBlockDevice: {
+              file: {
+                path: '/storage-cms/key_location_map',
+                sizeBytes: 1024 * 1024,
+              },
+            },
+            maximumGetAttempts: 16,
+            maximumPutAttempts: 64,
+          },
+          oldBlocks: 8,
+          currentBlocks: 24,
+          newBlocks: 1,
+          blocksOnBlockDevice: {
+            source: {
+              file: {
+                path: '/storage-cms/blocks',
+                sizeBytes: 20 * 1024 * 1024,
+              },
+            },
+            spareBlocks: 3,
+          },
+          persistent: {
+            stateDirectoryPath: '/storage-cms/persistent_state',
+            minimumEpochInterval: '300s',
+          },
         },
       },
     },
     getAuthorizer: { allow: {} },
     putAuthorizer: { allow: {} },
     findMissingAuthorizer: { allow: {} },
+    maximumChunkCount: 100000,
   },
   actionCache: {
     backend: {
