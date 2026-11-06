@@ -14,6 +14,9 @@ wait_for_bes() {
     for _ in $(seq 1 10); do
         if $grpcurl --plaintext -d '{}' localhost:8082 grpc.health.v1.Health/Check 2>/dev/null |
             jq -e '.status == "SERVING"' >/dev/null 2>&1; then
+            # TODO: There is a flakiness with Bazel reporting "connection
+            # refused" even though the service obviously accepts connections.
+            sleep 3
             return
         fi
         sleep 1
